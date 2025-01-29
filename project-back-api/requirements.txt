@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+sqlalchemy
+pymysql  # Si usas MySQL como base de datos
+asyncpg  # Si usas PostgreSQL
+pyserial

@@ -1,0 +1,14 @@
+# Entorno virtual
+project-back-api/.venv/
+
+# Caché de Python
+project-back-api/__pycache__/
+
+# Base de datos local
+project-back-api/vehiculos.db
+
+# Archivos temporales
+*.log
+*.pyc
+.DS_Store
+Thumbs.db
