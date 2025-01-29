@@ -3,7 +3,7 @@ Este proyecto consiste en una API desarrollada en **Python con FastAPI** para pr
 
 ## Características Principales
 - **FastAPI** para una API rápida y eficiente.
-- **Base de datos SQL (PostgreSQL/MySQL)** gestionada con SQLAlchemy.
+- **Base de datos SQL (MySQL)** gestionada con SQLAlchemy.
 - **Soporte para OBD-II** mediante librerías como `python-OBD`.
 - **Operaciones CRUD** para gestionar los datos de los vehículos.
 - **Integración con Angular** para consumir la API y mostrar la información al usuario.
