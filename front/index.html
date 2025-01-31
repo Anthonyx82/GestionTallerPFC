@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +8,10 @@
         async function enviarDatos() {
             try {
                 const respuesta = await fetch("http://127.0.0.1:5000/guardar-vehiculo/", {
-                    method: "POST"
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
                 });
 
                 if (respuesta.ok) {
@@ -26,10 +28,8 @@
         }
     </script>
 </head>
-
 <body>
     <h1>Diagnóstico del Taller</h1>
     <button onclick="enviarDatos()">Guardar datos del vehículo</button>
 </body>
-
 </html>
