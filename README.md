@@ -49,13 +49,8 @@ Crea un archivo `.env` con los datos de conexión a la base de datos y configura
 
 #### 4. Ejecutar la API:
 ```sh
-uvicorn main:app --reload
+uvicorn back-api:app --host 0.0.0.0 --port 5000 --reload
 ```
 
 #### 5. Probar la API:
 Abre en el navegador: `http://127.0.0.1:8000/docs` para acceder a la documentación generada automáticamente.
-
----
-
-Con esta estructura, el proyecto tendrá una API funcional y una aplicación en Angular que interactuará con ella para gestionar la información de los vehículos y los datos obtenidos del escáner OBD-II.
-
