@@ -100,3 +100,8 @@ async def guardar_vehiculo(db: Session = Depends(get_db)):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
+
+# Endpoint de saludo para comprobar si la API está funcionando
+@app.get("/saludo")
+async def saludo():
+    return {"mensaje": "¡La API está funcionando correctamente!"}
