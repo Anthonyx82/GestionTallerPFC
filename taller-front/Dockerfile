@@ -1,9 +1,9 @@
 FROM node:20 AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm install --legacy-peer-deps
+RUN npm install
 COPY . .
-RUN npm run build --configuration=production --output-hashing=all
+RUN npm run build --configuration=production
 
 FROM nginx:alpine
 COPY --from=build /app/dist/taller-front /usr/share/nginx/html
