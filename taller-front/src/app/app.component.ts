@@ -15,14 +15,9 @@ export class AppComponent {
   // Método para guardar el vehículo
   probarAPI(): void {
     // Realiza una solicitud POST a la API FastAPI
-    this.http.post('https://anthonyx82.ddns.net/taller/api/saludo/', {})
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      });
+    this.http.get('https://anthonyx82.ddns.net/taller/api/saludo')
+    .subscribe(response => {
+      console.log(response);
+    });
   }
 }
