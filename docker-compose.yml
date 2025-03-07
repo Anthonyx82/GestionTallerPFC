@@ -1,0 +1,53 @@
+services:
+  db:
+    image: mysql:8
+    container_name: mysql_taller
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: talleres
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - web
+
+  api:
+    build: ./taller-back-api
+    container_name: api_taller
+    restart: always
+    environment:
+      DATABASE_URL: mysql+pymysql://user:password@db/talleres
+    depends_on:
+      - db
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api_taller.rule=Host(`midominio.com`) && PathPrefix(`/taller/api`)"
+      - "traefik.http.middlewares.api_taller_stripprefix.stripprefix.prefixes=/taller/api"
+      - "traefik.http.routers.api_taller.middlewares=api_taller_stripprefix"
+      - "traefik.http.services.api_taller.loadbalancer.server.port=8000"
+
+  frontend:
+    build: ./taller-front
+    container_name: angular_taller
+    restart: always
+    depends_on:
+      - api
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend_taller.rule=Host(`midominio.com`) && PathPrefix(`/taller`)"
+      - "traefik.http.middlewares.frontend_taller_stripprefix.stripprefix.prefixes=/taller"
+      - "traefik.http.routers.frontend_taller.middlewares=frontend_taller_stripprefix"
+      - "traefik.http.services.frontend_taller.loadbalancer.server.port=80"
+
+networks:
+  web:
+    external: true
+
+volumes:
+  mysql_data:

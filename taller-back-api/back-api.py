@@ -1,30 +1,23 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
+import os
 import serial
 import time
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-# Crear la app
-app = FastAPI()
+# Obtener configuración desde variables de entorno
+DATABASE_URL = os.getenv("DATABASE_URL", "mysql+pymysql://user:password@db/talleres")
 
-# Configurar CORS correctamente
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Puedes cambiarlo a ["http://127.0.0.1:5500"] si lo necesitas
-    allow_credentials=True,
-    allow_methods=["*"],  # Permite todos los métodos (incluyendo OPTIONS)
-    allow_headers=["*"],  # Permite todos los headers
-)
-
-# Base de datos
-DATABASE_URL = "sqlite:///./vehiculos.db"
+# Crear conexión a la base de datos
 engine = create_engine(DATABASE_URL)
-Base = declarative_base()
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Modelo de la base de datos
+Base = declarative_base()
+
 class Vehiculo(Base):
     __tablename__ = "vehiculos"
     id = Column(Integer, primary_key=True, index=True)
@@ -34,14 +27,32 @@ class Vehiculo(Base):
     rpm = Column(Integer)
     velocidad = Column(Integer)
 
+# Crear tablas en la base de datos si no existen
 Base.metadata.create_all(bind=engine)
 
-# Sesión de la base de datos
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# Crear la app FastAPI
+app = FastAPI(root_path="/taller/api")  # Para funcionar en la subruta con Traefik
+
+# Configurar CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Dependencia para obtener la sesión de la base de datos
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 # Función para leer datos del lector OBD2
 def leer_datos_obd2():
-    PORT = "COM3"  # Cambia al puerto donde está tu lector OBD2
+    PORT = "/dev/ttyUSB0"  # Cambiar según el entorno
     BAUDRATE = 9600
     TIMEOUT = 1
 
@@ -60,25 +71,12 @@ def leer_datos_obd2():
         enviar_comando("ATSP0")
 
         rpm_respuesta = enviar_comando("010C")
-        if rpm_respuesta:
-            rpm_hex = rpm_respuesta[0].split()[2:4]
-            rpm = (int(rpm_hex[0], 16) * 256 + int(rpm_hex[1], 16)) // 4
-        else:
-            rpm = 0
+        rpm = int(rpm_respuesta[0].split()[2], 16) if rpm_respuesta else 0
 
         velocidad_respuesta = enviar_comando("010D")
-        if velocidad_respuesta:
-            velocidad = int(velocidad_respuesta[0].split()[2], 16)
-        else:
-            velocidad = 0
+        velocidad = int(velocidad_respuesta[0].split()[2], 16) if velocidad_respuesta else 0
 
-        return {
-            "marca": "Desconocida",
-            "modelo": "Desconocido",
-            "year": 2000,
-            "rpm": rpm,
-            "velocidad": velocidad,
-        }
+        return {"marca": "Desconocida", "modelo": "Desconocido", "year": 2000, "rpm": rpm, "velocidad": velocidad}
 
     except Exception as e:
         print(f"Error al leer datos OBD2: {e}")
@@ -89,25 +87,16 @@ def leer_datos_obd2():
 async def options_guardar_vehiculo():
     return JSONResponse(content={}, status_code=200)
 
-# Endpoint para guardar los datos del vehículo automáticamente
+# Endpoint para guardar los datos del vehículo en la BBDD
 @app.post("/guardar-vehiculo/")
-async def guardar_vehiculo():
-    session = SessionLocal()
+async def guardar_vehiculo(db: Session = Depends(get_db)):
     try:
         datos = leer_datos_obd2()
-        nuevo_vehiculo = Vehiculo(
-            marca=datos["marca"],
-            modelo=datos["modelo"],
-            year=datos["year"],
-            rpm=datos["rpm"],
-            velocidad=datos["velocidad"],
-        )
-        session.add(nuevo_vehiculo)
-        session.commit()
-        session.refresh(nuevo_vehiculo)
+        nuevo_vehiculo = Vehiculo(**datos)
+        db.add(nuevo_vehiculo)
+        db.commit()
+        db.refresh(nuevo_vehiculo)
         return {"mensaje": "Vehículo guardado correctamente", "id": nuevo_vehiculo.id}
     except Exception as e:
-        session.rollback()
+        db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        session.close()
