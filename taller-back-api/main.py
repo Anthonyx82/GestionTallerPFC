@@ -21,8 +21,8 @@ Base = declarative_base()
 class Vehiculo(Base):
     __tablename__ = "vehiculos"
     id = Column(Integer, primary_key=True, index=True)
-    marca = Column(String, index=True)
-    modelo = Column(String)
+    marca = Column(String(255), index=True)
+    modelo = Column(String(255))
     year = Column(Integer)
     rpm = Column(Integer)
     velocidad = Column(Integer)
