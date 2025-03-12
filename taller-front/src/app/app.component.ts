@@ -1,23 +1,24 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http'; // Importa HttpClient
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [],  // Ya no es necesario importar HttpClientModule aquí
+  imports: [],
   templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'taller-front';
+  title = 'Api Automotriz';
+  description = 'Bienvenido a la primera api para taller. Gestionamos la información de tus vehículos en tiempo real y te ofrecemos un servicio rápido y eficiente con tecnología avanzada.';
+  
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) {} // Inyectar HttpClient
-
-  // Método para guardar el vehículo
+  // Método para probar la API
   probarAPI(): void {
-    // Realiza una solicitud POST a la API FastAPI
     this.http.get('https://anthonyx82.ddns.net/taller/api/saludo')
-    .subscribe(response => {
-      console.log(response);
-    });
+      .subscribe(response => {
+        console.log(response);
+      });
   }
 }

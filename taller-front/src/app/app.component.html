@@ -1,5 +1,66 @@
-<div>
-  <h1>{{ title }}</h1>
-  <button (click)="probarAPI()">Probar API</button>
-</div>
+<div class="landing-container">
+  <header class="header">
+    <div class="overlay"></div>
+    <div class="content">
+      <div class="logo">
+        <h1>{{ title }}</h1>
+      </div>
+      <p class="description">{{ description }}</p>
+      <button class="cta-button" (click)="probarAPI()">Probar API</button>
+    </div>
+  </header>
 
+  <section class="features">
+    <h2 class="section-title">Características Principales</h2>
+    <div class="feature-list">
+      <div class="feature">
+        <h3>⚡ API Rápida y Eficiente</h3>
+        <p>Desarrollada con FastAPI para procesar datos rápidamente.</p>
+      </div>
+      <div class="feature">
+        <h3>🗄️ Base de Datos SQL</h3>
+        <p>Gestionada con MySQL y SQLAlchemy para un manejo eficiente de los datos.</p>
+      </div>
+      <div class="feature">
+        <h3>🚗 Soporte para OBD-II</h3>
+        <p>Conexión con el escáner OBD-II ELM327 para datos en tiempo real.</p>
+      </div>
+      <div class="feature">
+        <h3>🖥️ Integración con Angular</h3>
+        <p>Interfaz moderna y eficiente para gestionar los vehículos en tiempo real.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="why-choose">
+    <h2>¿Por qué elegirnos?</h2>
+    <div class="benefits">
+      <div class="benefit">
+        <h3>✔️ Optimización en tiempo real</h3>
+        <p>Nuestro sistema procesa datos al instante para un mejor rendimiento.</p>
+      </div>
+      <div class="benefit">
+        <h3>✔️ Seguridad avanzada</h3>
+        <p>Protegemos tu información con cifrado y protocolos modernos.</p>
+      </div>
+      <div class="benefit">
+        <h3>✔️ Interfaz intuitiva</h3>
+        <p>Diseñada para ser fácil de usar y accesible en cualquier dispositivo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <h2>Lo que dicen nuestros clientes</h2>
+    <div class="testimonial">
+      <p>🚀 "La mejor API para diagnóstico automotriz. Rápida y confiable." - <strong>Juan P.</strong></p>
+    </div>
+    <div class="testimonial">
+      <p>💡 "Muy fácil de integrar con nuestras plataformas. Totalmente recomendada." - <strong>María G.</strong></p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 Taller Automotriz - Todos los derechos reservados</p>
+  </footer>
+</div>
