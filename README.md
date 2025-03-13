@@ -1,74 +1,45 @@
-# Proyecto Taller - Monitoreo de Vehículos con OBD-II
+# Proyecto Taller
 
 ## Descripción
-Este proyecto consiste en una arquitectura completa para la recolección, almacenamiento y visualización de datos obtenidos desde un vehículo a través del puerto OBD-II. Se compone de:
+Este proyecto es una plataforma que permite la recopilación y visualización de datos OBD-II de un vehículo. La arquitectura incluye una API desarrollada en FastAPI, un cliente en Python para la conexión con el puerto OBD-II y un frontend en Angular. Todo el proyecto está dockerizado y configurado con Traefik como proxy inverso.
 
-- **API Backend** (FastAPI + MySQL): Maneja la autenticación y almacenamiento de datos.
-- **Cliente OBD-II** (Python): Se conecta al vehículo y envía los datos a la API.
-- **Frontend** (Angular): Permite a los usuarios autenticados visualizar la información de sus vehículos.
-- **Docker + Traefik**: Para la administración de contenedores y configuración de proxy inverso.
+## Características
+- **Monitoreo de datos del vehículo**: RPM, velocidad, marca, modelo y año.
+- **Autenticación segura**: Uso de tokens JWT.
+- **Interfaz web en Angular**: Visualización de la información del vehículo.
+- **Despliegue con Docker y Traefik**: Infraestructura lista para producción.
 
----
+## Configuración y Ejecución
+### Prerrequisitos
+Asegúrate de tener instalado:
+- Docker & Docker Compose
+- Un dispositivo OBD-II compatible
+- Python 3.x y Node.js (para desarrollo local)
 
-## Requisitos Previos
-
-Antes de comenzar, asegúrate de tener instalado:
-- [Docker](https://docs.docker.com/get-docker/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
-- [Python 3.8+](https://www.python.org/downloads/)
-- [Node.js y Angular CLI](https://angular.io/cli)
-
----
-
-## Configuración
-### 1. Crear archivo `.env`
-Antes de ejecutar el proyecto, crea un archivo `.env` en la raíz con las siguientes variables:
-
-```
-# Configuración de la base de datos
+### Variables de Entorno
+Antes de iniciar, configura un archivo `.env` con las siguientes variables:
+```env
 MYSQL_DATABASE=talleres
 MYSQL_USER=user
 MYSQL_PASSWORD=password
 MYSQL_ROOT_PASSWORD=rootpassword
 DATABASE_URL=mysql+pymysql://user:password@db/talleres
-
-# Clave secreta para JWT
-SECRET_KEY=clave-secreta-super-segura
 ```
 
-### 2. Configurar el Cliente OBD-II
-Asegúrate de modificar el script del cliente para reflejar el puerto correcto de tu dispositivo OBD-II. Ejemplo en `cliente.py`:
-```python
-PORT = "COM3"  # En Windows, cambiar si es necesario
-```
-
----
-
-## Ejecución del Proyecto
-### 1. Construcción y ejecución con Docker
-Para ejecutar todo el proyecto con Docker y Traefik, usa el siguiente comando:
+### Despliegue del Proyecto
+Ejecuta el siguiente comando para iniciar todos los servicios:
 ```sh
 docker-compose up -d --build
 ```
-Esto levantará los contenedores de MySQL, la API y el frontend.
+Esto lanzará:
+- **Base de datos MySQL**
+- **API FastAPI**
+- **Cliente Angular**
 
-### 2. Acceder a los Servicios
-- **API Backend**: `https://anthonyx82.ddns.net/taller/api`
-- **Frontend Angular**: `https://anthonyx82.ddns.net/taller-front`
+### Acceso
+- **API Backend:** `https://anthonyx82.ddns.net/taller/api`
+- **Frontend Angular:** `https://anthonyx82.ddns.net/taller-front`
 
-### 3. Probar la API
-Puedes probar los endpoints con [Postman](https://www.postman.com/) o `curl`:
-```sh
-curl -X POST "https://anthonyx82.ddns.net/taller/api/login" -H "Content-Type: application/json" -d '{"username":"user", "password":"password"}'
-```
-
----
-
-## Notas Adicionales
-- Asegúrate de que el dominio `anthonyx82.ddns.net` esté correctamente configurado.
-- Modifica `traefik.yml` si necesitas cambiar la configuración de red.
-- Revisa los logs con:
-  ```sh
-  docker-compose logs -f
-  ```
+## Contribución
+Las contribuciones son bienvenidas. Para reportar errores o proponer mejoras, abre un issue en este repositorio.
 
