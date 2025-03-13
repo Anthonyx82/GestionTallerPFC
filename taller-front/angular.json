@@ -14,8 +14,8 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/taller-front",
-            "baseHref": "/taller/",
-            "deployUrl": "/taller/",
+            "baseHref": "/taller-front/",
+            "deployUrl": "/taller-front/",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
