@@ -1,56 +1,74 @@
-## Descripción del Proyecto
-Este proyecto consiste en una API desarrollada en **Python con FastAPI** para procesar los datos de una **base de datos** y un **escáner OBD-II ELM327**. La API permitirá que una aplicación en **Angular** gestione la información de los vehículos en tiempo real, permitiendo la lectura de datos desde el escáner y el almacenamiento de información relevante en la base de datos.
+# Proyecto Taller - Monitoreo de Vehículos con OBD-II
 
-## Características Principales
-- **FastAPI** para una API rápida y eficiente.
-- **Base de datos SQL (MySQL)** gestionada con SQLAlchemy.
-- **Soporte para OBD-II** mediante librerías como `python-OBD`.
-- **Operaciones CRUD** para gestionar los datos de los vehículos.
-- **Integración con Angular** para consumir la API y mostrar la información al usuario.
-- **Seguridad con autenticación JWT** si es necesario.
+## Descripción
+Este proyecto consiste en una arquitectura completa para la recolección, almacenamiento y visualización de datos obtenidos desde un vehículo a través del puerto OBD-II. Se compone de:
 
-## Pasos para el Proyecto
-1. **Creación de la API y pruebas iniciales**
-   - Configurar FastAPI y la base de datos.
-   - Implementar las rutas CRUD.
-   - Habilitar CORS para la comunicación con Angular.
-2. **Prueba del escáner OBD-II**
-   - Conectar el escáner OBD-II ELM327.
-   - Probar la lectura de datos en tiempo real.
-   - Validar los datos recogidos y almacenarlos en la base de datos.
-3. **Desarrollo de la aplicación en Angular**
-   - Crear la interfaz de usuario.
-   - Integrar la API con Angular para mostrar los datos.
-   - Implementar funciones de gestión de vehículos y lectura en tiempo real.
+- **API Backend** (FastAPI + MySQL): Maneja la autenticación y almacenamiento de datos.
+- **Cliente OBD-II** (Python): Se conecta al vehículo y envía los datos a la API.
+- **Frontend** (Angular): Permite a los usuarios autenticados visualizar la información de sus vehículos.
+- **Docker + Traefik**: Para la administración de contenedores y configuración de proxy inverso.
 
-## Requisitos del Proyecto
-### Tecnologías Utilizadas
-- **Backend**: Python, FastAPI, SQLAlchemy
-- **Base de Datos**: PostgreSQL / MySQL
-- **Frontend**: Angular
-- **Hardware**: Escáner OBD-II ELM327
+---
 
-### Instalación y Configuración
-#### 1. Clonar el repositorio:
-```sh
-git clone <URL_DEL_REPO>
-cd <NOMBRE_DEL_PROYECTO>
+## Requisitos Previos
+
+Antes de comenzar, asegúrate de tener instalado:
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Python 3.8+](https://www.python.org/downloads/)
+- [Node.js y Angular CLI](https://angular.io/cli)
+
+---
+
+## Configuración
+### 1. Crear archivo `.env`
+Antes de ejecutar el proyecto, crea un archivo `.env` en la raíz con las siguientes variables:
+
+```
+# Configuración de la base de datos
+MYSQL_DATABASE=talleres
+MYSQL_USER=user
+MYSQL_PASSWORD=password
+MYSQL_ROOT_PASSWORD=rootpassword
+DATABASE_URL=mysql+pymysql://user:password@db/talleres
+
+# Clave secreta para JWT
+SECRET_KEY=clave-secreta-super-segura
 ```
 
-#### 2. Configurar un entorno virtual y las dependencias:
-```sh
-python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
-pip install -r requirements.txt
+### 2. Configurar el Cliente OBD-II
+Asegúrate de modificar el script del cliente para reflejar el puerto correcto de tu dispositivo OBD-II. Ejemplo en `cliente.py`:
+```python
+PORT = "COM3"  # En Windows, cambiar si es necesario
 ```
 
-#### 3. Configurar variables de entorno:
-Crea un archivo `.env` con los datos de conexión a la base de datos y configuración del OBD-II.
+---
 
-#### 4. Ejecutar la API:
+## Ejecución del Proyecto
+### 1. Construcción y ejecución con Docker
+Para ejecutar todo el proyecto con Docker y Traefik, usa el siguiente comando:
 ```sh
-uvicorn back-api:app --host 0.0.0.0 --port 5000 --reload
+docker-compose up -d --build
+```
+Esto levantará los contenedores de MySQL, la API y el frontend.
+
+### 2. Acceder a los Servicios
+- **API Backend**: `https://anthonyx82.ddns.net/taller/api`
+- **Frontend Angular**: `https://anthonyx82.ddns.net/taller-front`
+
+### 3. Probar la API
+Puedes probar los endpoints con [Postman](https://www.postman.com/) o `curl`:
+```sh
+curl -X POST "https://anthonyx82.ddns.net/taller/api/login" -H "Content-Type: application/json" -d '{"username":"user", "password":"password"}'
 ```
 
-#### 5. Probar la API:
-Abre en el navegador: `http://127.0.0.1:8000/docs` para acceder a la documentación generada automáticamente.
+---
+
+## Notas Adicionales
+- Asegúrate de que el dominio `anthonyx82.ddns.net` esté correctamente configurado.
+- Modifica `traefik.yml` si necesitas cambiar la configuración de red.
+- Revisa los logs con:
+  ```sh
+  docker-compose logs -f
+  ```
+
