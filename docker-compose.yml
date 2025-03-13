@@ -48,10 +48,10 @@ services:
       - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend_taller.rule=Host(`anthonyx82.ddns.net`) && PathPrefix(`/taller`)"
+      - "traefik.http.routers.frontend_taller.rule=Host(`anthonyx82.ddns.net`) && PathPrefix(`/taller-front`)"
       - "traefik.http.routers.frontend_taller.entrypoints=websecure"
       - "traefik.http.routers.frontend_taller.tls.certresolver=mysresolver"
-      - "traefik.http.middlewares.frontend_taller_stripprefix.stripprefix.prefixes=/taller"
+      - "traefik.http.middlewares.frontend_taller_stripprefix.stripprefix.prefixes=/taller-front"
       - "traefik.http.routers.frontend_taller.middlewares=frontend_taller_stripprefix"
       - "traefik.http.services.frontend_taller.loadbalancer.server.port=80"
 
