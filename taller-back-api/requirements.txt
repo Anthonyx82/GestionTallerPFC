@@ -6,3 +6,5 @@ pyserial
 requests
 tk
 pyinstaller
+python-jose
+passlib
