@@ -9,11 +9,15 @@ API_URL = "https://anthonyx82.ddns.net/taller/api"
 
 # Función para autenticarse y obtener el token
 def obtener_token(usuario, password):
-    response = requests.post(f"{API_URL}/login", json={"username": usuario, "password": password})
+    response = requests.post(
+        f"{API_URL}/login",
+        params={"username": usuario, "password": password}
+    )
+
     if response.status_code == 200:
         return response.json()["access_token"]
     else:
-        messagebox.showerror("Error", "Usuario o contraseña incorrectos.")
+        messagebox.showerror("Error", f"Error en el login: {response.text}")
         return None
 
 # Función para leer datos desde OBD-II

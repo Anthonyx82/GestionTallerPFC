@@ -22,7 +22,7 @@ export class RegisterComponent {
 
   register() {
     if (this.registerForm.valid) {
-      this.http.post('http://127.0.0.1:8000/register', this.registerForm.value).subscribe({
+      this.http.post('https://anthonyx82.ddns.net/taller/api/register', this.registerForm.value).subscribe({
         next: () => alert('Usuario registrado correctamente'),
         error: () => alert('Error en el registro')
       });
