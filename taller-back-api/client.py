@@ -11,44 +11,44 @@ API_URL = "https://anthonyx82.ddns.net/taller/api"
 def obtener_token(usuario, password):
     response = requests.post(
         f"{API_URL}/login",
-        params={"username": usuario, "password": password}
+        json={"username": usuario, "password": password}
     )
-
+    
     if response.status_code == 200:
-        return response.json()["access_token"]
+        return response.json().get("access_token")
     else:
         messagebox.showerror("Error", f"Error en el login: {response.text}")
         return None
 
 # Función para leer datos desde OBD-II
 def leer_datos_obd2():
-    PORT = "COM3"  # En Windows, cambia esto según el puerto del lector OBD-II
+    PORT = "COM3"  # Ajustar el puerto según el sistema operativo
     BAUDRATE = 9600
     TIMEOUT = 1
 
     try:
-        elm = serial.Serial(PORT, BAUDRATE, timeout=TIMEOUT)
-        print("Conexión con OBD2 exitosa.")
+        with serial.Serial(PORT, BAUDRATE, timeout=TIMEOUT) as elm:
+            print("Conexión con OBD2 exitosa.")
 
-        def enviar_comando(comando):
-            elm.write((comando + "\r").encode())
-            time.sleep(0.5)
-            respuesta = elm.readlines()
-            return [line.decode().strip() for line in respuesta]
+            def enviar_comando(comando):
+                elm.write((comando + "\r").encode())
+                time.sleep(0.5)
+                respuesta = elm.readlines()
+                return [line.decode().strip() for line in respuesta]
 
-        enviar_comando("ATZ")
-        enviar_comando("ATE0")
-        enviar_comando("ATSP0")
+            enviar_comando("ATZ")
+            enviar_comando("ATE0")
+            enviar_comando("ATSP0")
 
-        return {
-            "marca": "Toyota",
-            "modelo": "Corolla",
-            "year": 2015,
-            "rpm": 3000,
-            "velocidad": 80
-        }
-    except:
-        messagebox.showerror("Error", "No se pudo conectar al OBD-II.")
+            return {
+                "marca": "Toyota",
+                "modelo": "Corolla",
+                "year": 2015,
+                "rpm": 3000,
+                "velocidad": 80
+            }
+    except Exception as e:
+        messagebox.showerror("Error", f"No se pudo conectar al OBD-II: {e}")
         return None
 
 # Función para enviar los datos a la API
@@ -74,7 +74,7 @@ def enviar_datos():
     if response.status_code == 200:
         messagebox.showinfo("Éxito", "Datos enviados correctamente.")
     else:
-        messagebox.showerror("Error", "No se pudieron enviar los datos.")
+        messagebox.showerror("Error", f"No se pudieron enviar los datos: {response.text}")
 
 # Crear la ventana principal
 ventana = tk.Tk()

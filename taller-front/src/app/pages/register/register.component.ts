@@ -6,8 +6,8 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
-  standalone: true,  // <-- IMPORTANTE: declarar standalone
-  imports: [CommonModule, ReactiveFormsModule], // <-- IMPORTAR ReactiveFormsModule
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -16,16 +16,18 @@ export class RegisterComponent {
   private fb = inject(FormBuilder);
 
   registerForm: FormGroup = this.fb.group({
-    username: ['', Validators.required],
-    password: ['', Validators.required]
+    username: ['', [Validators.required, Validators.minLength(3)]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
   register() {
     if (this.registerForm.valid) {
       this.http.post('https://anthonyx82.ddns.net/taller/api/register', this.registerForm.value).subscribe({
         next: () => alert('Usuario registrado correctamente'),
-        error: () => alert('Error en el registro')
+        error: (error) => alert(`Error en el registro: ${error.error.detail || 'Desconocido'}`)
       });
+    } else {
+      alert('Por favor, complete el formulario correctamente.');
     }
   }
 }
