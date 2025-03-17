@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -14,10 +14,18 @@ export class MisVehiculosComponent {
   vehiculos: any[] = [];
 
   ngOnInit() {
-    this.http.get('https://anthonyx82.ddns.net/taller/api/mis-vehiculos/').subscribe({
-    next: (data: any) => this.vehiculos = data,
-    error: (error) => console.log('Error al obtener vehículos:', error)
-  });
+    const token = localStorage.getItem('token'); // 🔹 Obtener el token del almacenamiento
 
+    if (!token) {
+      console.log('No hay token disponible. Redirigiendo a login...');
+      return;
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    this.http.get('https://anthonyx82.ddns.net/taller/api/mis-vehiculos/', { headers }).subscribe({
+      next: (data: any) => this.vehiculos = data,
+      error: (error) => console.log('Error al obtener vehículos:', error)
+    });
   }
 }
