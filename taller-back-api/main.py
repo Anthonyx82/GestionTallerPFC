@@ -144,6 +144,34 @@ def obtener_vehiculos(usuario: Usuario = Depends(obtener_usuario_desde_token), d
     vehiculos = db.query(Vehiculo).filter(Vehiculo.usuario_id == usuario.id).all()
     return vehiculos
 
+# Endpoint para editar vehículo
+@app.put("/editar-vehiculo/{vehiculo_id}")
+def editar_vehiculo(vehiculo_id: int, datos: VehiculoRegistro, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+    vehiculo = db.query(Vehiculo).filter(Vehiculo.id == vehiculo_id, Vehiculo.usuario_id == usuario.id).first()
+    if vehiculo is None:
+        raise HTTPException(status_code=404, detail="Vehículo no encontrado")
+    
+    # Actualizar los detalles del vehículo
+    vehiculo.marca = datos.marca
+    vehiculo.modelo = datos.modelo
+    vehiculo.year = datos.year
+    vehiculo.rpm = datos.rpm
+    vehiculo.velocidad = datos.velocidad
+
+    db.commit()
+    return {"mensaje": "Vehículo actualizado correctamente"}
+
+# Endpoint para eliminar vehículo
+@app.delete("/eliminar-vehiculo/{vehiculo_id}")
+def eliminar_vehiculo(vehiculo_id: int, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+    vehiculo = db.query(Vehiculo).filter(Vehiculo.id == vehiculo_id, Vehiculo.usuario_id == usuario.id).first()
+    if vehiculo is None:
+        raise HTTPException(status_code=404, detail="Vehículo no encontrado")
+    
+    db.delete(vehiculo)
+    db.commit()
+    return {"mensaje": "Vehículo eliminado correctamente"}
+
 # Endpoint de saludo
 @app.get("/saludo")
 async def saludo():

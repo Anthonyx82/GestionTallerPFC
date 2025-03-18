@@ -48,9 +48,12 @@
         <p><strong>Año:</strong> {{ vehiculo.year }}</p>
         <p><strong>Color:</strong> {{ vehiculo.color }}</p>
         <p><strong>Kilometraje:</strong> {{ vehiculo.kilometraje }} km</p>
+        <button (click)="editarVehiculo(vehiculo.id)" class="edit-button">Editar</button>
+        <button (click)="eliminarVehiculo(vehiculo.id)" class="delete-button">Eliminar</button>
       </div>
     </div>
   </div>
 </ng-container>
+
 
 <button (click)="volverInicio()" class="cta-button">Volver al Inicio</button>
