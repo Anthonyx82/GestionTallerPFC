@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common'; // <-- IMPORTAR CommonModule
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterModule, CommonModule], // <-- AÑADIR CommonModule AQUÍ
+  imports: [RouterModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -20,10 +20,12 @@ export class AppComponent {
     return this.router.url === '/';
   }
 
-  probarAPI(): void {
-    this.http.get('https://anthonyx82.ddns.net/taller/api/saludo')
-      .subscribe(response => {
-        console.log(response);
-      });
+  usuarioAutenticado(): boolean {
+    return !!localStorage.getItem('token');
+  }
+
+  cerrarSesion(): void {
+    localStorage.removeItem('token');
+    this.router.navigate(['/']);
   }
 }

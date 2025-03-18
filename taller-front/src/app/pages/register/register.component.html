@@ -1,14 +1,22 @@
-<div class="container">
-    <h2>Registro</h2>
-    <form (ngSubmit)="register()" [formGroup]="registerForm">
-        <div class="mb-3">
-            <label for="username" class="form-label">Usuario:</label>
-            <input type="text" id="username" formControlName="username" class="form-control" required />
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Contraseña:</label>
-            <input type="password" id="password" formControlName="password" class="form-control" required />
-        </div>
-        <button type="submit" class="btn btn-success" [disabled]="registerForm.invalid">Registrar</button>
-    </form>
+<div class="register-container">
+    <div class="register-card">
+        <h2>Registro</h2>
+        <form (ngSubmit)="register()" [formGroup]="registerForm">
+            <div class="input-group">
+                <label for="username">Usuario:</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" formControlName="username" placeholder="Usuario" required />
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="password">Contraseña:</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" formControlName="password" placeholder="Contraseña" required />
+                </div>
+            </div>
+            <button type="submit" [disabled]="registerForm.invalid">Registrar</button>
+        </form>
+    </div>
 </div>

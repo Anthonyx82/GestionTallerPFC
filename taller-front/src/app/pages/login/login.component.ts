@@ -16,7 +16,7 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   login() {
     this.http.post<{ access_token: string }>('https://anthonyx82.ddns.net/taller/api/login', {
