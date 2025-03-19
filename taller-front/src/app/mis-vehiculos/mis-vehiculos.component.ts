@@ -44,7 +44,7 @@ export class MisVehiculosComponent {
   }
 
   async obtenerImagen(marca: string, modelo: string): Promise<string> {
-    const apiUrl = `https://anthonyx82.ddns.net/taller/api/car-imagery?searchTerm=${encodeURIComponent(marca + ' ' + modelo)}`;
+    const apiUrl = `https://anthonyx82.ddns.net/taller/api/car-imagery/?searchTerm=${encodeURIComponent(marca + ' ' + modelo)}`;
     try {
       const response = await this.http.get(apiUrl, { responseType: 'text' }).toPromise();
       const match = response?.match(/<string[^>]*>(.*?)<\/string>/);
