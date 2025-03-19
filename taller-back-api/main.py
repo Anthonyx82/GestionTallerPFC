@@ -152,6 +152,16 @@ def obtener_vehiculo(vehiculo_id: int, usuario: Usuario = Depends(obtener_usuari
         raise HTTPException(status_code=404, detail="Vehículo no encontrado")
     return vehiculo
 
+@app.get("/api/car-imagery/")
+def get_car_image(searchTerm: str):
+    url = f"https://www.carimagery.com/api.asmx/GetImageUrl?searchTerm={searchTerm}"
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.text
+    except requests.RequestException as e:
+        raise HTTPException(status_code=500, detail=f"Error al obtener imagen: {e}")
+
 # Endpoint para editar vehículo
 @app.put("/editar-vehiculo/{vehiculo_id}")
 def editar_vehiculo(vehiculo_id: int, datos: VehiculoRegistro, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):

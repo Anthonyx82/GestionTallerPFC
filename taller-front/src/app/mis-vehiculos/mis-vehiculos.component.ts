@@ -44,7 +44,7 @@ export class MisVehiculosComponent {
   }
 
   async obtenerImagen(marca: string, modelo: string): Promise<string> {
-    const apiUrl = `http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=${encodeURIComponent(marca + ' ' + modelo)}`;
+    const apiUrl = `https://anthonyx82.ddns.net/taller/api/car-imagery?searchTerm=${encodeURIComponent(marca + ' ' + modelo)}`;
     try {
       const response = await this.http.get(apiUrl, { responseType: 'text' }).toPromise();
       const match = response?.match(/<string[^>]*>(.*?)<\/string>/);
@@ -55,6 +55,7 @@ export class MisVehiculosComponent {
     }
   }
 
+
   editarVehiculo(vehiculoId: number): void {
     this.router.navigate([`/editar-vehiculo/${vehiculoId}`]);
   }
@@ -64,7 +65,7 @@ export class MisVehiculosComponent {
     if (!token) return;
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    
+
     this.http.delete(`https://anthonyx82.ddns.net/taller/api/eliminar-vehiculo/${vehiculoId}`, { headers }).subscribe({
       next: () => {
         this.vehiculos = this.vehiculos.filter(v => v.id !== vehiculoId);
