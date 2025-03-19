@@ -152,7 +152,7 @@ def obtener_vehiculo(vehiculo_id: int, usuario: Usuario = Depends(obtener_usuari
         raise HTTPException(status_code=404, detail="Vehículo no encontrado")
     return vehiculo
 
-@app.get("/api/car-imagery/")
+@app.get("/car-imagery/")
 def get_car_image(searchTerm: str):
     url = f"https://www.carimagery.com/api.asmx/GetImageUrl?searchTerm={searchTerm}"
     try:
