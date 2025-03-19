@@ -1,24 +1,46 @@
 <div class="edit-vehicle-container">
-    <h2>Editar Vehículo</h2>
+    <div class="edit-vehicle-card">
+        <h2>Editar Vehículo</h2>
 
-    <form (ngSubmit)="guardarEdicion()">
-        <label for="marca">Marca:</label>
-        <input type="text" id="marca" [(ngModel)]="vehiculo.marca" name="marca" required />
+        <form (ngSubmit)="guardarEdicion()">
+            <div class="input-group">
+                <label for="marca">Marca:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="marca" [(ngModel)]="vehiculo.marca" name="marca" required />
+                </div>
+            </div>
 
-        <label for="modelo">Modelo:</label>
-        <input type="text" id="modelo" [(ngModel)]="vehiculo.modelo" name="modelo" required />
+            <div class="input-group">
+                <label for="modelo">Modelo:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="modelo" [(ngModel)]="vehiculo.modelo" name="modelo" required />
+                </div>
+            </div>
 
-        <label for="year">Año:</label>
-        <input type="number" id="year" [(ngModel)]="vehiculo.year" name="year" required />
+            <div class="input-group">
+                <label for="year">Año:</label>
+                <div class="input-wrapper">
+                    <input type="number" id="year" [(ngModel)]="vehiculo.year" name="year" required />
+                </div>
+            </div>
 
-        <label for="rpm">RPM:</label>
-        <input type="number" id="rpm" [(ngModel)]="vehiculo.rpm" name="rpm" required />
+            <div class="input-group">
+                <label for="rpm">RPM:</label>
+                <div class="input-wrapper">
+                    <input type="number" id="rpm" [(ngModel)]="vehiculo.rpm" name="rpm" required />
+                </div>
+            </div>
 
-        <label for="velocidad">Velocidad:</label>
-        <input type="number" id="velocidad" [(ngModel)]="vehiculo.velocidad" name="velocidad" required />
+            <div class="input-group">
+                <label for="velocidad">Velocidad:</label>
+                <div class="input-wrapper">
+                    <input type="number" id="velocidad" [(ngModel)]="vehiculo.velocidad" name="velocidad" required />
+                </div>
+            </div>
 
-        <button type="submit">Guardar Cambios</button>
-    </form>
+            <button type="submit">Guardar Cambios</button>
+        </form>
 
-    <button (click)="volver()">Volver</button>
+        <button class="secondary-btn" (click)="volver()">Volver</button>
+    </div>
 </div>

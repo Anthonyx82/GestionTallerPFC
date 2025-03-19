@@ -27,9 +27,32 @@ export class MisVehiculosComponent {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     this.http.get('https://anthonyx82.ddns.net/taller/api/mis-vehiculos/', { headers }).subscribe({
-      next: (data: any) => this.vehiculos = data,
+      next: (data: any) => {
+        this.vehiculos = data;
+        this.cargarImagenesVehiculos();
+      },
       error: (error) => console.log('Error al obtener vehículos:', error)
     });
+  }
+
+  cargarImagenesVehiculos(): void {
+    this.vehiculos.forEach(vehiculo => {
+      this.obtenerImagen(vehiculo.marca, vehiculo.modelo).then(imagenUrl => {
+        vehiculo.imagenUrl = imagenUrl;
+      });
+    });
+  }
+
+  async obtenerImagen(marca: string, modelo: string): Promise<string> {
+    const apiUrl = `http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=${encodeURIComponent(marca + ' ' + modelo)}`;
+    try {
+      const response = await this.http.get(apiUrl, { responseType: 'text' }).toPromise();
+      const match = response?.match(/<string[^>]*>(.*?)<\/string>/);
+      return match ? match[1] : 'assets/no-image.png';
+    } catch (error) {
+      console.log(`Error al obtener imagen de ${marca} ${modelo}:`, error);
+      return 'assets/no-image.png';
+    }
   }
 
   editarVehiculo(vehiculoId: number): void {
