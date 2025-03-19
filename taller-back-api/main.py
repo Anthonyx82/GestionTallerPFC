@@ -11,6 +11,8 @@ from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.exc import IntegrityError
 from pydantic import BaseModel
+import requests
+
 
 # Configuración de la base de datos
 DATABASE_URL = os.getenv("DATABASE_URL", "mysql+pymysql://user:password@db/talleres")
