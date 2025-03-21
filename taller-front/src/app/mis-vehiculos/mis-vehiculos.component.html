@@ -44,18 +44,32 @@
     <div class="vehicle-card" *ngFor="let vehiculo of vehiculos">
       <img [src]="vehiculo.imagenUrl || 'assets/no-image.png'" 
            alt="{{ vehiculo.marca }} {{ vehiculo.modelo }}" 
-           class="vehicle-image">
+           class="vehicle-image" (click)="verDetalles(vehiculo.id)">
       <div class="vehicle-info">
         <h3>{{ vehiculo.marca }} {{ vehiculo.modelo }}</h3>
         <p><strong>Año:</strong> {{ vehiculo.year }}</p>
-        <p><strong>Velocidad MAX:</strong> {{ vehiculo.velocidad }} km/h </p>
-        <p><strong>RPM MAX:</strong> {{ vehiculo.rpm }}</p>
         <button (click)="editarVehiculo(vehiculo.id)" class="edit-button">Editar</button>
         <button (click)="eliminarVehiculo(vehiculo.id)" class="delete-button">Eliminar</button>
       </div>
     </div>
   </div>
 </ng-container>
+
+<!-- Modal para mostrar detalles del vehículo -->
+<div *ngIf="vehiculoSeleccionado" class="vehicle-details-modal">
+  <div class="modal-content">
+    <span class="close" (click)="cerrarDetalles()">&times;</span>
+    <h3>{{ vehiculoSeleccionado.marca }} {{ vehiculoSeleccionado.modelo }}</h3>
+    <p><strong>Año:</strong> {{ vehiculoSeleccionado.year }}</p>
+    <p><strong>RPM:</strong> {{ vehiculoSeleccionado.rpm }}</p>
+    <p><strong>Velocidad:</strong> {{ vehiculoSeleccionado.velocidad }} km/h</p>
+    <h4>Errores:</h4>
+    <ul>
+      <li *ngFor="let error of vehiculoSeleccionado.errores">{{ error.codigo_dtc }}</li>
+    </ul>
+  </div>
+</div>
+
 
 
 <button (click)="volverInicio()" class="cta-button">Volver al Inicio</button>

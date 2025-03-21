@@ -47,6 +47,15 @@ class Vehiculo(Base):
     rpm = Column(Integer)
     velocidad = Column(Integer)
     usuario_id = Column(Integer)
+    errores = relationship("ErrorVehiculo", back_populates="vehiculo")
+
+class ErrorVehiculo(Base):
+    __tablename__ = "errores_vehiculos"
+    id = Column(Integer, primary_key=True, index=True)
+    vehiculo_id = Column(Integer, ForeignKey('vehiculos.id'))
+    codigo_dtc = Column(String(255))
+
+    vehiculo = relationship("Vehiculo", back_populates="errores")
 
 # Crear tablas si no existen
 Base.metadata.create_all(bind=engine)
@@ -109,6 +118,9 @@ class VehiculoRegistro(BaseModel):
     rpm: int
     velocidad: int
 
+class ErrorVehiculoRegistro(BaseModel):
+    codigo_dtc: list[str]
+
 # Endpoint para registro de usuario
 @app.post("/register")
 def register(datos: UsuarioRegistro, db: Session = Depends(get_db)):
@@ -140,6 +152,21 @@ def guardar_vehiculo(datos: VehiculoRegistro, usuario: Usuario = Depends(obtener
     db.commit()
     return {"mensaje": "Vehículo guardado correctamente", "id": nuevo_vehiculo.id}
 
+# Endpoint para que el cliente de Python envíe errores OBD-II
+@app.post("/guardar-errores/")
+def guardar_errores(datos: ErrorVehiculoRegistro, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+    vehiculo = db.query(Vehiculo).filter(Vehiculo.id == datos.vehiculo_id, Vehiculo.usuario_id == usuario.id).first()
+    if vehiculo is None:
+        raise HTTPException(status_code=404, detail="Vehículo no encontrado para el usuario.")
+
+    for codigo in datos.codigo_dtc:
+        error = ErrorVehiculo(vehiculo_id=vehiculo.id, codigo_dtc=codigo)
+        db.add(error)
+
+    db.commit()
+    return {"mensaje": "Errores del vehículo guardados correctamente"}
+
+
 # Endpoint para obtener vehículos del usuario autenticado
 @app.get("/mis-vehiculos/")
 def obtener_vehiculos(usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
@@ -153,6 +180,14 @@ def obtener_vehiculo(vehiculo_id: int, usuario: Usuario = Depends(obtener_usuari
     if vehiculo is None:
         raise HTTPException(status_code=404, detail="Vehículo no encontrado")
     return vehiculo
+
+# Endpoint para obtener los errores de un vehículo específico del usuario autenticado
+@app.get("/mis-errores/{vehiculo_id}")
+def obtener_errores(vehiculo_id: int, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+    errores = db.query(ErrorVehiculo).filter(ErrorVehiculo.vehiculo_id == vehiculo_id).all()
+    if not errores:
+        raise HTTPException(status_code=404, detail="No se encontraron errores para este vehículo.")
+    return errores
 
 @app.get("/car-imagery/")
 def get_car_image(searchTerm: str):

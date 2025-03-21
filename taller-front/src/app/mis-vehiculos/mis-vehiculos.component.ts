@@ -13,6 +13,7 @@ import { Router, RouterModule } from '@angular/router';
 export class MisVehiculosComponent {
   private http = inject(HttpClient);
   vehiculos: any[] = [];
+  vehiculoSeleccionado: any = null; // Vehículo seleccionado para mostrar detalles
 
   constructor(private router: Router) { }
 
@@ -55,6 +56,37 @@ export class MisVehiculosComponent {
     }
   }
 
+  // Mostrar los detalles del vehículo seleccionado
+  verDetalles(vehiculoId: number): void {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    // Obtener detalles del vehículo
+    this.http.get(`https://anthonyx82.ddns.net/taller/api/mis-vehiculos/${vehiculoId}`, { headers }).subscribe({
+      next: (data: any) => {
+        // Asignar el vehículo y sus detalles a la variable vehiculoSeleccionado
+        this.vehiculoSeleccionado = data;
+        
+        // Obtener los errores del vehículo
+        this.http.get(`https://anthonyx82.ddns.net/taller/api/mis-errores/${vehiculoId}`, { headers }).subscribe({
+          next: (errores: any) => {
+            this.vehiculoSeleccionado.errores = errores; // Asignar los errores al vehículo
+          },
+          error: (error) => {
+            console.log('Error al obtener errores del vehículo:', error);
+            this.vehiculoSeleccionado.errores = []; // Si no hay errores, asignar un array vacío
+          }
+        });
+      },
+      error: (error) => console.log('Error al obtener detalles del vehículo:', error)
+    });
+  }
+
+  cerrarDetalles(): void {
+    this.vehiculoSeleccionado = null; // Cerrar el modal
+  }
 
   editarVehiculo(vehiculoId: number): void {
     this.router.navigate([`/editar-vehiculo/${vehiculoId}`]);
