@@ -48,6 +48,8 @@
       <div class="vehicle-info">
         <h3>{{ vehiculo.marca }} {{ vehiculo.modelo }}</h3>
         <p><strong>Año:</strong> {{ vehiculo.year }}</p>
+        <p><strong>Velocidad MAX:</strong> {{ vehiculo.velocidad }} km/h </p>
+        <p><strong>RPM MAX:</strong> {{ vehiculo.rpm }}</p>
         <button (click)="editarVehiculo(vehiculo.id)" class="edit-button">Editar</button>
         <button (click)="eliminarVehiculo(vehiculo.id)" class="delete-button">Eliminar</button>
       </div>
