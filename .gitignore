@@ -12,3 +12,5 @@ project-back-api/vehiculos.db
 *.pyc
 .DS_Store
 Thumbs.db
+
+taller-back-api/client.exe
