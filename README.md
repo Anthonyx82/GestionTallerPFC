@@ -43,3 +43,9 @@ Esto lanzará:
 ## Contribución
 Las contribuciones son bienvenidas. Para reportar errores o proponer mejoras, abre un issue en este repositorio.
 
+## Contacto
+- **Autor:** Antonio Martín Sosa  
+- **Email:** [antoniomartinmanzanares2004@gmail.com](mailto:antoniomartinmanzanares2004@gmail.com)  
+- **LinkedIn:** [linkedin.com/in/antoniomartinsosa](https://www.linkedin.com/in/antoniomartinsosa)  
+- **Portfolio Web:** [anthonyx82.github.io](https://anthonyx82.github.io)  
+
