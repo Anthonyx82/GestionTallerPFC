@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import sessionmaker, Session, relationship
 import os
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -38,6 +38,9 @@ class Usuario(Base):
     username = Column(String(255), unique=True, index=True)
     password_hash = Column(String(255))
 
+    # Relación con Vehículo (uno a muchos)
+    vehiculos = relationship("Vehiculo", back_populates="usuario")
+
 class Vehiculo(Base):
     __tablename__ = "vehiculos"
     id = Column(Integer, primary_key=True, index=True)
@@ -46,16 +49,23 @@ class Vehiculo(Base):
     year = Column(Integer)
     rpm = Column(Integer)
     velocidad = Column(Integer)
-    usuario_id = Column(Integer)
+    usuario_id = Column(Integer, ForeignKey('usuarios.id'))  # FK hacia Usuario
+
+    # Relación con Usuario (muchos a uno)
+    usuario = relationship("Usuario", back_populates="vehiculos")
+
+    # Relación con ErrorVehiculo (uno a muchos)
     errores = relationship("ErrorVehiculo", back_populates="vehiculo")
 
 class ErrorVehiculo(Base):
     __tablename__ = "errores_vehiculos"
     id = Column(Integer, primary_key=True, index=True)
-    vehiculo_id = Column(Integer, ForeignKey('vehiculos.id'))
+    vehiculo_id = Column(Integer, ForeignKey('vehiculos.id'))  # FK hacia Vehiculo
     codigo_dtc = Column(String(255))
 
+    # Relación con Vehículo (muchos a uno)
     vehiculo = relationship("Vehiculo", back_populates="errores")
+
 
 # Crear tablas si no existen
 Base.metadata.create_all(bind=engine)
@@ -165,7 +175,6 @@ def guardar_errores(datos: ErrorVehiculoRegistro, usuario: Usuario = Depends(obt
 
     db.commit()
     return {"mensaje": "Errores del vehículo guardados correctamente"}
-
 
 # Endpoint para obtener vehículos del usuario autenticado
 @app.get("/mis-vehiculos/")
