@@ -190,69 +190,6 @@ header .content {
   box-shadow: 0px 5px 10px rgba(255, 111, 0, 0.3);
 }
 
-/* Estilos para el modal de detalles del vehículo */
-.vehicle-details-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-.modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 600px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  text-align: left;
-  overflow-y: auto;
-  max-height: 80vh;
-}
-
-.modal-content h3 {
-  font-size: 2rem;
-  margin-bottom: 15px;
-  color: #ff6f00;
-  /* Usamos el mismo color de la marca */
-}
-
-.modal-content p {
-  font-size: 1rem;
-  margin: 10px 0;
-  color: #555;
-}
-
-.modal-content ul {
-  padding-left: 20px;
-}
-
-.modal-content ul li {
-  color: #ff6f00;
-  font-weight: bold;
-}
-
-.close {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  font-size: 1.8rem;
-  color: #ff6f00;
-  cursor: pointer;
-  transition: color 0.3s ease-in-out;
-}
-
-.close:hover {
-  color: #d57e00;
-  /* Color ligeramente más oscuro al hacer hover */
-}
-
 /* RESPONSIVIDAD */
 @media (max-width: 1024px) {
 
@@ -303,22 +240,10 @@ header .content {
     width: 100%;
     max-width: 300px;
   }
-
-  .modal-content {
-    width: 95%;
-  }
 }
 
 @media (max-width: 480px) {
   .cta-button {
     padding: 10px 30px;
-  }
-
-  .modal-content h3 {
-    font-size: 1.5rem;
-  }
-
-  .modal-content p {
-    font-size: 0.9rem;
   }
 }
