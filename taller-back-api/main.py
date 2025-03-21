@@ -130,6 +130,7 @@ class VehiculoRegistro(BaseModel):
 
 class ErrorVehiculoRegistro(BaseModel):
     codigo_dtc: list[str]
+    vehiculo_id: int
 
 # Endpoint para registro de usuario
 @app.post("/register")
@@ -232,6 +233,7 @@ def eliminar_vehiculo(vehiculo_id: int, usuario: Usuario = Depends(obtener_usuar
     if vehiculo is None:
         raise HTTPException(status_code=404, detail="Vehículo no encontrado")
     
+    db.query(ErrorVehiculo).filter(ErrorVehiculo.vehiculo_id == vehiculo.id).delete()
     db.delete(vehiculo)
     db.commit()
     return {"mensaje": "Vehículo eliminado correctamente"}
