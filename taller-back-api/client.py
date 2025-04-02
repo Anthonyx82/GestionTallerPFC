@@ -1,35 +1,43 @@
 import requests
 import serial
 import time
-import tkinter as tk
+import ttkbootstrap as ttk
+from ttkbootstrap.constants import *
 from tkinter import messagebox
 
 # Configuración de la API
 API_URL = "https://anthonyx82.ddns.net/taller/api"
 
-# Función para autenticarse y obtener el token
-def obtener_token(usuario, password):
+# Función para autenticarse
+def obtener_token():
+    usuario = usuario_entry.get()
+    password = password_entry.get()
+
+    if not usuario or not password:
+        messagebox.showwarning("Aviso", "Por favor, ingrese usuario y contraseña.")
+        return
+
     response = requests.post(
         f"{API_URL}/login",
         json={"username": usuario, "password": password}
     )
     
     if response.status_code == 200:
-        return response.json().get("access_token")
+        global token
+        token = response.json().get("access_token")
+        login_frame.pack_forget()
+        main_frame.pack(pady=20)
     else:
         messagebox.showerror("Error", f"Error en el login: {response.text}")
-        return None
 
-# Función para leer datos desde OBD-II
+# Función para leer datos del OBD-II
 def leer_datos_obd2():
-    PORT = "COM3"  # Ajusta según el sistema operativo
+    PORT = "COM3"
     BAUDRATE = 9600
     TIMEOUT = 1
 
     try:
         with serial.Serial(PORT, BAUDRATE, timeout=TIMEOUT) as elm:
-            print("Conexión con OBD2 exitosa.")
-
             def enviar_comando(comando):
                 elm.write((comando + "\r").encode())
                 time.sleep(0.5)
@@ -48,26 +56,12 @@ def leer_datos_obd2():
             respuesta_velocidad = enviar_comando("010D")
             velocidad = interpretar_respuesta_velocidad(respuesta_velocidad)
 
-            # Leer códigos de error (DTCs)
-            respuesta_errores = enviar_comando("03")
-            codigos_dtc = interpretar_codigos_dtc(respuesta_errores)
-
-            return {
-                "rpm": rpm,
-                "velocidad": velocidad,
-                "errores": codigos_dtc
-            }
+            return {"rpm": rpm, "velocidad": velocidad}
 
     except Exception as e:
         messagebox.showerror("Error", f"No se pudo conectar al OBD-II: {e}")
-        # Datos por defecto si ocurre un error
-        return {
-            "rpm": 5200,  # RPM del Peugeot 206 HDi de 2002
-            "velocidad": 168,  # Velocidad máxima del Peugeot 206 HDi de 2002
-            "errores": ["P0300", "P0400"]  # Errores básicos por defecto
-        }
+        return {"rpm": 5200, "velocidad": 168}
 
-# Funciones para interpretar los datos OBD-II
 def interpretar_respuesta_rpm(respuesta):
     for linea in respuesta:
         if "41 0C" in linea:
@@ -86,35 +80,12 @@ def interpretar_respuesta_velocidad(respuesta):
                 return int(partes[2], 16)
     return 0
 
-def interpretar_codigos_dtc(respuesta):
-    dtcs = []
-    for linea in respuesta:
-        if "43" in linea or "47" in linea:
-            partes = linea.split(" ")[1:]
-            for i in range(0, len(partes), 2):
-                if len(partes) > i + 1:
-                    codigo = partes[i] + partes[i + 1]
-                    dtcs.append(codigo)
-    return dtcs
-
 # Función para enviar los datos a la API
 def enviar_datos():
-    usuario = usuario_entry.get()
-    password = password_entry.get()
-
-    if not usuario or not password:
-        messagebox.showwarning("Aviso", "Por favor, ingrese usuario y contraseña.")
-        return
-
-    token = obtener_token(usuario, password)
     if not token:
+        messagebox.showerror("Error", "Debe iniciar sesión primero.")
         return
 
-    datos_obd = leer_datos_obd2()
-    if not datos_obd:
-        return
-
-    # Solicitar marca, modelo y año
     marca = marca_entry.get()
     modelo = modelo_entry.get()
     year = year_entry.get()
@@ -123,60 +94,66 @@ def enviar_datos():
         messagebox.showwarning("Aviso", "Ingrese marca, modelo y año.")
         return
 
-    # Guardar datos del vehículo
+    datos_obd = leer_datos_obd2()
     vehiculo_data = {
-        "marca": marca if marca else "Peugeot",
-        "modelo": modelo if modelo else "206 HDi",
-        "year": int(year) if year else 2002,
+        "marca": marca,
+        "modelo": modelo,
+        "year": int(year),
         "rpm": datos_obd["rpm"],
         "velocidad": datos_obd["velocidad"]
     }
-    
+
     headers = {"Authorization": f"Bearer {token}"}
     response = requests.post(f"{API_URL}/guardar-vehiculo/", json=vehiculo_data, headers=headers)
-    
+
     if response.status_code == 200:
-        vehiculo_id = response.json()["id"]
         messagebox.showinfo("Éxito", "Datos del vehículo enviados correctamente.")
-        
-        if datos_obd["errores"]:
-            errores_data = {"codigo_dtc": datos_obd["errores"], "vehiculo_id": vehiculo_id}
-            response = requests.post(f"{API_URL}/guardar-errores/", json=errores_data, headers=headers)
-            if response.status_code == 200:
-                messagebox.showinfo("Éxito", "Errores enviados correctamente.")
-            else:
-                messagebox.showerror("Error", f"No se pudieron enviar los errores: {response.text}")
-        else:
-            messagebox.showinfo("Info", "No se encontraron errores en el vehículo.")
+    else:
+        messagebox.showerror("Error", f"No se pudo enviar: {response.text}")
 
-# Crear la ventana principal
-ventana = tk.Tk()
+# Crear ventana con colores personalizados
+ventana = ttk.Window(themename="flatly")  # Tema más moderno
 ventana.title("Cliente OBD-II")
-ventana.geometry("400x400")
+ventana.geometry("400x500")
+ventana.configure(bg="#FFFFFF")  # Fondo blanco
 
-# Etiquetas y campos de entrada
-tk.Label(ventana, text="Usuario:").pack(pady=5)
-usuario_entry = tk.Entry(ventana)
-usuario_entry.pack()
+# ---------- Estilo ----------
+btn_style = {"bootstyle": "warning", "width": 20, "padding": 5}  # Naranja
+entry_style = {"width": 30, "bootstyle": "light"}  # Fondos blancos
 
-tk.Label(ventana, text="Contraseña:").pack(pady=5)
-password_entry = tk.Entry(ventana, show="*")
-password_entry.pack()
+# ---------- Pantalla de Login ----------
+login_frame = ttk.Frame(ventana, padding=20)
+login_frame.pack(pady=50)
 
-tk.Label(ventana, text="Marca:").pack(pady=5)
-marca_entry = tk.Entry(ventana)
+ttk.Label(login_frame, text="Iniciar Sesión", font=("Arial", 16, "bold"), background="#FFFFFF", foreground="#E67E22").pack(pady=10)
+
+usuario_entry = ttk.Entry(login_frame, **entry_style)
+usuario_entry.pack(pady=5)
+usuario_entry.insert(0, "Usuario")
+
+password_entry = ttk.Entry(login_frame, show="*", **entry_style)
+password_entry.pack(pady=5)
+password_entry.insert(0, "Contraseña")
+
+ttk.Button(login_frame, text="Login", command=obtener_token, **btn_style).pack(pady=10)
+
+# ---------- Pantalla Principal ----------
+main_frame = ttk.Frame(ventana, padding=20)
+
+ttk.Label(main_frame, text="Registro de Vehículo", font=("Arial", 14, "bold"), background="#FFFFFF", foreground="#E67E22").pack(pady=10)
+
+ttk.Label(main_frame, text="Marca", background="#FFFFFF", foreground="#333").pack(pady=2)
+marca_entry = ttk.Entry(main_frame, **entry_style)
 marca_entry.pack()
 
-tk.Label(ventana, text="Modelo:").pack(pady=5)
-modelo_entry = tk.Entry(ventana)
+ttk.Label(main_frame, text="Modelo", background="#FFFFFF", foreground="#333").pack(pady=2)
+modelo_entry = ttk.Entry(main_frame, **entry_style)
 modelo_entry.pack()
 
-tk.Label(ventana, text="Año:").pack(pady=5)
-year_entry = tk.Entry(ventana)
+ttk.Label(main_frame, text="Año", background="#FFFFFF", foreground="#333").pack(pady=2)
+year_entry = ttk.Entry(main_frame, **entry_style)
 year_entry.pack()
 
-# Botón para enviar los datos
-tk.Button(ventana, text="Conectar y enviar datos", command=enviar_datos).pack(pady=20)
+ttk.Button(main_frame, text="Conectar OBD-II y Enviar", command=enviar_datos, **btn_style).pack(pady=20)
 
-# Ejecutar la ventana
 ventana.mainloop()
