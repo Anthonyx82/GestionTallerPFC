@@ -15,7 +15,7 @@ export class MisVehiculosComponent {
   vehiculos: any[] = [];
   vehiculoSeleccionado: any = null; // Vehículo seleccionado para mostrar detalles
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     const token = localStorage.getItem('token');
@@ -66,17 +66,16 @@ export class MisVehiculosComponent {
     // Obtener detalles del vehículo
     this.http.get(`https://anthonyx82.ddns.net/taller/api/mis-vehiculos/${vehiculoId}`, { headers }).subscribe({
       next: (data: any) => {
-        // Asignar el vehículo y sus detalles a la variable vehiculoSeleccionado
         this.vehiculoSeleccionado = data;
         
         // Obtener los errores del vehículo
         this.http.get(`https://anthonyx82.ddns.net/taller/api/mis-errores/${vehiculoId}`, { headers }).subscribe({
           next: (errores: any) => {
-            this.vehiculoSeleccionado.errores = errores; // Asignar los errores al vehículo
+            this.vehiculoSeleccionado.errores = errores;
           },
           error: (error) => {
             console.log('Error al obtener errores del vehículo:', error);
-            this.vehiculoSeleccionado.errores = []; // Si no hay errores, asignar un array vacío
+            this.vehiculoSeleccionado.errores = [];
           }
         });
       },
@@ -85,7 +84,7 @@ export class MisVehiculosComponent {
   }
 
   cerrarDetalles(): void {
-    this.vehiculoSeleccionado = null; // Cerrar el modal
+    this.vehiculoSeleccionado = null;
   }
 
   editarVehiculo(vehiculoId: number): void {

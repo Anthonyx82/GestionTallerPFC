@@ -13,7 +13,6 @@ from sqlalchemy.exc import IntegrityError
 from pydantic import BaseModel
 import requests
 
-
 # Configuración de la base de datos
 DATABASE_URL = os.getenv("DATABASE_URL", "mysql+pymysql://user:password@db/talleres")
 engine = create_engine(DATABASE_URL)
@@ -49,6 +48,7 @@ class Vehiculo(Base):
     year = Column(Integer)
     rpm = Column(Integer)
     velocidad = Column(Integer)
+    vin = Column(String(17), unique=True, nullable=False)
     usuario_id = Column(Integer, ForeignKey('usuarios.id'))  # FK hacia Usuario
 
     # Relación con Usuario (muchos a uno)
@@ -127,6 +127,7 @@ class VehiculoRegistro(BaseModel):
     year: int
     rpm: int
     velocidad: int
+    vin: str
 
 class ErrorVehiculoRegistro(BaseModel):
     codigo_dtc: list[str]
@@ -157,7 +158,15 @@ def login(datos: UsuarioLogin, db: Session = Depends(get_db)):
 
 # Endpoint para que el cliente de Python envíe datos OBD-II
 @app.post("/guardar-vehiculo/")
-def guardar_vehiculo(datos: VehiculoRegistro, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+def guardar_vehiculo(
+    datos: VehiculoRegistro, 
+    usuario: Usuario = Depends(obtener_usuario_desde_token), 
+    db: Session = Depends(get_db)
+):
+    # Verificar si el VIN ya está registrado
+    if db.query(Vehiculo).filter(Vehiculo.vin == datos.vin).first():
+        raise HTTPException(status_code=400, detail="El VIN ya está registrado en otro vehículo.")
+    
     nuevo_vehiculo = Vehiculo(**datos.dict(), usuario_id=usuario.id)
     db.add(nuevo_vehiculo)
     db.commit()
@@ -211,17 +220,28 @@ def get_car_image(searchTerm: str):
 
 # Endpoint para editar vehículo
 @app.put("/editar-vehiculo/{vehiculo_id}")
-def editar_vehiculo(vehiculo_id: int, datos: VehiculoRegistro, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+def editar_vehiculo(
+    vehiculo_id: int, 
+    datos: VehiculoRegistro, 
+    usuario: Usuario = Depends(obtener_usuario_desde_token), 
+    db: Session = Depends(get_db)
+):
     vehiculo = db.query(Vehiculo).filter(Vehiculo.id == vehiculo_id, Vehiculo.usuario_id == usuario.id).first()
+    
     if vehiculo is None:
         raise HTTPException(status_code=404, detail="Vehículo no encontrado")
     
-    # Actualizar los detalles del vehículo
+    # Verificar que el nuevo VIN no esté en otro vehículo
+    if vehiculo.vin != datos.vin and db.query(Vehiculo).filter(Vehiculo.vin == datos.vin).first():
+        raise HTTPException(status_code=400, detail="El VIN ya está registrado en otro vehículo.")
+
+    # Actualizar datos
     vehiculo.marca = datos.marca
     vehiculo.modelo = datos.modelo
     vehiculo.year = datos.year
     vehiculo.rpm = datos.rpm
     vehiculo.velocidad = datos.velocidad
+    vehiculo.vin = datos.vin  # Actualizar VIN
 
     db.commit()
     return {"mensaje": "Vehículo actualizado correctamente"}

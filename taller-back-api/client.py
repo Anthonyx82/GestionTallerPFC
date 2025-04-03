@@ -7,6 +7,7 @@ from tkinter import messagebox
 
 # Configuración de la API
 API_URL = "https://anthonyx82.ddns.net/taller/api"
+token = None
 
 # Función para autenticarse
 def obtener_token():
@@ -30,7 +31,7 @@ def obtener_token():
     else:
         messagebox.showerror("Error", f"Error en el login: {response.text}")
 
-# Función para leer datos del OBD-II
+# Función para leer datos del OBD-II, incluyendo VIN
 def leer_datos_obd2():
     PORT = "COM3"
     BAUDRATE = 9600
@@ -48,6 +49,10 @@ def leer_datos_obd2():
             enviar_comando("ATE0")
             enviar_comando("ATSP0")
 
+            # Leer VIN
+            respuesta_vin = enviar_comando("0902")
+            vin = interpretar_respuesta_vin(respuesta_vin)
+
             # Leer RPM
             respuesta_rpm = enviar_comando("010C")
             rpm = interpretar_respuesta_rpm(respuesta_rpm)
@@ -56,11 +61,19 @@ def leer_datos_obd2():
             respuesta_velocidad = enviar_comando("010D")
             velocidad = interpretar_respuesta_velocidad(respuesta_velocidad)
 
-            return {"rpm": rpm, "velocidad": velocidad}
+            return {"vin": vin, "rpm": rpm, "velocidad": velocidad}
 
     except Exception as e:
         messagebox.showerror("Error", f"No se pudo conectar al OBD-II: {e}")
-        return {"rpm": 5200, "velocidad": 168}
+        return {"vin": "DESCONOCIDO", "rpm": 5200, "velocidad": 168}
+
+def interpretar_respuesta_vin(respuesta):
+    vin = ""
+    for linea in respuesta:
+        if "49 02" in linea:
+            partes = linea.split(" ")[2:]  # Ignorar el identificador "49 02"
+            vin += "".join(chr(int(p, 16)) for p in partes if p != "00")
+    return vin.strip() if vin else "DESCONOCIDO"
 
 def interpretar_respuesta_rpm(respuesta):
     for linea in respuesta:
@@ -95,12 +108,17 @@ def enviar_datos():
         return
 
     datos_obd = leer_datos_obd2()
+    
+    # Mostrar VIN en la interfaz
+    vin_label.config(text=f"VIN: {datos_obd['vin']}")
+
     vehiculo_data = {
         "marca": marca,
         "modelo": modelo,
         "year": int(year),
         "rpm": datos_obd["rpm"],
-        "velocidad": datos_obd["velocidad"]
+        "velocidad": datos_obd["velocidad"],
+        "vin": datos_obd["vin"]
     }
 
     headers = {"Authorization": f"Bearer {token}"}
@@ -114,7 +132,7 @@ def enviar_datos():
 # Crear ventana con colores personalizados
 ventana = ttk.Window(themename="flatly")  # Tema más moderno
 ventana.title("Cliente OBD-II")
-ventana.geometry("400x500")
+ventana.geometry("400x550")
 ventana.configure(bg="#FFFFFF")  # Fondo blanco
 
 # ---------- Estilo ----------
@@ -153,6 +171,9 @@ modelo_entry.pack()
 ttk.Label(main_frame, text="Año", background="#FFFFFF", foreground="#333").pack(pady=2)
 year_entry = ttk.Entry(main_frame, **entry_style)
 year_entry.pack()
+
+vin_label = ttk.Label(main_frame, text="VIN: Desconocido", background="#FFFFFF", foreground="#E67E22", font=("Arial", 10, "bold"))
+vin_label.pack(pady=5)
 
 ttk.Button(main_frame, text="Conectar OBD-II y Enviar", command=enviar_datos, **btn_style).pack(pady=20)
 

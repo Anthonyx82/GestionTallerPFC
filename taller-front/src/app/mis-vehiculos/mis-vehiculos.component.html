@@ -61,6 +61,7 @@
     <span class="close" (click)="cerrarDetalles()">&times;</span>
     <h3>{{ vehiculoSeleccionado.marca }} {{ vehiculoSeleccionado.modelo }}</h3>
     <p><strong>Año:</strong> {{ vehiculoSeleccionado.year }}</p>
+    <p><strong>VIN:</strong> {{ vehiculoSeleccionado.vin }}</p>  <!-- 🔹 Agregado VIN -->
     <p><strong>RPM:</strong> {{ vehiculoSeleccionado.rpm }}</p>
     <p><strong>Velocidad:</strong> {{ vehiculoSeleccionado.velocidad }} km/h</p>
     <h4>Errores:</h4>
@@ -69,7 +70,5 @@
     </ul>
   </div>
 </div>
-
-
 
 <button (click)="volverInicio()" class="cta-button">Volver al Inicio</button>
