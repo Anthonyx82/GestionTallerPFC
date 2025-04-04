@@ -53,6 +53,10 @@ def leer_datos_obd2():
             respuesta_vin = enviar_comando("0902")
             vin = interpretar_respuesta_vin(respuesta_vin)
 
+            # Si el VIN es desconocido, asignar un valor predeterminado
+            if not vin or vin == "DESCONOCIDO":
+                vin = "1HGCM82633A123456"
+
             # Leer RPM
             respuesta_rpm = enviar_comando("010C")
             rpm = interpretar_respuesta_rpm(respuesta_rpm)
@@ -65,7 +69,7 @@ def leer_datos_obd2():
 
     except Exception as e:
         messagebox.showerror("Error", f"No se pudo conectar al OBD-II: {e}")
-        return {"vin": "DESCONOCIDO", "rpm": 5200, "velocidad": 168}
+        return {"vin": "1HGCM82633A123456", "rpm": 5200, "velocidad": 168}
 
 def interpretar_respuesta_vin(respuesta):
     vin = ""
