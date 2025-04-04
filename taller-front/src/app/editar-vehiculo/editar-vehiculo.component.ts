@@ -17,6 +17,7 @@ export class EditarVehiculoComponent implements OnInit {
     marca: '',
     modelo: '',
     year: null,
+    vin: '', 
     rpm: null,
     velocidad: null
   };
@@ -71,6 +72,7 @@ export class EditarVehiculoComponent implements OnInit {
       marca: this.vehiculo.marca,
       modelo: this.vehiculo.modelo,
       year: this.vehiculo.year,
+      vin: this.vehiculo.vin,
       rpm: this.vehiculo.rpm,
       velocidad: this.vehiculo.velocidad
     };
