@@ -135,6 +135,7 @@ def enviar_datos():
 
 # Crear ventana con colores personalizados
 ventana = ttk.Window(themename="flatly")  # Tema más moderno
+ventana.iconbitmap(r"C:/Users/Antonio/Desktop/GestionTallerPFC/taller-front/public/favicon.ico")
 ventana.title("Cliente OBD-II")
 ventana.geometry("400x550")
 ventana.configure(bg="#FFFFFF")  # Fondo blanco
