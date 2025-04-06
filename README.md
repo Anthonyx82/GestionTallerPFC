@@ -9,6 +9,13 @@ Este proyecto es una plataforma que permite la recopilación y visualización de
 - **Interfaz web en Angular**: Visualización de la información del vehículo.
 - **Despliegue con Docker y Traefik**: Infraestructura lista para producción.
 
+## Compilacion del cliente (Desarrollo)
+Si quieres compilar el cliente de python para tener un .exe personalizado, deberas usar el siguiente comando (Siempre y cuando no hayas modificado los imports)
+
+```python
+pyinstaller --noconfirm --onefile --windowed --icon=../taller-front/public/favicon.ico --hidden-import=ttkbootstrap --hidden-import=serial --hidden-import=requests --hidden-import=tkinter --hidden-import=tkinter.messagebox --hidden-import=pyserial .\client.py
+```
+
 ## Configuración y Ejecución
 ### Prerrequisitos
 Asegúrate de tener instalado:

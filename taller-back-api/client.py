@@ -1,15 +1,15 @@
 import requests
 import serial
+import serial.tools.list_ports
 import time
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from tkinter import messagebox
 
-# Configuración de la API
 API_URL = "https://anthonyx82.ddns.net/taller/api"
 token = None
+selected_port = None
 
-# Función para autenticarse
 def obtener_token():
     usuario = usuario_entry.get()
     password = password_entry.get()
@@ -28,12 +28,27 @@ def obtener_token():
         token = response.json().get("access_token")
         login_frame.pack_forget()
         main_frame.pack(pady=20)
+        cargar_puertos()
     else:
         messagebox.showerror("Error", f"Error en el login: {response.text}")
 
-# Función para leer datos del OBD-II, incluyendo VIN
+def cargar_puertos():
+    ports = list(serial.tools.list_ports.comports())
+    puerto_combo['values'] = [f"{p.device} - {p.description}" for p in ports]
+    if ports:
+        puerto_combo.current(0)
+        btn_enviar.config(state=NORMAL)
+    else:
+        puerto_combo['values'] = ["No se detectaron dispositivos"]
+        btn_enviar.config(state=DISABLED)
+
 def leer_datos_obd2():
-    PORT = "COM3"
+    port_info = puerto_combo.get()
+    if " - " not in port_info:
+        messagebox.showerror("Error", "Seleccione un puerto válido.")
+        return
+
+    PORT = port_info.split(" - ")[0]
     BAUDRATE = 9600
     TIMEOUT = 1
 
@@ -49,19 +64,15 @@ def leer_datos_obd2():
             enviar_comando("ATE0")
             enviar_comando("ATSP0")
 
-            # Leer VIN
             respuesta_vin = enviar_comando("0902")
             vin = interpretar_respuesta_vin(respuesta_vin)
 
-            # Si el VIN es desconocido, asignar un valor predeterminado
             if not vin or vin == "DESCONOCIDO":
                 vin = "1HGCM82633A123456"
 
-            # Leer RPM
             respuesta_rpm = enviar_comando("010C")
             rpm = interpretar_respuesta_rpm(respuesta_rpm)
 
-            # Leer velocidad
             respuesta_velocidad = enviar_comando("010D")
             velocidad = interpretar_respuesta_velocidad(respuesta_velocidad)
 
@@ -75,7 +86,7 @@ def interpretar_respuesta_vin(respuesta):
     vin = ""
     for linea in respuesta:
         if "49 02" in linea:
-            partes = linea.split(" ")[2:]  # Ignorar el identificador "49 02"
+            partes = linea.split(" ")[2:]
             vin += "".join(chr(int(p, 16)) for p in partes if p != "00")
     return vin.strip() if vin else "DESCONOCIDO"
 
@@ -97,7 +108,6 @@ def interpretar_respuesta_velocidad(respuesta):
                 return int(partes[2], 16)
     return 0
 
-# Función para enviar los datos a la API
 def enviar_datos():
     if not token:
         messagebox.showerror("Error", "Debe iniciar sesión primero.")
@@ -113,7 +123,6 @@ def enviar_datos():
 
     datos_obd = leer_datos_obd2()
     
-    # Mostrar VIN en la interfaz
     vin_label.config(text=f"VIN: {datos_obd['vin']}")
 
     vehiculo_data = {
@@ -133,18 +142,15 @@ def enviar_datos():
     else:
         messagebox.showerror("Error", f"No se pudo enviar: {response.text}")
 
-# Crear ventana con colores personalizados
-ventana = ttk.Window(themename="flatly")  # Tema más moderno
+ventana = ttk.Window(themename="flatly")
 ventana.iconbitmap(r"C:/Users/Antonio/Desktop/GestionTallerPFC/taller-front/public/favicon.ico")
 ventana.title("Cliente OBD-II")
-ventana.geometry("400x550")
-ventana.configure(bg="#FFFFFF")  # Fondo blanco
+ventana.geometry("400x600")
+ventana.configure(bg="#FFFFFF")
 
-# ---------- Estilo ----------
-btn_style = {"bootstyle": "warning", "width": 20, "padding": 5}  # Naranja
-entry_style = {"width": 30, "bootstyle": "light"}  # Fondos blancos
+btn_style = {"bootstyle": "warning", "width": 20, "padding": 5}
+entry_style = {"width": 30, "bootstyle": "light"}
 
-# ---------- Pantalla de Login ----------
 login_frame = ttk.Frame(ventana, padding=20)
 login_frame.pack(pady=50)
 
@@ -160,10 +166,13 @@ password_entry.insert(0, "Contraseña")
 
 ttk.Button(login_frame, text="Login", command=obtener_token, **btn_style).pack(pady=10)
 
-# ---------- Pantalla Principal ----------
 main_frame = ttk.Frame(ventana, padding=20)
 
 ttk.Label(main_frame, text="Registro de Vehículo", font=("Arial", 14, "bold"), background="#FFFFFF", foreground="#E67E22").pack(pady=10)
+
+ttk.Label(main_frame, text="Puerto OBD-II", background="#FFFFFF", foreground="#333").pack(pady=2)
+puerto_combo = ttk.Combobox(main_frame, width=35)
+puerto_combo.pack(pady=5)
 
 ttk.Label(main_frame, text="Marca", background="#FFFFFF", foreground="#333").pack(pady=2)
 marca_entry = ttk.Entry(main_frame, **entry_style)
@@ -180,6 +189,8 @@ year_entry.pack()
 vin_label = ttk.Label(main_frame, text="VIN: Desconocido", background="#FFFFFF", foreground="#E67E22", font=("Arial", 10, "bold"))
 vin_label.pack(pady=5)
 
-ttk.Button(main_frame, text="Conectar OBD-II y Enviar", command=enviar_datos, **btn_style).pack(pady=20)
+btn_enviar = ttk.Button(main_frame, text="Conectar OBD-II y Enviar", command=enviar_datos, **btn_style)
+btn_enviar.pack(pady=20)
+btn_enviar.config(state=DISABLED)
 
 ventana.mainloop()

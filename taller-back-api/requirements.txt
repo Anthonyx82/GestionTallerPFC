@@ -8,3 +8,4 @@ tk
 pyinstaller
 python-jose
 passlib
+pyserial
