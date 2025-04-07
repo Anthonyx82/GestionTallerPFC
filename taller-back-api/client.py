@@ -4,11 +4,18 @@ import serial.tools.list_ports
 import time
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
-from tkinter import messagebox
+from tkinter import messagebox, Toplevel, StringVar, IntVar
+from tkinter import Label, Checkbutton, Button, Frame
 
 API_URL = "https://anthonyx82.ddns.net/taller/api"
 token = None
 selected_port = None
+revision_data = {}
+
+partes_generales = ["Motor", "Chasis", "Caja de cambios"]
+detalles_motor = ["Correa distribución", "Filtro aire", "Bujías", "Inyectores", "Radiador", "Aceite", "Refrigerante", "Batería", "Alternador", "Turbocompresor"]
+detalles_chasis = ["Suspensión", "Frenos", "Rótulas", "Amortiguadores", "Discos", "Pastillas", "Dirección", "Eje delantero", "Eje trasero", "Ruedas"]
+detalles_caja = ["Aceite transmisión", "Sincronizadores", "Embrague", "Convertidor par", "Engranajes", "Sensor velocidad", "Palanca", "Caja externa", "Sello junta", "Montura"]
 
 def obtener_token():
     usuario = usuario_entry.get()
@@ -108,6 +115,74 @@ def interpretar_respuesta_velocidad(respuesta):
                 return int(partes[2], 16)
     return 0
 
+def mostrar_modal_revision():
+    modal = Toplevel(ventana)
+    modal.title("Revisión de partes del vehículo")
+    modal.geometry("400x500")
+
+    Label(modal, text="Selecciona las partes revisadas:", font=("Arial", 12, "bold")).pack(pady=10)
+
+    seleccion_general = {}
+    for parte in partes_generales:
+        var = IntVar()
+        Checkbutton(modal, text=parte, variable=var).pack(anchor="w", padx=20)
+        seleccion_general[parte] = var
+
+    def siguiente():
+        for parte, var in seleccion_general.items():
+            if var.get():
+                revision_data[parte] = []
+        modal.destroy()
+        mostrar_modal_detalle()
+
+    Button(modal, text="Siguiente", command=siguiente).pack(pady=20)
+
+def mostrar_modal_detalle():
+    partes_detalle = {
+        "Motor": detalles_motor,
+        "Chasis": detalles_chasis,
+        "Caja de cambios": detalles_caja
+    }
+
+    partes_a_mostrar = [parte for parte in revision_data]
+
+    if not partes_a_mostrar:
+        messagebox.showwarning("Aviso", "Debes seleccionar al menos una parte para continuar.")
+        return
+
+    idx = 0
+
+    def mostrar_parte():
+        nonlocal idx
+        if idx >= len(partes_a_mostrar):
+            enviar_datos()
+            return
+
+        parte = partes_a_mostrar[idx]
+        modal_detalle = Toplevel(ventana)
+        modal_detalle.title(f"Revisión: {parte}")
+        modal_detalle.geometry("400x500")
+
+        Label(modal_detalle, text=f"Selecciona elementos revisados del {parte}", font=("Arial", 12, "bold")).pack(pady=10)
+
+        detalle_vars = []
+        for elemento in partes_detalle[parte]:
+            var = IntVar()
+            Checkbutton(modal_detalle, text=elemento, variable=var).pack(anchor="w", padx=20)
+            detalle_vars.append((elemento, var))
+
+        def siguiente_detalle():
+            seleccionados = [el for el, v in detalle_vars if v.get()]
+            revision_data[parte] = seleccionados
+            modal_detalle.destroy()
+            nonlocal idx
+            idx += 1
+            mostrar_parte()
+
+        Button(modal_detalle, text="Siguiente", command=siguiente_detalle).pack(pady=20)
+
+    mostrar_parte()
+
 def enviar_datos():
     if not token:
         messagebox.showerror("Error", "Debe iniciar sesión primero.")
@@ -122,7 +197,7 @@ def enviar_datos():
         return
 
     datos_obd = leer_datos_obd2()
-    
+
     vin_label.config(text=f"VIN: {datos_obd['vin']}")
 
     vehiculo_data = {
@@ -131,7 +206,8 @@ def enviar_datos():
         "year": int(year),
         "rpm": datos_obd["rpm"],
         "velocidad": datos_obd["velocidad"],
-        "vin": datos_obd["vin"]
+        "vin": datos_obd["vin"],
+        "revision": revision_data
     }
 
     headers = {"Authorization": f"Bearer {token}"}
@@ -142,8 +218,9 @@ def enviar_datos():
     else:
         messagebox.showerror("Error", f"No se pudo enviar: {response.text}")
 
+# CONFIGURACIÓN UI PRINCIPAL
 ventana = ttk.Window(themename="flatly")
-ventana.iconbitmap(r"C:/Users/Antonio/Desktop/GestionTallerPFC/taller-front/public/favicon.ico")
+ventana.iconbitmap(r"C:/Users/amartinsos/GestionTallerPFC/taller-front/public/favicon.ico")
 ventana.title("Cliente OBD-II")
 ventana.geometry("400x600")
 ventana.configure(bg="#FFFFFF")
@@ -154,42 +231,35 @@ entry_style = {"width": 30, "bootstyle": "light"}
 login_frame = ttk.Frame(ventana, padding=20)
 login_frame.pack(pady=50)
 
+# LOGIN UI
 ttk.Label(login_frame, text="Iniciar Sesión", font=("Arial", 16, "bold"), background="#FFFFFF", foreground="#E67E22").pack(pady=10)
-
 usuario_entry = ttk.Entry(login_frame, **entry_style)
 usuario_entry.pack(pady=5)
 usuario_entry.insert(0, "Usuario")
-
 password_entry = ttk.Entry(login_frame, show="*", **entry_style)
 password_entry.pack(pady=5)
 password_entry.insert(0, "Contraseña")
-
 ttk.Button(login_frame, text="Login", command=obtener_token, **btn_style).pack(pady=10)
 
+# MAIN FRAME
 main_frame = ttk.Frame(ventana, padding=20)
-
 ttk.Label(main_frame, text="Registro de Vehículo", font=("Arial", 14, "bold"), background="#FFFFFF", foreground="#E67E22").pack(pady=10)
-
 ttk.Label(main_frame, text="Puerto OBD-II", background="#FFFFFF", foreground="#333").pack(pady=2)
 puerto_combo = ttk.Combobox(main_frame, width=35)
 puerto_combo.pack(pady=5)
-
 ttk.Label(main_frame, text="Marca", background="#FFFFFF", foreground="#333").pack(pady=2)
 marca_entry = ttk.Entry(main_frame, **entry_style)
 marca_entry.pack()
-
 ttk.Label(main_frame, text="Modelo", background="#FFFFFF", foreground="#333").pack(pady=2)
 modelo_entry = ttk.Entry(main_frame, **entry_style)
 modelo_entry.pack()
-
 ttk.Label(main_frame, text="Año", background="#FFFFFF", foreground="#333").pack(pady=2)
 year_entry = ttk.Entry(main_frame, **entry_style)
 year_entry.pack()
-
 vin_label = ttk.Label(main_frame, text="VIN: Desconocido", background="#FFFFFF", foreground="#E67E22", font=("Arial", 10, "bold"))
 vin_label.pack(pady=5)
 
-btn_enviar = ttk.Button(main_frame, text="Conectar OBD-II y Enviar", command=enviar_datos, **btn_style)
+btn_enviar = ttk.Button(main_frame, text="Revisión y Enviar", command=mostrar_modal_revision, **btn_style)
 btn_enviar.pack(pady=20)
 btn_enviar.config(state=DISABLED)
 
