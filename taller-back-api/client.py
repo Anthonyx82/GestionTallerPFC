@@ -6,6 +6,7 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from tkinter import messagebox, Toplevel, StringVar, IntVar
 from tkinter import Label, Checkbutton, Button, Frame
+from PIL import Image, ImageTk
 
 API_URL = "https://anthonyx82.ddns.net/taller/api"
 token = None
@@ -115,12 +116,25 @@ def interpretar_respuesta_velocidad(respuesta):
                 return int(partes[2], 16)
     return 0
 
+def mostrar_imagen(parent, ruta, ancho=300, alto=200):
+    try:
+        img = Image.open(ruta)
+        img = img.resize((ancho, alto), Image.Resampling.LANCZOS)
+        img_tk = ImageTk.PhotoImage(img)
+        label_img = Label(parent, image=img_tk)
+        label_img.image = img_tk
+        label_img.pack(pady=10)
+    except Exception as e:
+        print(f"No se pudo cargar la imagen: {e}")
+
 def mostrar_modal_revision():
     modal = Toplevel(ventana)
     modal.title("Revisión de partes del vehículo")
-    modal.geometry("400x500")
+    modal.geometry("420x600")
 
     Label(modal, text="Selecciona las partes revisadas:", font=("Arial", 12, "bold")).pack(pady=10)
+
+    mostrar_imagen(modal, "images/vehiculo_xray.png")  # Asegúrate de tener esta imagen
 
     seleccion_general = {}
     for parte in partes_generales:
@@ -161,9 +175,11 @@ def mostrar_modal_detalle():
         parte = partes_a_mostrar[idx]
         modal_detalle = Toplevel(ventana)
         modal_detalle.title(f"Revisión: {parte}")
-        modal_detalle.geometry("400x500")
+        modal_detalle.geometry("420x600")
 
         Label(modal_detalle, text=f"Selecciona elementos revisados del {parte}", font=("Arial", 12, "bold")).pack(pady=10)
+
+        mostrar_imagen(modal_detalle, f"images/{parte.lower()}_xray.png")
 
         detalle_vars = []
         for elemento in partes_detalle[parte]:
