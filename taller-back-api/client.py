@@ -4,9 +4,9 @@ import serial.tools.list_ports
 import time
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
-from tkinter import messagebox, Toplevel, StringVar, IntVar
-from tkinter import Label, Checkbutton, Button, Frame
+from tkinter import messagebox, Toplevel, StringVar, IntVar, Canvas, Label, Checkbutton, Button, Frame
 from PIL import Image, ImageTk
+
 
 API_URL = "https://anthonyx82.ddns.net/taller/api"
 token = None
@@ -28,7 +28,7 @@ def obtener_token():
 
     response = requests.post(
         f"{API_URL}/login",
-        json={"username": usuario, "password": password}
+        json={"username": "test1", "password": "Ams1313*"}
     )
     
     if response.status_code == 200:
@@ -116,40 +116,83 @@ def interpretar_respuesta_velocidad(respuesta):
                 return int(partes[2], 16)
     return 0
 
-def mostrar_imagen(parent, ruta, ancho=300, alto=200):
+def mostrar_imagen(parent, ruta):
     try:
         img = Image.open(ruta)
-        img = img.resize((ancho, alto), Image.Resampling.LANCZOS)
         img_tk = ImageTk.PhotoImage(img)
+
         label_img = Label(parent, image=img_tk)
         label_img.image = img_tk
-        label_img.pack(pady=10)
+        label_img.pack()
+        return label_img
     except Exception as e:
         print(f"No se pudo cargar la imagen: {e}")
 
+def siguiente(modal, seleccion_general):
+    global revision_data
+    seleccionadas = [parte for parte, var in seleccion_general.items() if var.get()]
+    if not seleccionadas:
+        messagebox.showwarning("Aviso", "Debe seleccionar al menos una parte para continuar.")
+        return
+    revision_data = {parte: [] for parte in seleccionadas}
+    modal.destroy()
+    mostrar_modal_detalle()
+
 def mostrar_modal_revision():
     modal = Toplevel(ventana)
+    modal.attributes("-fullscreen", True)
     modal.title("Revisión de partes del vehículo")
-    modal.geometry("420x600")
 
-    Label(modal, text="Selecciona las partes revisadas:", font=("Arial", 12, "bold")).pack(pady=10)
+    # Cargar imagen y escalarla al 80%
+    img = Image.open("images/vehiculo_xray.png")
+    original_width, original_height = img.size
+    escala = 0.8
+    nuevo_ancho = int(original_width * escala)
+    nuevo_alto = int(original_height * escala)
+    img = img.resize((nuevo_ancho, nuevo_alto), Image.Resampling.LANCZOS)
+    img_tk = ImageTk.PhotoImage(img)
 
-    mostrar_imagen(modal, "images/vehiculo_xray.png")  # Asegúrate de tener esta imagen
+    # Crear canvas con el tamaño ajustado
+    canvas = Canvas(modal, width=modal.winfo_screenwidth(), height=modal.winfo_screenheight(), bg="white")
+    canvas.pack(fill="both", expand=True)
+    canvas.background = img_tk
+
+    # Calcular posición centrada con margen superior (ej. 50px)
+    margen_superior = 50
+    x_centro = (modal.winfo_screenwidth() - nuevo_ancho) // 2
+
+    canvas.create_image(x_centro, margen_superior, image=img_tk, anchor="nw")
 
     seleccion_general = {}
-    for parte in partes_generales:
+
+    partes_info = {
+        "Motor": {"pos": (100, 300), "flecha": (150, 150)},
+        "Chasis": {"pos": (700, 150), "flecha": (10, 100)},
+        "Caja de cambios": {"pos": (800, 750), "flecha": (-150, -150)}
+    }
+    
+    for parte, datos in partes_info.items():
+        x, y = datos["pos"]
+        dx, dy = datos["flecha"]
+    
+        x_escalado = int(x * escala) + x_centro
+        y_escalado = int(y * escala) + margen_superior
+    
         var = IntVar()
-        Checkbutton(modal, text=parte, variable=var).pack(anchor="w", padx=20)
+        chk = Checkbutton(modal, text=parte, variable=var, bg="white")
+        canvas.create_window(x_escalado, y_escalado, window=chk)
+    
+        canvas.create_line(
+            x_escalado, y_escalado,
+            x_escalado + dx, y_escalado + dy,
+            arrow="last", width=2, fill="white"
+        )
+    
         seleccion_general[parte] = var
 
-    def siguiente():
-        for parte, var in seleccion_general.items():
-            if var.get():
-                revision_data[parte] = []
-        modal.destroy()
-        mostrar_modal_detalle()
+    btn_siguiente = Button(modal, text="Siguiente", command=lambda: siguiente(modal, seleccion_general))
+    canvas.create_window(modal.winfo_screenwidth()//2, modal.winfo_screenheight() - 80, window=btn_siguiente)
 
-    Button(modal, text="Siguiente", command=siguiente).pack(pady=20)
 
 def mostrar_modal_detalle():
     partes_detalle = {
@@ -158,7 +201,7 @@ def mostrar_modal_detalle():
         "Caja de cambios": detalles_caja
     }
 
-    partes_a_mostrar = [parte for parte in revision_data]
+    partes_a_mostrar = list(revision_data.keys())
 
     if not partes_a_mostrar:
         messagebox.showwarning("Aviso", "Debes seleccionar al menos una parte para continuar.")
@@ -173,29 +216,109 @@ def mostrar_modal_detalle():
             return
 
         parte = partes_a_mostrar[idx]
-        modal_detalle = Toplevel(ventana)
-        modal_detalle.title(f"Revisión: {parte}")
-        modal_detalle.geometry("420x600")
+        detalles = partes_detalle[parte]
 
-        Label(modal_detalle, text=f"Selecciona elementos revisados del {parte}", font=("Arial", 12, "bold")).pack(pady=10)
+        modal = Toplevel(ventana)
+        modal.attributes("-fullscreen", True)
+        modal.title(f"Revisión de {parte}")
 
-        mostrar_imagen(modal_detalle, f"images/{parte.lower()}_xray.png")
+        # Cargar imagen y escalarla
+        ruta_imagen = f"images/{parte.lower()}_xray.png"
+        try:
+            img = Image.open(ruta_imagen)
+            original_width, original_height = img.size
+            escala = 0.8
+            nuevo_ancho = int(original_width * escala)
+            nuevo_alto = int(original_height * escala)
+            img = img.resize((nuevo_ancho, nuevo_alto), Image.Resampling.LANCZOS)
+            img_tk = ImageTk.PhotoImage(img)
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo cargar la imagen para {parte}: {e}")
+            modal.destroy()
+            return
+
+        canvas = Canvas(modal, width=modal.winfo_screenwidth(), height=modal.winfo_screenheight(), bg="white")
+        canvas.pack(fill="both", expand=True)
+        canvas.background = img_tk
+
+        margen_superior = 50
+        x_centro = (modal.winfo_screenwidth() - nuevo_ancho) // 2
+        canvas.create_image(x_centro, margen_superior, image=img_tk, anchor="nw")
 
         detalle_vars = []
-        for elemento in partes_detalle[parte]:
-            var = IntVar()
-            Checkbutton(modal_detalle, text=elemento, variable=var).pack(anchor="w", padx=20)
-            detalle_vars.append((elemento, var))
 
-        def siguiente_detalle():
+        # Coordenadas y flechas personalizadas para cada parte
+        coordenadas_custom = {
+            "Motor": {
+                "Correa distribución": ((220, 280), (100, 50)),
+                "Filtro aire": ((400, 320), (-80, -100)),
+                "Bujías": ((600, 260), (-150, -120)),
+                "Inyectores": ((780, 240), (-100, 100)),
+                "Radiador": ((300, 180), (120, 60)),
+                "Aceite": ((500, 400), (-60, -150)),
+                "Refrigerante": ((620, 150), (-90, 120)),
+                "Batería": ((150, 380), (100, 100)),
+                "Alternador": ((360, 480), (80, -80)),
+                "Turbocompresor": ((720, 360), (-150, -100))
+            },
+            "Chasis": {
+                "Suspensión": ((200, 200), (60, 80)),
+                "Frenos": ((400, 150), (-100, 100)),
+                "Rótulas": ((600, 220), (-80, -50)),
+                "Amortiguadores": ((800, 180), (-150, 50)),
+                "Discos": ((300, 300), (100, -60)),
+                "Pastillas": ((500, 260), (-90, -90)),
+                "Dirección": ((700, 300), (-100, 100)),
+                "Eje delantero": ((400, 400), (60, -60)),
+                "Eje trasero": ((600, 420), (-60, -60)),
+                "Ruedas": ((800, 400), (-100, -80))
+            },
+            "Caja de cambios": {
+                "Aceite transmisión": ((200, 150), (100, 100)),
+                "Sincronizadores": ((400, 180), (-100, 100)),
+                "Embrague": ((600, 160), (-120, 60)),
+                "Convertidor par": ((800, 140), (-150, 120)),
+                "Engranajes": ((300, 260), (80, 80)),
+                "Sensor velocidad": ((500, 240), (-60, -90)),
+                "Palanca": ((700, 260), (-90, -100)),
+                "Caja externa": ((400, 360), (60, -80)),
+                "Sello junta": ((600, 340), (-100, -50)),
+                "Montura": ((800, 320), (-120, -80))
+            }
+        }
+
+        coords_detalles = coordenadas_custom.get(parte, {})
+
+        for nombre in detalles:
+            if nombre not in coords_detalles:
+                continue  # Saltar si no tiene coordenadas
+
+            (x, y), (dx, dy) = coords_detalles[nombre]
+            x_escalado = int(x * escala) + x_centro
+            y_escalado = int(y * escala) + margen_superior
+
+            var = IntVar()
+            chk = Checkbutton(modal, text=nombre, variable=var, bg="white")
+            canvas.create_window(x_escalado, y_escalado, window=chk)
+
+            # Flecha con dirección personalizada
+            canvas.create_line(
+                x_escalado, y_escalado,
+                x_escalado + dx, y_escalado + dy,
+                arrow="last", width=2, fill="white"
+            )
+
+            detalle_vars.append((nombre, var))
+
+        def siguiente_parte():
             seleccionados = [el for el, v in detalle_vars if v.get()]
             revision_data[parte] = seleccionados
-            modal_detalle.destroy()
+            modal.destroy()
             nonlocal idx
             idx += 1
             mostrar_parte()
 
-        Button(modal_detalle, text="Siguiente", command=siguiente_detalle).pack(pady=20)
+        canvas.create_window(modal.winfo_screenwidth()//2, modal.winfo_screenheight() - 80, window=Button(modal, text="Siguiente", command=siguiente_parte))
 
     mostrar_parte()
 
@@ -236,6 +359,7 @@ def enviar_datos():
 
 # CONFIGURACIÓN UI PRINCIPAL
 ventana = ttk.Window(themename="flatly")
+ventana.attributes("-fullscreen", True)
 ventana.iconbitmap(r"C:/Users/amartinsos/GestionTallerPFC/taller-front/public/favicon.ico")
 ventana.title("Cliente OBD-II")
 ventana.geometry("400x600")
