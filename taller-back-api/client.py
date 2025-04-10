@@ -17,7 +17,7 @@ revision_data = {}
 partes_generales = ["Motor", "Chasis", "Caja de cambios"]
 detalles_motor = ["Correa distribución", "Filtro aire", "Bujías", "Inyectores", "Aceite", "Refrigerante", "Batería", "Alternador", "Turbocompresor"]
 detalles_chasis = ["Suspensión", "Frenos", "Rótulas", "Amortiguadores", "Discos", "Pastillas", "Dirección", "Eje delantero", "Eje trasero", "Ruedas"]
-detalles_caja = ["Aceite transmisión", "Sincronizadores", "Embrague", "Convertidor par", "Engranajes", "Sensor velocidad", "Palanca", "Caja externa", "Sello junta", "Montura"]
+detalles_caja = ["Aceite transmisión", "Sincronizadores", "Embrague", "Convertidor par", "Engranajes", "Sensor velocidad", "Palanca", "Juntas"]
 
 def obtener_token():
     usuario = usuario_entry.get()
@@ -307,16 +307,14 @@ def mostrar_modal_detalle():
                 "Ruedas": ((800, 400), (-100, -80))
             },
             "Caja de cambios": {
-                "Aceite transmisión": ((200, 150), (100, 100)),
-                "Sincronizadores": ((400, 180), (-100, 100)),
-                "Embrague": ((600, 160), (-120, 60)),
-                "Convertidor par": ((800, 140), (-150, 120)),
-                "Engranajes": ((300, 260), (80, 80)),
-                "Sensor velocidad": ((500, 240), (-60, -90)),
-                "Palanca": ((700, 260), (-90, -100)),
-                "Caja externa": ((400, 360), (60, -80)),
-                "Sello junta": ((600, 340), (-100, -50)),
-                "Montura": ((800, 320), (-120, -80))
+                "Aceite transmisión": ((100, 800), (0, -100)),
+                "Sincronizadores": ((100, 100), (80, 220)),
+                "Embrague": ((830, 900), (-80, -100)),
+                "Convertidor par": ((900, 750), (-100, -30)),
+                "Engranajes": ((300, 100), (80, 300)),
+                "Sensor velocidad": ((550, 130), (-140, 150)),
+                "Palanca": ((840, 80), (-120, 100)),
+                "Juntas": ((600, 900), (-100, -50)),
             }
         }
 
