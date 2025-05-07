@@ -20,6 +20,7 @@ detalles_chasis = ["Suspensión", "Frenos", "Rótulas", "Amortiguadores", "Disco
 detalles_caja = ["Aceite transmisión", "Sincronizadores", "Embrague", "Convertidor par", "Engranajes", "Sensor velocidad", "Palanca", "Juntas"]
 
 def obtener_token():
+    login_button.config(text="Logueando...")
     usuario = usuario_entry.get()
     password = password_entry.get()
 
@@ -178,7 +179,7 @@ def mostrar_modal_revision():
     modal = Toplevel(ventana)
     modal.attributes("-fullscreen", True)
     modal.title("Revisión de partes del vehículo")
-    modal.configure(bg="#FDFDFD")
+    modal.configure(bg="#ECF0F1")  # Fondo gris clarito
 
     img = Image.open("images/vehiculo_xray.png")
     original_width, original_height = img.size
@@ -295,16 +296,13 @@ def mostrar_modal_detalle():
                 "Turbocompresor": ((900, 550), (-20, -100))
             },
             "Chasis": {
-                "Suspensión": ((200, 200), (60, 80)),
-                "Frenos": ((400, 150), (-100, 100)),
-                "Rótulas": ((600, 220), (-80, -50)),
-                "Amortiguadores": ((800, 180), (-150, 50)),
-                "Discos": ((300, 300), (100, -60)),
-                "Pastillas": ((500, 260), (-90, -90)),
-                "Dirección": ((700, 300), (-100, 100)),
-                "Eje delantero": ((400, 400), (60, -60)),
-                "Eje trasero": ((600, 420), (-60, -60)),
-                "Ruedas": ((800, 400), (-100, -80))
+                "Suspensión": ((350, 200), (-120, 180)),
+                "Rótulas": ((900, 500), (-50, -100)),
+                "Frenos": ((100, 300), (30, 200)),
+                "Dirección": ((350, 900), (150, -150)),
+                "Eje delantero": ((250, 800), (100, -100)),
+                "Eje trasero": ((850, 150), (-50, 120)),
+                "Ruedas": ((600, 100), (0, 70))
             },
             "Caja de cambios": {
                 "Aceite transmisión": ((100, 800), (0, -100)),
@@ -361,48 +359,47 @@ def mostrar_modal_detalle():
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
 # CONFIGURACIÓN UI PRINCIPAL
-ventana = ttk.Window(themename="flatly")
+ventana = ttk.Window(themename="minty")
 ventana.state("zoomed")
 ventana.minsize(320, 500)
 ventana.iconbitmap(r"C:/Users/amartinsos/GestionTallerPFC/taller-front/public/favicon.ico")
 ventana.title("Cliente OBD-II")
 ventana.configure(bg="#F8F9FA")  # Fondo más claro y moderno
-contenedor_central = ttk.Frame(ventana, style="light")
+contenedor_central = ttk.Frame(ventana, padding=40, style="light")
 contenedor_central.pack(expand=True)
 
 # Estilos personalizados
-btn_style = {"bootstyle": "warning-outline", "width": 25, "padding": 6}
 entry_style = {"width": 35, "bootstyle": "light"}
+btn_style = {"bootstyle": "warning-outline", "width": 25}
 
 # LOGIN UI
-login_frame = ttk.Frame(contenedor_central, padding=30, bootstyle="light")
+login_frame = ttk.Frame(contenedor_central, padding=40)
 login_frame.pack(expand=True)
 
-ttk.Label(
-    login_frame, 
-    text="Iniciar Sesión", 
-    font=("Segoe UI", 18, "bold"), 
-    foreground="#E67E22"
-).pack(pady=(0, 20))
+ttk.Label(login_frame, text="Iniciar sesión", font=("Helvetica", 18, "bold"), foreground="#E67E22").pack(pady=(0, 20))
 
+ttk.Label(login_frame, text="Usuario:", font=("Helvetica", 12, "bold")).pack(anchor="w")
 usuario_entry = ttk.Entry(login_frame, **entry_style)
-usuario_entry.pack(pady=20)
+usuario_entry.pack(pady=5)
 usuario_entry.insert(0, "Usuario")
 
+ttk.Label(login_frame, text="Contraseña:", font=("Helvetica", 12, "bold")).pack(anchor="w")
 password_entry = ttk.Entry(login_frame, show="*", **entry_style)
 password_entry.pack(pady=5)
+
 password_entry.insert(0, "Contraseña")
 
-ttk.Button(login_frame, text="Login", command=obtener_token, **btn_style).pack(pady=15)
+login_button = ttk.Button(login_frame, text="Login", command=obtener_token, **btn_style)
+login_button.pack(pady=15)
 
 # MAIN FRAME
-main_frame = ttk.Frame(contenedor_central, padding=30, bootstyle="light")
+main_frame = ttk.Frame(contenedor_central, padding=30)
 main_frame.place_forget()
 
-ttk.Label(main_frame, text="Registro de Vehículo", font=("Segoe UI", 16, "bold"), foreground="#E67E22").pack(pady=(0, 15))
+ttk.Label(main_frame, text="Registro de Vehículo", font=("Helvetica", 18, "bold"), foreground="#E67E22").pack(pady=(0, 15))
 
 def label_campo(texto):
-    ttk.Label(main_frame, text=texto, font=("Segoe UI", 10), foreground="#333").pack(anchor="w", pady=(5, 0))
+     ttk.Label(main_frame, text=texto, font=("Helvetica", 12, "bold"), foreground="#E67E22").pack(anchor="w", pady=(10, 0))
 
 label_campo("Puerto OBD-II")
 puerto_combo = ttk.Combobox(main_frame, width=38)
@@ -420,8 +417,8 @@ label_campo("Año")
 year_entry = ttk.Entry(main_frame, **entry_style)
 year_entry.pack(pady=2)
 
-vin_label = ttk.Label(main_frame, text="VIN: Desconocido", foreground="#E67E22", font=("Segoe UI", 10, "bold"))
-vin_label.pack(pady=10)
+vin_label = ttk.Label(main_frame, text="VIN: Desconocido", foreground="#1ABC9C", font=("Segoe UI", 12, "bold"))
+vin_label.pack(pady=15)
 
 btn_enviar = ttk.Button(main_frame, text="Revisión y Enviar", command=mostrar_modal_revision, **btn_style)
 btn_enviar.pack(pady=20)
