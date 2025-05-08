@@ -67,7 +67,7 @@ export class MisVehiculosComponent {
     this.http.get(`https://anthonyx82.ddns.net/taller/api/mis-vehiculos/${vehiculoId}`, { headers }).subscribe({
       next: (data: any) => {
         this.vehiculoSeleccionado = data;
-        
+
         // Obtener los errores del vehículo
         this.http.get(`https://anthonyx82.ddns.net/taller/api/mis-errores/${vehiculoId}`, { headers }).subscribe({
           next: (errores: any) => {
@@ -86,8 +86,13 @@ export class MisVehiculosComponent {
   solicitarInforme(vehiculoId: number) {
     const email = prompt("Introduce el email del cliente:");
     if (!email) return;
-  
-    this.http.post<{ enlace: string }>(`https://anthonyx82.ddns.net/taller/api/crear-informe/${vehiculoId}`, { email }).subscribe(res => {
+
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    this.http.post<{ enlace: string }>(`https://anthonyx82.ddns.net/taller/api/crear-informe/${vehiculoId}`, { email }, { headers }).subscribe(res => {
       alert("Informe generado y enviado por correo. También puedes copiar este enlace: " + res.enlace);
       navigator.clipboard.writeText(res.enlace);
     });
