@@ -248,28 +248,28 @@ def obtener_errores(vehiculo_id: int, usuario: Usuario = Depends(obtener_usuario
     return errores
 
 @app.post("/crear-informe/{vehiculo_id}")
-def crear_informe(vehiculo_id: int, email: str, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+def crear_informe(vehiculo_id: int, request: InformeRequest, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
     vehiculo = db.query(Vehiculo).filter_by(id=vehiculo_id, usuario_id=usuario.id).first()
     if not vehiculo:
         raise HTTPException(status_code=404, detail="Vehículo no encontrado")
 
     token = str(uuid.uuid4())
-    informe = InformeCompartido(token=token, vehiculo_id=vehiculo.id, email_cliente=email)
+    informe = InformeCompartido(token=token, vehiculo_id=vehiculo.id, email_cliente=request.email)
     db.add(informe)
     db.commit()
 
     enlace = f"https://anthonyx82.ddns.net/taller-front/informe/{token}"
     mensaje = MessageSchema(
         subject="Tu informe del vehículo",
-        recipients=[email],
+        recipients=[request.email],
         body=f"Hola, aquí tienes el informe de tu vehículo: {enlace}",
         subtype="plain"
     )
     # Descomentar una vez configurado el correo
-    #fm = FastMail(conf)
-    #fm.send_message(mensaje)
+    # fm.send_message(mensaje)
 
     return {"mensaje": "Informe creado y enviado al email", "token": token, "enlace": enlace}
+
 
 @app.get("/informe/{token}")
 def ver_informe(token: str, db: Session = Depends(get_db)):
