@@ -86,13 +86,17 @@ export class MisVehiculosComponent {
   solicitarInforme(vehiculoId: number) {
     const email = prompt("Introduce el email del cliente:");
     if (!email) return;
-
+  
     const token = localStorage.getItem('token');
     if (!token) return;
-
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    this.http.post<{ enlace: string }>(`https://anthonyx82.ddns.net/taller/api/crear-informe/${vehiculoId}`, { email }, { headers }).subscribe(res => {
+  
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`).set('Content-Type', 'application/json');
+  
+    this.http.post<{ enlace: string }>(
+      `https://anthonyx82.ddns.net/taller/api/crear-informe/${vehiculoId}`, 
+      { email: email }, 
+      { headers }
+    ).subscribe(res => {
       alert("Informe generado y enviado por correo. También puedes copiar este enlace: " + res.enlace);
       navigator.clipboard.writeText(res.enlace);
     });
