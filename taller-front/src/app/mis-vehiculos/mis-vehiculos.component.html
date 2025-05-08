@@ -68,8 +68,8 @@
     <ul>
       <li *ngFor="let error of vehiculoSeleccionado.errores">{{ error.codigo_dtc }}</li>
     </ul>
+    <button class="download-button" (click)="solicitarInforme(vehiculoSeleccionado.id)">📄 Descargar Informe</button>
   </div>
 </div>
 
 <button (click)="volverInicio()" class="cta-button">Volver al Inicio</button>
-<button class="download-button" (click)="solicitarInforme(vehiculoSeleccionado.id)">📄 Descargar Informe</button>
