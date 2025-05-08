@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { jsPDF } from 'jspdf';
 
 @Component({
@@ -20,15 +20,18 @@ export class InformePublicoComponent {
   error = '';
 
   ngOnInit(): void {
-    const token = this.route.snapshot.paramMap.get('token');
+    const token = this.route.snapshot.paramMap.get('token'); 
+    const tokenAuth = localStorage.getItem('token');
 
-    if (!token) {
-      this.error = 'Token no válido';
+    if (!token || !tokenAuth) {
+      this.error = 'Token no válido o no autenticado';
       this.cargando = false;
       return;
     }
 
-    this.http.get(`https://anthonyx82.ddns.net/taller/api/informe/${token}`).subscribe({
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${tokenAuth}`);
+
+    this.http.get(`https://anthonyx82.ddns.net/taller/api/informe/${token}`, { headers }).subscribe({
       next: (res) => {
         this.datosInforme = res;
         this.cargando = false;

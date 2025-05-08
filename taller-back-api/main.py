@@ -203,7 +203,7 @@ def guardar_vehiculo(
         rpm=datos.rpm,
         velocidad=datos.velocidad,
         vin=datos.vin,
-        revision=str(datos.revision),  # Si la revisión es un diccionario, conviértelo en string
+        revision=str(datos.revision),
         usuario_id=usuario.id
     )
     
