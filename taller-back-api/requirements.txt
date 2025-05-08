@@ -8,4 +8,6 @@ tk
 pyinstaller
 python-jose
 passlib
-pyserial
+fastapi-mail
+pydantic
+python-dotenv

@@ -1,19 +1,22 @@
-from fastapi import FastAPI, HTTPException, Depends
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session, relationship
+# Standard library
 import os
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+import uuid
+from datetime import datetime, timedelta
+
+# Third-party libraries
+import requests
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from datetime import datetime, timedelta
-from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy.exc import IntegrityError
 from pydantic import BaseModel
-import requests
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from fastapi.security import OAuth2PasswordBearer
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
-import uuid
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, Session, relationship
 
 # Configuración de la base de datos
 DATABASE_URL = os.getenv("DATABASE_URL", "mysql+pymysql://user:password@db/talleres")
