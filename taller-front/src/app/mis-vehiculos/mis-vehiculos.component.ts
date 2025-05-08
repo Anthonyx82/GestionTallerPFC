@@ -83,6 +83,16 @@ export class MisVehiculosComponent {
     });
   }
 
+  solicitarInforme(vehiculoId: number) {
+    const email = prompt("Introduce el email del cliente:");
+    if (!email) return;
+  
+    this.http.post<{ enlace: string }>(`https://anthonyx82.ddns.net/taller/api/crear-informe/${vehiculoId}`, { email }).subscribe(res => {
+      alert("Informe generado y enviado por correo. También puedes copiar este enlace: " + res.enlace);
+      navigator.clipboard.writeText(res.enlace);
+    });
+  }
+
   cerrarDetalles(): void {
     this.vehiculoSeleccionado = null;
   }

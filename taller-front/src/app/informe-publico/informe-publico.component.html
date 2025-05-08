@@ -1,0 +1,21 @@
+<div *ngIf="cargando" class="loading">Cargando informe...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<div *ngIf="!cargando && datosInforme" class="informe-container">
+  <h2>Informe del Vehículo</h2>
+
+  <p><strong>Marca:</strong> {{ datosInforme.vehiculo.marca }}</p>
+  <p><strong>Modelo:</strong> {{ datosInforme.vehiculo.modelo }}</p>
+  <p><strong>Año:</strong> {{ datosInforme.vehiculo.year }}</p>
+  <p><strong>VIN:</strong> {{ datosInforme.vehiculo.vin }}</p>
+  <p><strong>Velocidad:</strong> {{ datosInforme.vehiculo.velocidad }} km/h</p>
+  <p><strong>RPM:</strong> {{ datosInforme.vehiculo.rpm }}</p>
+
+  <h3>Errores detectados</h3>
+  <ul>
+    <li *ngFor="let error of datosInforme.errores">{{ error }}</li>
+  </ul>
+
+  <button (click)="descargarPDF()">📄 Descargar PDF</button>
+  <button (click)="compartir()">🔗 Compartir</button>
+</div>

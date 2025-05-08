@@ -1,0 +1,74 @@
+/* Contenedor general del informe */
+.informe-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #ff6f00;
+  margin-bottom: 25px;
+}
+
+/* Datos del vehículo */
+.informe-container p {
+  font-size: 1.1rem;
+  margin: 10px 0;
+  color: #555;
+}
+
+/* Errores */
+.informe-container h3 {
+  font-size: 1.5rem;
+  margin-top: 30px;
+  color: #ff6f00;
+}
+
+.informe-container ul {
+  list-style: disc;
+  padding-left: 25px;
+  margin-top: 10px;
+}
+
+.informe-container ul li {
+  color: #ff6f00;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Botones */
+button {
+  display: inline-block;
+  margin: 20px 10px 0 0;
+  font-size: 1.1rem;
+  background: linear-gradient(45deg, #ffffff, #ffbf80);
+  color: #ff6f00;
+  padding: 12px 30px;
+  border-radius: 50px;
+  border: none;
+  box-shadow: 0px 5px 15px rgba(255, 111, 0, 0.4);
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+button:hover {
+  background: #ff6f00;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0px 8px 20px rgba(255, 111, 0, 0.6);
+}
+
+/* Estado de carga y errores */
+.loading,
+.error {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 40px;
+  color: #ff6f00;
+}

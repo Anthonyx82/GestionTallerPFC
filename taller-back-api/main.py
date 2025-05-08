@@ -12,12 +12,26 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.exc import IntegrityError
 from pydantic import BaseModel
 import requests
+from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
+import uuid
 
 # Configuración de la base de datos
 DATABASE_URL = os.getenv("DATABASE_URL", "mysql+pymysql://user:password@db/talleres")
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
+
+# Configuracion servidor de corre
+conf = ConnectionConfig(
+    MAIL_USERNAME="tucorreo@example.com",
+    MAIL_PASSWORD="tu_contraseña",
+    MAIL_FROM="tucorreo@example.com",
+    MAIL_PORT=587,
+    MAIL_SERVER="smtp.tu-servidor.com",
+    MAIL_TLS=True,
+    MAIL_SSL=False,
+    USE_CREDENTIALS=True
+)
 
 # Clave secreta y configuración de JWT
 SECRET_KEY = "clave-secreta-super-segura"
@@ -49,6 +63,7 @@ class Vehiculo(Base):
     rpm = Column(Integer)
     velocidad = Column(Integer)
     vin = Column(String(17), unique=True, nullable=False)
+    revision = Column(String(255))
     usuario_id = Column(Integer, ForeignKey('usuarios.id'))  # FK hacia Usuario
 
     # Relación con Usuario (muchos a uno)
@@ -66,6 +81,15 @@ class ErrorVehiculo(Base):
     # Relación con Vehículo (muchos a uno)
     vehiculo = relationship("Vehiculo", back_populates="errores")
 
+class InformeCompartido(Base):
+    __tablename__ = "informes_compartidos"
+    id = Column(Integer, primary_key=True)
+    token = Column(String(100), unique=True, index=True, default=lambda: str(uuid.uuid4()))
+    vehiculo_id = Column(Integer, ForeignKey("vehiculos.id"))
+    email_cliente = Column(String(255))
+    creado_en = Column(String(255), default=lambda: datetime.utcnow().isoformat())
+
+    vehiculo = relationship("Vehiculo")
 
 # Crear tablas si no existen
 Base.metadata.create_all(bind=engine)
@@ -128,6 +152,7 @@ class VehiculoRegistro(BaseModel):
     rpm: int
     velocidad: int
     vin: str
+    revision: dict
 
 class ErrorVehiculoRegistro(BaseModel):
     codigo_dtc: list[str]
@@ -167,7 +192,18 @@ def guardar_vehiculo(
     if db.query(Vehiculo).filter(Vehiculo.vin == datos.vin).first():
         raise HTTPException(status_code=400, detail="El VIN ya está registrado en otro vehículo.")
     
-    nuevo_vehiculo = Vehiculo(**datos.dict(), usuario_id=usuario.id)
+    # Agregar los datos de revisión al vehículo
+    nuevo_vehiculo = Vehiculo(
+        marca=datos.marca,
+        modelo=datos.modelo,
+        year=datos.year,
+        rpm=datos.rpm,
+        velocidad=datos.velocidad,
+        vin=datos.vin,
+        revision=str(datos.revision),  # Si la revisión es un diccionario, conviértelo en string
+        usuario_id=usuario.id
+    )
+    
     db.add(nuevo_vehiculo)
     db.commit()
     return {"mensaje": "Vehículo guardado correctamente", "id": nuevo_vehiculo.id}
@@ -207,6 +243,52 @@ def obtener_errores(vehiculo_id: int, usuario: Usuario = Depends(obtener_usuario
     if not errores:
         raise HTTPException(status_code=404, detail="No se encontraron errores para este vehículo.")
     return errores
+
+@app.post("/crear-informe/{vehiculo_id}")
+def crear_informe(vehiculo_id: int, email: str, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+    vehiculo = db.query(Vehiculo).filter_by(id=vehiculo_id, usuario_id=usuario.id).first()
+    if not vehiculo:
+        raise HTTPException(status_code=404, detail="Vehículo no encontrado")
+
+    token = str(uuid.uuid4())
+    informe = InformeCompartido(token=token, vehiculo_id=vehiculo.id, email_cliente=email)
+    db.add(informe)
+    db.commit()
+
+    enlace = f"https://anthonyx82.ddns.net/taller-front/informe/{token}"
+    mensaje = MessageSchema(
+        subject="Tu informe del vehículo",
+        recipients=[email],
+        body=f"Hola, aquí tienes el informe de tu vehículo: {enlace}",
+        subtype="plain"
+    )
+    # Descomentar una vez configurado el correo
+    #fm = FastMail(conf)
+    #fm.send_message(mensaje)
+
+    return {"mensaje": "Informe creado y enviado al email", "token": token, "enlace": enlace}
+
+@app.get("/informe/{token}")
+def ver_informe(token: str, db: Session = Depends(get_db)):
+    informe = db.query(InformeCompartido).filter_by(token=token).first()
+    if not informe:
+        raise HTTPException(status_code=404, detail="Informe no encontrado")
+
+    vehiculo = db.query(Vehiculo).filter_by(id=informe.vehiculo_id).first()
+    errores = db.query(ErrorVehiculo).filter_by(vehiculo_id=vehiculo.id).all()
+
+    return {
+        "vehiculo": {
+            "marca": vehiculo.marca,
+            "modelo": vehiculo.modelo,
+            "year": vehiculo.year,
+            "vin": vehiculo.vin,
+            "rpm": vehiculo.rpm,
+            "velocidad": vehiculo.velocidad,
+            "revision": vehiculo.revision
+        },
+        "errores": [e.codigo_dtc for e in errores]
+    }
 
 @app.get("/car-imagery/")
 def get_car_image(searchTerm: str):
