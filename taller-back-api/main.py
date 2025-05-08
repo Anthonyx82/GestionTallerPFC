@@ -160,6 +160,9 @@ class VehiculoRegistro(BaseModel):
 class ErrorVehiculoRegistro(BaseModel):
     codigo_dtc: list[str]
     vehiculo_id: int
+    
+class InformeRequest(BaseModel):
+    email: str
 
 # Endpoint para registro de usuario
 @app.post("/register")
