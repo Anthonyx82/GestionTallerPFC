@@ -24,17 +24,17 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-# Configuracion servidor de corre
-conf = ConnectionConfig(
-    MAIL_USERNAME="tucorreo@example.com",
-    MAIL_PASSWORD="tu_contraseña",
-    MAIL_FROM="tucorreo@example.com",
-    MAIL_PORT=587,
-    MAIL_SERVER="smtp.tu-servidor.com",
-    MAIL_TLS=True,
-    MAIL_SSL=False,
-    USE_CREDENTIALS=True
-)
+# Configuracion del servidor de correo
+#conf = ConnectionConfig(
+#    MAIL_USERNAME="tucorreo@example.com",
+#    MAIL_PASSWORD="tu_contraseña",
+#    MAIL_FROM="tucorreo@example.com",
+#    MAIL_PORT=587,
+#    MAIL_SERVER="smtp.tu-servidor.com",
+#    MAIL_TLS=True,
+#    MAIL_SSL=False,
+#    USE_CREDENTIALS=True
+#)
 
 # Clave secreta y configuración de JWT
 SECRET_KEY = "clave-secreta-super-segura"
