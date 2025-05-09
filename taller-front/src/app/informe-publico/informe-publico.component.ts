@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 @Component({
   selector: 'app-informe-publico',
@@ -44,28 +45,74 @@ export class InformePublicoComponent {
   }
 
   descargarPDF(): void {
-    const doc = new jsPDF();
-
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+    const pageWidth = doc.internal.pageSize.getWidth();
+  
+    // -- Encabezado --
+    doc.setFillColor(255, 111, 0);
+    doc.rect(0, 0, pageWidth, 80, 'F');
+    doc.setFontSize(24);
+    doc.setTextColor('#ffffff');
+    doc.text('Informe del Vehículo', pageWidth / 2, 50, { align: 'center' });
+  
+    // -- Datos del vehículo --
     const v = this.datosInforme.vehiculo;
-    const errores = this.datosInforme.errores;
-
-    doc.setFontSize(20);
-    doc.text('Informe del Vehículo', 20, 20);
-
+    let cursorY = 110;
+    doc.setFillColor(245, 245, 245);
+    doc.roundedRect(20, cursorY - 10, pageWidth - 40, 100, 8, 8, 'F');
+    doc.setTextColor('#333333');
     doc.setFontSize(12);
-    doc.text(`Marca: ${v.marca}`, 20, 40);
-    doc.text(`Modelo: ${v.modelo}`, 20, 50);
-    doc.text(`Año: ${v.year}`, 20, 60);
-    doc.text(`VIN: ${v.vin}`, 20, 70);
-    doc.text(`Velocidad: ${v.velocidad} km/h`, 20, 80);
-    doc.text(`RPM: ${v.rpm}`, 20, 90);
-
-    doc.text('Errores detectados:', 20, 110);
-    errores.forEach((err: any, i: number) => {
-      doc.text(`- ${err}`, 25, 120 + i * 10);
+    doc.text(`Marca: ${v.marca}`, 30, cursorY);
+    doc.text(`Modelo: ${v.modelo}`, 200, cursorY);
+    doc.text(`Año: ${v.year}`, 380, cursorY);
+    cursorY += 20;
+    doc.text(`VIN: ${v.vin}`, 30, cursorY);
+    doc.text(`Velocidad: ${v.velocidad} km/h`, 200, cursorY);
+    doc.text(`RPM: ${v.rpm}`, 380, cursorY);
+  
+    // -- Puntos revisados --
+    cursorY += 40;
+    doc.setFontSize(16);
+    doc.setTextColor(255, 111, 0);
+    doc.text('Puntos revisados', 30, cursorY);
+    cursorY += 20;
+    doc.setFontSize(12);
+    doc.setTextColor('#555555');
+  
+    const revision = v.revision as Record<string, string>;
+    Object.entries(revision).forEach(([key, val]) => {
+      if (cursorY > 750) {
+        doc.addPage();
+        cursorY = 40;
+      }
+      doc.text(`• ${key.charAt(0).toUpperCase() + key.slice(1)}: ${val}`, 40, cursorY);
+      cursorY += 18;
     });
-
-    doc.save('informe-vehiculo.pdf');
+  
+    // -- Errores detectados --
+    cursorY += 20;
+    if (cursorY > 750) {
+      doc.addPage();
+      cursorY = 40;
+    }
+    doc.setFontSize(16);
+    doc.setTextColor(255, 111, 0);
+    doc.text('Errores detectados', 30, cursorY);
+    cursorY += 20;
+    doc.setFontSize(12);
+    doc.setTextColor('#cc3300');
+  
+    this.datosInforme.errores.forEach((err: string) => {
+      if (cursorY > 750) {
+        doc.addPage();
+        cursorY = 40;
+      }
+      doc.text(`• ${err}`, 40, cursorY);
+      cursorY += 18;
+    });
+  
+    // -- Guardar PDF --
+    doc.save(`informe-vehiculo-${v.vin}.pdf`);
   }
 
   compartir(): void {
