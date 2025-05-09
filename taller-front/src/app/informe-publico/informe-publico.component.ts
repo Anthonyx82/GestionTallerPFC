@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
 
 @Component({
   selector: 'app-informe-publico',
