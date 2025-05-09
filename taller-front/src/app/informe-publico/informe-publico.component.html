@@ -14,7 +14,7 @@
   <h3>Puntos revisados</h3>
   <ul>
     <li *ngFor="let item of datosInforme.vehiculo.revision | keyvalue">
-      <strong>{{ item.key | titlecase }}:</strong> {{ item.value }}
+      <strong>{{ item.key?.toString() | titlecase }}:</strong>
     </li>
   </ul>
 
