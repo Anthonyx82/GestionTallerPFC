@@ -1,28 +1,47 @@
-<div *ngIf="cargando" class="loading">Cargando informe...</div>
-<div *ngIf="error" class="error">{{ error }}</div>
+<div *ngIf="cargando" class="loading">
+  Cargando informe...
+</div>
 
-<div *ngIf="!cargando && datosInforme" class="informe-container">
-  <h2>Informe del Vehículo</h2>
+<div *ngIf="error && !cargando" class="error">
+  {{ error }}
+</div>
 
-  <p><strong>Marca:</strong> {{ datosInforme.vehiculo.marca }}</p>
-  <p><strong>Modelo:</strong> {{ datosInforme.vehiculo.modelo }}</p>
-  <p><strong>Año:</strong> {{ datosInforme.vehiculo.year }}</p>
-  <p><strong>VIN:</strong> {{ datosInforme.vehiculo.vin }}</p>
-  <p><strong>Velocidad:</strong> {{ datosInforme.vehiculo.velocidad }} km/h</p>
-  <p><strong>RPM:</strong> {{ datosInforme.vehiculo.rpm }}</p>
+<div *ngIf="!cargando && !error && datosInforme" class="informe">
+  <h1>Informe del Vehículo</h1>
 
-  <h3>Puntos revisados</h3>
-  <ul>
-    <li *ngFor="let item of datosInforme.vehiculo.revision | keyvalue">
-      <strong>{{ item.key | titlecase }}:</strong> {{ item.value }}
-    </li>
-  </ul>
+  <section class="datos-vehiculo">
+    <h2>Datos del Vehículo</h2>
+    <p><strong>Marca:</strong> {{ datosInforme.vehiculo.marca }}</p>
+    <p><strong>Modelo:</strong> {{ datosInforme.vehiculo.modelo }}</p>
+    <p><strong>Año:</strong> {{ datosInforme.vehiculo.year }}</p>
+    <p><strong>VIN:</strong> {{ datosInforme.vehiculo.vin }}</p>
+    <p><strong>Velocidad:</strong> {{ datosInforme.vehiculo.velocidad }} km/h</p>
+    <p><strong>RPM:</strong> {{ datosInforme.vehiculo.rpm }}</p>
+  </section>
 
-  <h3>Errores detectados</h3>
-  <ul>
-    <li *ngFor="let error of datosInforme.errores">{{ error }}</li>
-  </ul>
+  <section class="revisiones">
+    <h2>Puntos Revisados</h2>
+    <div *ngFor="let rev of revisionesPreparadas">
+      <h3>{{ rev.seccion | titlecase }}</h3>
+      <ul>
+        <li *ngFor="let punto of rev.puntos">
+          {{ punto }}
+        </li>
+      </ul>
+    </div>
+  </section>
 
-  <button (click)="descargarPDF()">📄 Descargar PDF</button>
-  <button (click)="compartir()">🔗 Compartir</button>
+  <section class="errores" *ngIf="datosInforme.errores?.length">
+    <h2>Errores Detectados</h2>
+    <ul>
+      <li *ngFor="let err of datosInforme.errores">
+        {{ err }}
+      </li>
+    </ul>
+  </section>
+
+  <div class="acciones">
+    <button (click)="descargarPDF()">Descargar PDF</button>
+    <button (click)="compartir()">Compartir</button>
+  </div>
 </div>
