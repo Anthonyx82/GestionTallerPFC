@@ -34,6 +34,7 @@ export class InformePublicoComponent {
 
     this.http.get(`https://anthonyx82.ddns.net/taller/api/informe/${token}`, { headers }).subscribe({
       next: (res) => {
+        console.log('Respuesta completa del backend:', res);
         this.datosInforme = res;
         this.prepararRevisiones();
         this.cargando = false;
