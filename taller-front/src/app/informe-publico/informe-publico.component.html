@@ -22,11 +22,9 @@
   <section class="revisiones">
     <h2>Puntos Revisados</h2>
     <div *ngFor="let rev of revisionesPreparadas">
-      <h3>{{ rev.seccion | titlecase }}</h3>
+      <h3>{{ rev.seccion }}</h3>
       <ul>
-        <li *ngFor="let punto of rev.puntos">
-          {{ punto }}
-        </li>
+        <li *ngFor="let punto of rev.puntos">{{ punto }}</li>
       </ul>
     </div>
   </section>
