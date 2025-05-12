@@ -47,24 +47,31 @@ export class InformePublicoComponent {
   }
 
   prepararRevisiones(): void {
-    let revisionStr = this.datosInforme?.vehiculo?.revision;
     this.revisionesPreparadas = [];
   
-    if (typeof revisionStr === 'string') {
-      try {
-        revisionStr = revisionStr.replace(/'/g, '"');
-        const revision = JSON.parse(revisionStr);
+    const rawRevision = this.datosInforme?.vehiculo?.revision;
   
-        for (const seccion in revision) {
-          if (Array.isArray(revision[seccion])) {
-            this.revisionesPreparadas.push({
-              seccion,
-              puntos: revision[seccion]
-            });
-          }
-        }
+    let revision: Record<string, string[]> | null = null;
+  
+    if (typeof rawRevision === 'string') {
+      try {
+        const safeJson = rawRevision.replace(/'/g, '"');
+        revision = JSON.parse(safeJson);
       } catch (e) {
         console.error('Error al parsear la revisión:', e);
+      }
+    } else if (typeof rawRevision === 'object' && rawRevision !== null) {
+      revision = rawRevision;
+    }
+  
+    if (revision) {
+      for (const seccion in revision) {
+        if (Array.isArray(revision[seccion])) {
+          this.revisionesPreparadas.push({
+            seccion,
+            puntos: revision[seccion]
+          });
+        }
       }
     }
   

@@ -19,7 +19,7 @@
     <p><strong>RPM:</strong> {{ datosInforme.vehiculo.rpm }}</p>
   </section>
 
-  <section class="revisiones">
+  <section class="revisiones" *ngIf="revisionesPreparadas.length">
     <h2>Puntos Revisados</h2>
     <div *ngFor="let rev of revisionesPreparadas">
       <h3>{{ rev.seccion }}</h3>
