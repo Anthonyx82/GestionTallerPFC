@@ -59,6 +59,8 @@ export class InformePublicoComponent {
         }
       }
     }
+
+    console.log('Revisiones:', this.revisionesPreparadas);
   }
 
   descargarPDF(): void {
