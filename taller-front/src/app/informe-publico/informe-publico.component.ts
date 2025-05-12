@@ -47,21 +47,28 @@ export class InformePublicoComponent {
   }
 
   prepararRevisiones(): void {
-    const revision = this.datosInforme?.vehiculo?.revision;
+    let revisionStr = this.datosInforme?.vehiculo?.revision;
     this.revisionesPreparadas = [];
-
-    if (revision && typeof revision === 'object') {
-      for (const seccion in revision) {
-        if (Array.isArray(revision[seccion])) {
-          this.revisionesPreparadas.push({
-            seccion,
-            puntos: revision[seccion]
-          });
+  
+    if (typeof revisionStr === 'string') {
+      try {
+        revisionStr = revisionStr.replace(/'/g, '"');
+        const revision = JSON.parse(revisionStr);
+  
+        for (const seccion in revision) {
+          if (Array.isArray(revision[seccion])) {
+            this.revisionesPreparadas.push({
+              seccion,
+              puntos: revision[seccion]
+            });
+          }
         }
+      } catch (e) {
+        console.error('Error al parsear la revisión:', e);
       }
     }
-
-    console.log('Revisiones:', this.revisionesPreparadas);
+  
+    console.log('Revisiones preparadas:', this.revisionesPreparadas);
   }
 
   descargarPDF(): void {
