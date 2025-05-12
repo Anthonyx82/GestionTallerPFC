@@ -6,29 +6,38 @@
   {{ error }}
 </div>
 
-<div *ngIf="!cargando && !error && datosInforme" class="informe">
+<div *ngIf="!cargando && !error && datosInforme" class="informe-container">
   <h1>Informe del Vehículo</h1>
 
+  <!-- Datos del Vehículo -->
   <section class="datos-vehiculo">
     <h2>Datos del Vehículo</h2>
-    <p><strong>Marca:</strong> {{ datosInforme.vehiculo.marca }}</p>
-    <p><strong>Modelo:</strong> {{ datosInforme.vehiculo.modelo }}</p>
-    <p><strong>Año:</strong> {{ datosInforme.vehiculo.year }}</p>
-    <p><strong>VIN:</strong> {{ datosInforme.vehiculo.vin }}</p>
-    <p><strong>Velocidad:</strong> {{ datosInforme.vehiculo.velocidad }} km/h</p>
-    <p><strong>RPM:</strong> {{ datosInforme.vehiculo.rpm }}</p>
+    <ul>
+      <li><strong>Marca:</strong> {{ datosInforme.vehiculo.marca }}</li>
+      <li><strong>Modelo:</strong> {{ datosInforme.vehiculo.modelo }}</li>
+      <li><strong>Año:</strong> {{ datosInforme.vehiculo.year }}</li>
+      <li><strong>VIN:</strong> {{ datosInforme.vehiculo.vin }}</li>
+      <li><strong>Velocidad:</strong> {{ datosInforme.vehiculo.velocidad }} km/h</li>
+      <li><strong>RPM:</strong> {{ datosInforme.vehiculo.rpm }}</li>
+    </ul>
   </section>
 
+  <!-- Puntos Revisados -->
   <section class="revisiones" *ngIf="revisionesPreparadas.length">
     <h2>Puntos Revisados</h2>
-    <div *ngFor="let rev of revisionesPreparadas">
-      <h3>{{ rev.seccion }}</h3>
-      <ul>
-        <li *ngFor="let punto of rev.puntos">{{ punto }}</li>
-      </ul>
-    </div>    
+    <ul>
+      <li *ngFor="let rev of revisionesPreparadas">
+        <h3>{{ rev.seccion }}</h3>
+        <ul>
+          <li *ngFor="let punto of rev.puntos">
+            {{ punto }}
+          </li>
+        </ul>
+      </li>
+    </ul>
   </section>
 
+  <!-- Errores Detectados -->
   <section class="errores" *ngIf="datosInforme.errores?.length">
     <h2>Errores Detectados</h2>
     <ul>
@@ -38,6 +47,7 @@
     </ul>
   </section>
 
+  <!-- Botones -->
   <div class="acciones">
     <button (click)="descargarPDF()">Descargar PDF</button>
     <button (click)="compartir()">Compartir</button>

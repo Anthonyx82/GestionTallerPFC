@@ -72,3 +72,21 @@ button:hover {
   margin-top: 40px;
   color: #ff6f00;
 }
+
+.informe-container ul {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.informe-container ul li {
+  font-weight: 400;
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.revisiones ul li > h3 {
+  color: #ff6f00;
+  font-size: 1.2rem;
+  margin: 15px 0 10px;
+}
