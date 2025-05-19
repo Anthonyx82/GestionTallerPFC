@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-informe-publico',
@@ -74,84 +73,28 @@ export class InformePublicoComponent {
     console.log('Revisiones preparadas:', this.revisionesPreparadas);
   }
 
-  descargarPDF(): void {
-    const doc = new jsPDF({ unit: 'pt', format: 'a4' });
-    const pageWidth = doc.internal.pageSize.getWidth();
-
-    // -- Encabezado --
-    doc.setFillColor(255, 111, 0);
-    doc.rect(0, 0, pageWidth, 80, 'F');
-    doc.setFontSize(24);
-    doc.setTextColor('#ffffff');
-    doc.text('Informe del Vehículo', pageWidth / 2, 50, { align: 'center' });
-
-    // -- Datos del vehículo --
-    const v = this.datosInforme.vehiculo;
-    let cursorY = 110;
-    doc.setFillColor(245, 245, 245);
-    doc.roundedRect(20, cursorY - 10, pageWidth - 40, 100, 8, 8, 'F');
-    doc.setTextColor('#333333');
-    doc.setFontSize(12);
-    doc.text(`Marca: ${v.marca}`, 30, cursorY);
-    doc.text(`Modelo: ${v.modelo}`, 200, cursorY);
-    doc.text(`Año: ${v.year}`, 380, cursorY);
-    cursorY += 20;
-    doc.text(`VIN: ${v.vin}`, 30, cursorY);
-    doc.text(`Velocidad: ${v.velocidad} km/h`, 200, cursorY);
-    doc.text(`RPM: ${v.rpm}`, 380, cursorY);
-
-    // -- Puntos revisados --
-    cursorY += 40;
-    doc.setFontSize(16);
-    doc.setTextColor(255, 111, 0);
-    doc.text('Puntos revisados', 30, cursorY);
-    cursorY += 20;
-    doc.setFontSize(12);
-    doc.setTextColor('#555555');
-
-    this.revisionesPreparadas.forEach(({ seccion, puntos }) => {
-      if (cursorY > 750) {
-        doc.addPage();
-        cursorY = 40;
-      }
-      doc.text(`• ${this.titleCase(seccion)}:`, 40, cursorY);
-      cursorY += 16;
-
-      puntos.forEach((punto) => {
-        if (cursorY > 750) {
-          doc.addPage();
-          cursorY = 40;
-        }
-        doc.text(`  - ${punto}`, 60, cursorY);
-        cursorY += 16;
-      });
-
-      cursorY += 10;
-    });
-
-    // -- Errores detectados --
-    if (cursorY > 750) {
-      doc.addPage();
-      cursorY = 40;
-    }
-    doc.setFontSize(16);
-    doc.setTextColor(255, 111, 0);
-    doc.text('Errores detectados', 30, cursorY);
-    cursorY += 20;
-    doc.setFontSize(12);
-    doc.setTextColor('#cc3300');
-
-    this.datosInforme.errores.forEach((err: string) => {
-      if (cursorY > 750) {
-        doc.addPage();
-        cursorY = 40;
-      }
-      doc.text(`• ${err}`, 40, cursorY);
-      cursorY += 18;
-    });
-
-    // -- Guardar PDF --
-    doc.save(`informe-vehiculo-${v.vin}.pdf`);
+  async descargarPDF(): Promise<void> {
+    const element = document.querySelector('.informe-container') as HTMLElement;
+    if (!element) return;
+  
+    // Import dinámico compatible con Angular 18
+    const html2pdfModule = await import('html2pdf.js');
+    const html2pdf = html2pdfModule.default || html2pdfModule;
+  
+    const opt = {
+      margin:       0,
+      filename:     `informe-vehiculo-${this.datosInforme.vehiculo.vin}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'pt', format: 'a4', orientation: 'portrait' }
+    };
+  
+    // Clonar para eliminar botones sin afectar el DOM real
+    const clone = element.cloneNode(true) as HTMLElement;
+    const acciones = clone.querySelector('.acciones');
+    if (acciones) acciones.remove();
+  
+    html2pdf().set(opt).from(clone).save();
   }
 
   compartir(): void {
