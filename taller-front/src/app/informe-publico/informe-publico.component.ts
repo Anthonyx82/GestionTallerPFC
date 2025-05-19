@@ -22,19 +22,15 @@ export class InformePublicoComponent {
 
   ngOnInit(): void {
     const token = this.route.snapshot.paramMap.get('token');
-    const tokenAuth = localStorage.getItem('token');
 
-    if (!token || !tokenAuth) {
-      this.error = 'Token no válido o no autenticado';
+    if (!token) {
+      this.error = 'Token no válido';
       this.cargando = false;
       return;
     }
 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${tokenAuth}`);
-
-    this.http.get(`https://anthonyx82.ddns.net/taller/api/informe/${token}`, { headers }).subscribe({
+    this.http.get(`https://anthonyx82.ddns.net/taller/api/informe/${token}`).subscribe({
       next: (res) => {
-        console.log('Respuesta completa del backend:', res);
         this.datosInforme = res;
         this.prepararRevisiones();
         this.cargando = false;
