@@ -52,12 +52,12 @@
     <div class="vehicle-cards">
       <div class="vehicle-card" *ngFor="let vehiculo of vehiculos">
         <!-- Botones ahora están fuera de image-container -->
-        <button class="icon-button edit-icon" (click)="editarVehiculo(vehiculo.id)" title="Editar">
+        <button mat-icon-button color="primary" (click)="editarVehiculo(vehiculo.id)" title="Editar">
           <mat-icon>edit</mat-icon>
         </button>
 
-        <button class="icon-button delete-icon" (click)="eliminarVehiculo(vehiculo.id)" title="Eliminar">
-          <mat-icon color="warn">delete</mat-icon>
+        <button mat-icon-button color="warn" (click)="eliminarVehiculo(vehiculo.id)" title="Eliminar">
+          <mat-icon>delete</mat-icon>
         </button>
 
         <div class="image-container">
