@@ -18,7 +18,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
         console.log('Token inválido o expirado. Redirigiendo a login...');
-        router.navigateByUrl('/login');
+        router.navigate(['/login']);
       }
       return throwError(() => error);
     })
