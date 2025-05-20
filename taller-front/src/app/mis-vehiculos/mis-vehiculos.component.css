@@ -27,7 +27,7 @@ button {
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-button:hover {
+button:not(.icon-button):hover {
     background: #ff6f00;
     color: white;
     transform: scale(1.1);
@@ -160,13 +160,13 @@ button:hover {
 }
 
 .edit-icon {
-    top: 10px;
-    left: 10px;
+    top: 0px;
+    left: 0px;
 }
 
 .delete-icon {
-    top: 10px;
-    right: 10px;
+    top: 0px;
+    right: 0px;
 }
 
 .icon-button:hover {
