@@ -17,6 +17,8 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     setHeaders: { Authorization: `Bearer ${token}` }
   }) : req;
 
+  console.log('Router está definido:', !!router);
+
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
