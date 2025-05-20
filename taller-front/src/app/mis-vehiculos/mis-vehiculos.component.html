@@ -1,70 +1,78 @@
 <h2>Mis Vehículos</h2>
 
-<ng-container *ngIf="vehiculos.length === 0">
-  <div class="instructions">
-    <h3>No tienes vehículos registrados</h3>
-    <p>Para registrar un vehículo sigue estos sencillos pasos:</p>
-    <div class="steps">
-      <div class="step">
-        <h4>1. Descarga la aplicación del cliente</h4>
-        <p>Accede al siguiente enlace para descargar la aplicación del cliente:</p>
-        <a href="https://github.com/Anthonyx82/GestionTallerPFC/releases/download/v1.0.0/client.exe" target="_blank"
-          class="download-link">Descargar aplicación</a>
-      </div>
-
-      <div class="step">
-        <h4>2. Conecta el vehículo al puerto OBDII</h4>
-        <p>Conecta el cable ELM327 al puerto OBDII de tu vehículo. Este puerto suele encontrarse cerca del volante,
-          debajo del tablero.</p>
-      </div>
-
-      <div class="step">
-        <h4>3. Conecta el portátil al vehículo</h4>
-        <p>Asegúrate de que el portátil que vas a usar para la conexión está conectado al vehículo mediante el cable
-          ELM327.</p>
-      </div>
-
-      <div class="step">
-        <h4>4. Inicia sesión en la aplicación</h4>
-        <p>Abre la aplicación del cliente que descargaste e inicia sesión con el mismo usuario y contraseña que usaste
-          para registrar tu cuenta en esta página web.</p>
-      </div>
-
-      <div class="step">
-        <h4>5. Los datos del vehículo se recopilarán automáticamente</h4>
-        <p>Una vez iniciada la sesión, la aplicación del cliente comenzará a recoger todos los datos del vehículo de
-          forma automática. ¡Ya está! Ahora tu vehículo aparecerá en tu lista de vehículos registrados.</p>
-      </div>
-    </div>
+<ng-container *ngIf="cargando">
+  <div class="loading">
+    <p>Cargando vehículos...</p>
   </div>
 </ng-container>
 
-<ng-container *ngIf="vehiculos.length > 0">
-  <div class="vehicle-cards">
-    <div class="vehicle-card" *ngFor="let vehiculo of vehiculos">
-      <!-- Botones ahora están fuera de image-container -->
-      <button class="icon-button edit-icon" (click)="editarVehiculo(vehiculo.id)" title="Editar">
-        <span class="material-icons">edit</span>
-      </button>
-    
-      <button class="icon-button delete-icon" (click)="eliminarVehiculo(vehiculo.id)" title="Eliminar">
-        <span class="material-icons red">delete</span>
-      </button>
-    
-      <div class="image-container">
-        <img [src]="vehiculo.imagenUrl || 'assets/no-image.png'" 
-             alt="{{ vehiculo.marca }} {{ vehiculo.modelo }}" 
-             class="vehicle-image" 
-             (click)="verDetalles(vehiculo.id)">
-      </div>
-    
-      <div class="vehicle-info">
-        <h3>{{ vehiculo.marca }} {{ vehiculo.modelo }}</h3>
-        <p><strong>Año:</strong> {{ vehiculo.year }}</p>
+<ng-container *ngIf="!cargando && vehiculos.length === 0">
+  <ng-container *ngIf="vehiculos.length === 0">
+    <div class="instructions">
+      <h3>No tienes vehículos registrados</h3>
+      <p>Para registrar un vehículo sigue estos sencillos pasos:</p>
+      <div class="steps">
+        <div class="step">
+          <h4>1. Descarga la aplicación del cliente</h4>
+          <p>Accede al siguiente enlace para descargar la aplicación del cliente:</p>
+          <a href="https://github.com/Anthonyx82/GestionTallerPFC/releases/download/v1.0.0/client.exe" target="_blank"
+            class="download-link">Descargar aplicación</a>
+        </div>
+
+        <div class="step">
+          <h4>2. Conecta el vehículo al puerto OBDII</h4>
+          <p>Conecta el cable ELM327 al puerto OBDII de tu vehículo. Este puerto suele encontrarse cerca del volante,
+            debajo del tablero.</p>
+        </div>
+
+        <div class="step">
+          <h4>3. Conecta el portátil al vehículo</h4>
+          <p>Asegúrate de que el portátil que vas a usar para la conexión está conectado al vehículo mediante el cable
+            ELM327.</p>
+        </div>
+
+        <div class="step">
+          <h4>4. Inicia sesión en la aplicación</h4>
+          <p>Abre la aplicación del cliente que descargaste e inicia sesión con el mismo usuario y contraseña que usaste
+            para registrar tu cuenta en esta página web.</p>
+        </div>
+
+        <div class="step">
+          <h4>5. Los datos del vehículo se recopilarán automáticamente</h4>
+          <p>Una vez iniciada la sesión, la aplicación del cliente comenzará a recoger todos los datos del vehículo de
+            forma automática. ¡Ya está! Ahora tu vehículo aparecerá en tu lista de vehículos registrados.</p>
+        </div>
       </div>
     </div>
-    
-  </div>
+  </ng-container>
+</ng-container>
+
+<ng-container *ngIf="!cargando && vehiculos.length > 0">
+  <ng-container *ngIf="vehiculos.length > 0">
+    <div class="vehicle-cards">
+      <div class="vehicle-card" *ngFor="let vehiculo of vehiculos">
+        <!-- Botones ahora están fuera de image-container -->
+        <button class="icon-button edit-icon" (click)="editarVehiculo(vehiculo.id)" title="Editar">
+          <span class="material-icons">edit</span>
+        </button>
+
+        <button class="icon-button delete-icon" (click)="eliminarVehiculo(vehiculo.id)" title="Eliminar">
+          <span class="material-icons red">delete</span>
+        </button>
+
+        <div class="image-container">
+          <img [src]="vehiculo.imagenUrl || 'assets/no-image.png'" alt="{{ vehiculo.marca }} {{ vehiculo.modelo }}"
+            class="vehicle-image" (click)="verDetalles(vehiculo.id)">
+        </div>
+
+        <div class="vehicle-info">
+          <h3>{{ vehiculo.marca }} {{ vehiculo.modelo }}</h3>
+          <p><strong>Año:</strong> {{ vehiculo.year }}</p>
+        </div>
+      </div>
+
+    </div>
+  </ng-container>
 </ng-container>
 
 <!-- Modal para mostrar detalles del vehículo -->
@@ -73,7 +81,7 @@
     <span class="close" (click)="cerrarDetalles()">&times;</span>
     <h3>{{ vehiculoSeleccionado.marca }} {{ vehiculoSeleccionado.modelo }}</h3>
     <p><strong>Año:</strong> {{ vehiculoSeleccionado.year }}</p>
-    <p><strong>VIN:</strong> {{ vehiculoSeleccionado.vin }}</p>  <!-- 🔹 Agregado VIN -->
+    <p><strong>VIN:</strong> {{ vehiculoSeleccionado.vin }}</p> <!-- 🔹 Agregado VIN -->
     <p><strong>RPM:</strong> {{ vehiculoSeleccionado.rpm }}</p>
     <p><strong>Velocidad:</strong> {{ vehiculoSeleccionado.velocidad }} km/h</p>
     <h4>Errores:</h4>

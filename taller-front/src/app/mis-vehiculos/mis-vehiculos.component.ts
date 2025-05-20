@@ -14,23 +14,39 @@ export class MisVehiculosComponent {
   private http = inject(HttpClient);
   vehiculos: any[] = [];
   vehiculoSeleccionado: any = null;
+  cargando: boolean = true;
+  imagenesCargadas: number = 0;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.http.get('https://anthonyx82.ddns.net/taller/api/mis-vehiculos/').subscribe({
       next: (data: any) => {
         this.vehiculos = data;
-        this.cargarImagenesVehiculos();
+        if (this.vehiculos.length === 0) {
+          this.cargando = false;
+        } else {
+          this.cargarImagenesVehiculos();
+        }
       },
-      error: (error) => console.log('Error al obtener vehículos:', error)
+      error: (error) => {
+        console.log('Error al obtener vehículos:', error);
+        this.cargando = false;
+      }
     });
   }
 
   cargarImagenesVehiculos(): void {
-    this.vehiculos.forEach(vehiculo => {
+    this.imagenesCargadas = 0;
+
+    this.vehiculos.forEach((vehiculo, index) => {
       this.obtenerImagen(vehiculo.marca, vehiculo.modelo).then(imagenUrl => {
         vehiculo.imagenUrl = imagenUrl;
+        this.imagenesCargadas++;
+
+        if (this.imagenesCargadas === this.vehiculos.length) {
+          this.cargando = false;
+        }
       });
     });
   }

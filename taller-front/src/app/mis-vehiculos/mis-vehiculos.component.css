@@ -33,6 +33,13 @@ button:not(.icon-button):hover {
     box-shadow: 0px 8px 20px rgba(255, 111, 0, 0.6);
 }
 
+/* Cargando */
+.loading {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
 /* Estilos para las instrucciones cuando no hay vehículos */
 .instructions {
     text-align: center;
