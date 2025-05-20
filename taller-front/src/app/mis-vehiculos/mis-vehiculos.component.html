@@ -42,17 +42,27 @@
 <ng-container *ngIf="vehiculos.length > 0">
   <div class="vehicle-cards">
     <div class="vehicle-card" *ngFor="let vehiculo of vehiculos">
-      <img [src]="vehiculo.imagenUrl || 'assets/no-image.png'" 
-           alt="{{ vehiculo.marca }} {{ vehiculo.modelo }}" 
-           class="vehicle-image" (click)="verDetalles(vehiculo.id)">
+      <div class="image-wrapper">
+        <img
+          [src]="vehiculo.imagenUrl || 'assets/no-image.png'"
+          alt="{{ vehiculo.marca }} {{ vehiculo.modelo }}"
+          class="vehicle-image"
+          (click)="verDetalles(vehiculo.id)"
+        />
+        <button class="icon-button edit" (click)="editarVehiculo(vehiculo.id)">
+          ✏️
+        </button>
+        <button class="icon-button delete" (click)="eliminarVehiculo(vehiculo.id)">
+          🗑️
+        </button>
+      </div>
       <div class="vehicle-info">
         <h3>{{ vehiculo.marca }} {{ vehiculo.modelo }}</h3>
         <p><strong>Año:</strong> {{ vehiculo.year }}</p>
-        <button (click)="editarVehiculo(vehiculo.id)" class="edit-button">Editar</button>
-        <button (click)="eliminarVehiculo(vehiculo.id)" class="delete-button">Eliminar</button>
       </div>
     </div>
   </div>
+  
 </ng-container>
 
 <!-- Modal para mostrar detalles del vehículo -->

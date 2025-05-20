@@ -132,6 +132,52 @@ button:hover {
     color: #555;
 }
 
+.image-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.vehicle-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+
+.icon-button {
+    position: absolute;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.icon-button:hover {
+    transform: scale(1.2);
+}
+
+.icon-button.edit {
+    top: 8px;
+    left: 8px;
+    color: #1976d2;
+    /* azul */
+}
+
+.icon-button.delete {
+    top: 8px;
+    right: 8px;
+    color: red;
+}
+
+
 /* Estilos para el modal de detalles del vehículo */
 .vehicle-details-modal {
     position: fixed;
