@@ -145,14 +145,13 @@ button:hover {
 .icon-button {
     z-index: 10;
     position: absolute;
-    background: white;
+    background: none;
     border: none;
     border-radius: 50%;
     padding: 6px;
     font-size: 1.2rem;
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease;
+    box-shadow: none;
     width: 36px;
     height: 36px;
     display: flex;
@@ -162,16 +161,6 @@ button:hover {
 
 .icon-button:hover {
     transform: scale(1.1);
-}
-
-.edit-icon {
-    top: 10px;
-    left: 10px;
-}
-
-.delete-icon {
-    top: 10px;
-    right: 10px;
 }
 
 .material-icons {
