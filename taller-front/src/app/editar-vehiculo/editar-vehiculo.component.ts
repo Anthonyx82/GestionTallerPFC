@@ -67,7 +67,7 @@ export class EditarVehiculoComponent implements OnInit {
       vin: this.vehiculo.vin,
       rpm: this.vehiculo.rpm,
       velocidad: this.vehiculo.velocidad,
-      revision: JSON.parse(this.vehiculo.revision)
+      revision: this.vehiculo.revision
     };
 
     this.http.put(`https://anthonyx82.ddns.net/taller/api/editar-vehiculo/${this.vehiculoId}`, vehiculoActualizado).subscribe({

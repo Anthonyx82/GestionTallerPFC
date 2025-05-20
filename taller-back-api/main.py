@@ -163,6 +163,14 @@ class ErrorVehiculoRegistro(BaseModel):
     
 class InformeRequest(BaseModel):
     email: str
+    
+class VehiculoEdicion(BaseModel):
+    marca: str
+    modelo: str
+    year: int
+    rpm: int
+    velocidad: int
+    vin: str
 
 # Endpoint para registro de usuario
 @app.post("/register")
@@ -310,7 +318,7 @@ def get_car_image(searchTerm: str):
 @app.put("/editar-vehiculo/{vehiculo_id}")
 def editar_vehiculo(
     vehiculo_id: int, 
-    datos: VehiculoRegistro, 
+    datos: VehiculoEdicion,
     usuario: Usuario = Depends(obtener_usuario_desde_token), 
     db: Session = Depends(get_db)
 ):
@@ -323,13 +331,13 @@ def editar_vehiculo(
     if vehiculo.vin != datos.vin and db.query(Vehiculo).filter(Vehiculo.vin == datos.vin).first():
         raise HTTPException(status_code=400, detail="El VIN ya está registrado en otro vehículo.")
 
-    # Actualizar datos
+    # Actualizar solo los campos permitidos
     vehiculo.marca = datos.marca
     vehiculo.modelo = datos.modelo
     vehiculo.year = datos.year
     vehiculo.rpm = datos.rpm
     vehiculo.velocidad = datos.velocidad
-    vehiculo.vin = datos.vin  # Actualizar VIN
+    vehiculo.vin = datos.vin
 
     db.commit()
     return {"mensaje": "Vehículo actualizado correctamente"}
