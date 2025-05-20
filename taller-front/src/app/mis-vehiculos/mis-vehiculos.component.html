@@ -53,11 +53,11 @@
       <div class="vehicle-card" *ngFor="let vehiculo of vehiculos">
         <!-- Botones ahora están fuera de image-container -->
         <button class="icon-button edit-icon" (click)="editarVehiculo(vehiculo.id)" title="Editar">
-          <span class="material-icons">edit</span>
+          <mat-icon>edit</mat-icon>
         </button>
 
         <button class="icon-button delete-icon" (click)="eliminarVehiculo(vehiculo.id)" title="Eliminar">
-          <span class="material-icons red">delete</span>
+          <mat-icon color="warn">delete</mat-icon>
         </button>
 
         <div class="image-container">
