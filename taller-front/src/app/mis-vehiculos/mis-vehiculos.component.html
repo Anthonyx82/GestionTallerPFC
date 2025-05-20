@@ -40,27 +40,26 @@
 </ng-container>
 
 <ng-container *ngIf="vehiculos.length > 0">
-  <div class="vehicle-cards">
-    <div class="vehicle-card" *ngFor="let vehiculo of vehiculos">
-      <div class="image-wrapper">
-        <img
-          [src]="vehiculo.imagenUrl || 'assets/no-image.png'"
-          alt="{{ vehiculo.marca }} {{ vehiculo.modelo }}"
-          class="vehicle-image"
-          (click)="verDetalles(vehiculo.id)"
-        />
-        <button class="icon-button edit" (click)="editarVehiculo(vehiculo.id)">
-          ✏️
-        </button>
-        <button class="icon-button delete" (click)="eliminarVehiculo(vehiculo.id)">
-          🗑️
-        </button>
-      </div>
-      <div class="vehicle-info">
-        <h3>{{ vehiculo.marca }} {{ vehiculo.modelo }}</h3>
-        <p><strong>Año:</strong> {{ vehiculo.year }}</p>
-      </div>
+  <div class="vehicle-card" *ngFor="let vehiculo of vehiculos">
+    <div class="image-container" (click)="verDetalles(vehiculo.id)">
+      <img [src]="vehiculo.imagenUrl || 'assets/no-image.png'" 
+           alt="{{ vehiculo.marca }} {{ vehiculo.modelo }}" 
+           class="vehicle-image">
+  
+      <button (click)="editarVehiculo(vehiculo.id); $event.stopPropagation()" class="icon-button edit-icon" aria-label="Editar vehículo">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" fill="#000000" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.004 1.004 0 0 0 0-1.42l-2.34-2.34a1.004 1.004 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/></svg>
+      </button>
+  
+      <button (click)="eliminarVehiculo(vehiculo.id); $event.stopPropagation()" class="icon-button delete-icon" aria-label="Eliminar vehículo">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" fill="#ff0000" viewBox="0 0 24 24"><path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-4.5l-1-1z"/></svg>
+      </button>
     </div>
+    <div class="vehicle-info">
+      <h3>{{ vehiculo.marca }} {{ vehiculo.modelo }}</h3>
+      <p><strong>Año:</strong> {{ vehiculo.year }}</p>
+    </div>
+  </div>
+  
   </div>
   
 </ng-container>
