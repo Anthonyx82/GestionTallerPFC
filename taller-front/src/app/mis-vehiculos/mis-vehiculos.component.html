@@ -45,16 +45,15 @@
       <div class="image-container">
         <img [src]="vehiculo.imagenUrl || 'assets/no-image.png'" 
              alt="{{ vehiculo.marca }} {{ vehiculo.modelo }}" 
-             class="vehicle-image" (click)="verDetalles(vehiculo.id)">
+             class="vehicle-image" 
+             (click)="verDetalles(vehiculo.id)">
     
-        <!-- Botón de editar (esquina superior izquierda) -->
         <button class="icon-button edit-icon" (click)="editarVehiculo(vehiculo.id)" title="Editar">
-          ✏️
+          <span class="material-icons">edit</span>
         </button>
     
-        <!-- Botón de eliminar (esquina superior derecha) -->
         <button class="icon-button delete-icon" (click)="eliminarVehiculo(vehiculo.id)" title="Eliminar">
-          🗑️
+          <span class="material-icons red">delete</span>
         </button>
       </div>
     
@@ -63,7 +62,6 @@
         <p><strong>Año:</strong> {{ vehiculo.year }}</p>
       </div>
     </div>
-    
   </div>
 </ng-container>
 
