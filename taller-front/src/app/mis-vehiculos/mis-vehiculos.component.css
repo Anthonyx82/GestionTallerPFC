@@ -159,6 +159,16 @@ button:hover {
     justify-content: center;
 }
 
+.edit-icon {
+    top: 10px;
+    left: 10px;
+}
+
+.delete-icon {
+    top: 10px;
+    right: 10px;
+}
+
 .icon-button:hover {
     transform: scale(1.1);
 }
