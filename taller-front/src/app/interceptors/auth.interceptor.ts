@@ -17,14 +17,9 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     setHeaders: { Authorization: `Bearer ${token}` }
   }) : req;
 
-  console.log('Router está definido:', !!router);
-
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
-        console.log('Token inválido o expirado. Redirigiendo a login...');
-
-        // ✅ Esta línea soluciona problemas de ciclo de vida del Router
         setTimeout(() => router.navigateByUrl('/login'), 0);
       }
       return throwError(() => error);

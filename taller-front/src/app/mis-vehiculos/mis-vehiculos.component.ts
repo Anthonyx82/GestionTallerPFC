@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 
@@ -13,21 +13,12 @@ import { Router, RouterModule } from '@angular/router';
 export class MisVehiculosComponent {
   private http = inject(HttpClient);
   vehiculos: any[] = [];
-  vehiculoSeleccionado: any = null; // Vehículo seleccionado para mostrar detalles
+  vehiculoSeleccionado: any = null;
 
   constructor(private router: Router) {}
 
   ngOnInit() {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      console.log('No hay token disponible. Redirigiendo a login...');
-      return;
-    }
-
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    this.http.get('https://anthonyx82.ddns.net/taller/api/mis-vehiculos/', { headers }).subscribe({
+    this.http.get('https://anthonyx82.ddns.net/taller/api/mis-vehiculos/').subscribe({
       next: (data: any) => {
         this.vehiculos = data;
         this.cargarImagenesVehiculos();
@@ -56,20 +47,12 @@ export class MisVehiculosComponent {
     }
   }
 
-  // Mostrar los detalles del vehículo seleccionado
   verDetalles(vehiculoId: number): void {
-    const token = localStorage.getItem('token');
-    if (!token) return;
-
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    // Obtener detalles del vehículo
-    this.http.get(`https://anthonyx82.ddns.net/taller/api/mis-vehiculos/${vehiculoId}`, { headers }).subscribe({
+    this.http.get(`https://anthonyx82.ddns.net/taller/api/mis-vehiculos/${vehiculoId}`).subscribe({
       next: (data: any) => {
         this.vehiculoSeleccionado = data;
 
-        // Obtener los errores del vehículo
-        this.http.get(`https://anthonyx82.ddns.net/taller/api/mis-errores/${vehiculoId}`, { headers }).subscribe({
+        this.http.get(`https://anthonyx82.ddns.net/taller/api/mis-errores/${vehiculoId}`).subscribe({
           next: (errores: any) => {
             this.vehiculoSeleccionado.errores = errores;
           },
@@ -86,16 +69,11 @@ export class MisVehiculosComponent {
   solicitarInforme(vehiculoId: number) {
     const email = prompt("Introduce el email del cliente:");
     if (!email) return;
-  
-    const token = localStorage.getItem('token');
-    if (!token) return;
-  
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`).set('Content-Type', 'application/json');
-  
+
     this.http.post<{ enlace: string }>(
-      `https://anthonyx82.ddns.net/taller/api/crear-informe/${vehiculoId}`, 
-      { email: email }, 
-      { headers }
+      `https://anthonyx82.ddns.net/taller/api/crear-informe/${vehiculoId}`,
+      { email: email },
+      { headers: { 'Content-Type': 'application/json' } }
     ).subscribe(res => {
       alert("Informe generado y enviado por correo. También puedes copiar este enlace: " + res.enlace);
       navigator.clipboard.writeText(res.enlace);
@@ -111,12 +89,7 @@ export class MisVehiculosComponent {
   }
 
   eliminarVehiculo(vehiculoId: number): void {
-    const token = localStorage.getItem('token');
-    if (!token) return;
-
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    this.http.delete(`https://anthonyx82.ddns.net/taller/api/eliminar-vehiculo/${vehiculoId}`, { headers }).subscribe({
+    this.http.delete(`https://anthonyx82.ddns.net/taller/api/eliminar-vehiculo/${vehiculoId}`).subscribe({
       next: () => {
         this.vehiculos = this.vehiculos.filter(v => v.id !== vehiculoId);
         console.log('Vehículo eliminado');
