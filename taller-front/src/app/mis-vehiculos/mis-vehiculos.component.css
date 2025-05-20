@@ -98,7 +98,6 @@ button:hover {
 }
 
 .vehicle-card {
-    position: relative;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -107,24 +106,16 @@ button:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0;
+    padding: 20px;
     text-align: center;
 }
 
-.image-container {
-    position: relative;
-    width: 100%;
-    cursor: pointer;
-}
-
-.vehicle-image {
+.vehicle-card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    display: block;
-    border-radius: 8px 8px 0 0;
+    border-radius: 8px;
 }
-
 
 .vehicle-card .vehicle-info {
     margin-top: 15px;
@@ -141,51 +132,39 @@ button:hover {
     color: #555;
 }
 
-.image-wrapper {
+/* Botones de editar y eliminar sobre la imagen */
+.image-container {
     position: relative;
     width: 100%;
 }
 
-.vehicle-image {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 10px;
-}
-
 .icon-button {
     position: absolute;
-    background: white;
+    background: rgba(255, 255, 255, 0.8);
     border: none;
     border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
+    padding: 6px;
+    font-size: 1.2rem;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s ease;
+    z-index: 2;
+    transition: background 0.3s ease;
 }
 
 .icon-button:hover {
-    transform: scale(1.2);
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
 }
 
-.icon-button.edit {
-    top: 8px;
-    left: 8px;
-    color: #1976d2;
-    /* azul */
+.edit-icon {
+    top: 10px;
+    left: 10px;
 }
 
-.icon-button.delete {
-    top: 8px;
-    right: 8px;
+.delete-icon {
+    top: 10px;
+    right: 10px;
     color: red;
 }
-
 
 /* Estilos para el modal de detalles del vehículo */
 .vehicle-details-modal {
