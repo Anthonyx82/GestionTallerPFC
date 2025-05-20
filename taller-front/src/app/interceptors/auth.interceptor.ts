@@ -1,8 +1,11 @@
-// src/app/interceptors/auth.interceptor.ts
 import { inject } from '@angular/core';
-import { HttpInterceptorFn } from '@angular/common/http';
+import {
+  HttpInterceptorFn,
+  HttpRequest,
+  HttpHandlerFn,
+  HttpErrorResponse
+} from '@angular/common/http';
 import { Router } from '@angular/router';
-import { HttpErrorResponse, HttpRequest, HttpHandlerFn } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -18,7 +21,9 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
         console.log('Token inválido o expirado. Redirigiendo a login...');
-        router.navigate(['/login']);
+
+        // ✅ Esta línea soluciona problemas de ciclo de vida del Router
+        setTimeout(() => router.navigateByUrl('/login'), 0);
       }
       return throwError(() => error);
     })
