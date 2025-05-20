@@ -8,7 +8,6 @@ h2 {
 /* Botón de inicio visible siempre */
 button {
     display: block;
-    width: 200px;
     margin: 20px auto;
     font-size: 1.2rem;
     /* Aumenté el tamaño de la fuente */
