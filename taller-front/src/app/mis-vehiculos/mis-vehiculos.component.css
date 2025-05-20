@@ -98,6 +98,7 @@ button:hover {
 }
 
 .vehicle-card {
+    position: relative;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -142,6 +143,7 @@ button:hover {
 }
 
 .icon-button {
+    z-index: 10;
     position: absolute;
     background: white;
     border: none;
@@ -156,7 +158,6 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2;
 }
 
 .icon-button:hover {
@@ -164,13 +165,11 @@ button:hover {
 }
 
 .edit-icon {
-    position: absolute;
     top: 10px;
     left: 10px;
 }
 
 .delete-icon {
-    position: absolute;
     top: 10px;
     right: 10px;
 }
