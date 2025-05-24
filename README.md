@@ -13,7 +13,7 @@ Este proyecto es una plataforma que permite la recopilación y visualización de
 Si quieres compilar el cliente de python para tener un .exe personalizado, deberas usar el siguiente comando (Siempre y cuando no hayas modificado los imports)
 
 ```python
-pyinstaller --noconfirm --onefile --windowed --icon=../taller-front/public/favicon.ico --hidden-import=ttkbootstrap --hidden-import=serial --hidden-import=requests --hidden-import=tkinter --hidden-import=tkinter.messagebox --hidden-import=pyserial .\client.py
+pyinstaller --noconfirm --onefile --windowed --icon=../taller-front/public/favicon.ico --add-data "../taller-front/public/favicon.ico;." --hidden-import=ttkbootstrap --hidden-import=serial --hidden-import=requests --hidden-import=tkinter --hidden-import=tkinter.messagebox --hidden-import=pyserial client.py
 ```
 
 ## Configuración y Ejecución

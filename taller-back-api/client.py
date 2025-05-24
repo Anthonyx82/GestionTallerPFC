@@ -362,7 +362,7 @@ ctypes.windll.shcore.SetProcessDpiAwareness(1)
 ventana = ttk.Window(themename="minty")
 ventana.state("zoomed")
 ventana.minsize(320, 500)
-ventana.iconbitmap(r"C:/Users/amartinsos/GestionTallerPFC/taller-front/public/favicon.ico")
+ventana.iconbitmap(r"../taller-front/public/favicon.ico")
 ventana.title("Cliente OBD-II")
 ventana.configure(bg="#F8F9FA")  # Fondo más claro y moderno
 contenedor_central = ttk.Frame(ventana, padding=40, style="light")
