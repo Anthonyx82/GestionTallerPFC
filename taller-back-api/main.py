@@ -175,24 +175,43 @@ class VehiculoEdicion(BaseModel):
 # Endpoint para registro de usuario
 @app.post("/register")
 def register(datos: UsuarioRegistro, db: Session = Depends(get_db)):
+    if not datos.username or len(datos.username.strip()) < 3:
+        raise HTTPException(status_code=400, detail="El nombre de usuario es obligatorio y debe tener al menos 3 caracteres.")
+    if not datos.password or len(datos.password) < 6:
+        raise HTTPException(status_code=400, detail="La contraseña debe tener al menos 6 caracteres.")
+
     hashed_password = pwd_context.hash(datos.password)
-    usuario = Usuario(username=datos.username, password_hash=hashed_password)
+    usuario = Usuario(username=datos.username.strip(), password_hash=hashed_password)
     db.add(usuario)
     try:
         db.commit()
     except IntegrityError:
         db.rollback()
-        raise HTTPException(status_code=400, detail="El usuario ya existe")
+        raise HTTPException(status_code=400, detail="El nombre de usuario ya está registrado. Por favor elige otro.")
     return {"mensaje": "Usuario registrado correctamente"}
 
 # Endpoint para autenticación y obtención del token JWT
 @app.post("/login")
 def login(datos: UsuarioLogin, db: Session = Depends(get_db)):
-    usuario = db.query(Usuario).filter(Usuario.username == datos.username).first()
-    if not usuario or not verificar_password(datos.password, usuario.password_hash):
-        raise HTTPException(status_code=401, detail="Credenciales incorrectas")
+    if not datos.username or len(datos.username.strip()) < 3:
+        raise HTTPException(status_code=400, detail="Debes ingresar un nombre de usuario válido.")
     
-    token = crear_token({"sub": datos.username})
+    if not datos.password or len(datos.password) < 6:
+        raise HTTPException(status_code=400, detail="Debes ingresar una contraseña válida de al menos 6 caracteres.")
+
+    usuario = db.query(Usuario).filter(Usuario.username == datos.username.strip()).first()
+    
+    if not usuario:
+        raise HTTPException(status_code=401, detail="El nombre de usuario no está registrado.")
+    
+    if not verificar_password(datos.password, usuario.password_hash):
+        raise HTTPException(status_code=401, detail="La contraseña es incorrecta.")
+
+    try:
+        token = crear_token({"sub": usuario.username})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Hubo un error al generar el token. Intenta nuevamente.")
+
     return {"access_token": token, "token_type": "bearer"}
 
 # Endpoint para que el cliente de Python envíe datos OBD-II
@@ -202,45 +221,102 @@ def guardar_vehiculo(
     usuario: Usuario = Depends(obtener_usuario_desde_token), 
     db: Session = Depends(get_db)
 ):
+    # Validaciones básicas
+    if not datos.vin or len(datos.vin.strip()) != 17:
+        raise HTTPException(status_code=400, detail="El VIN debe contener exactamente 17 caracteres.")
+
+    campos_requeridos = {
+        "marca": datos.marca,
+        "modelo": datos.modelo,
+        "year": datos.year,
+        "rpm": datos.rpm,
+        "velocidad": datos.velocidad
+    }
+    for campo, valor in campos_requeridos.items():
+        if not valor and valor != 0:
+            raise HTTPException(status_code=400, detail=f"El campo '{campo}' es obligatorio.")
+
+    if not isinstance(datos.revision, dict):
+        raise HTTPException(status_code=400, detail="El campo 'revision' debe ser un objeto JSON.")
+
     # Verificar si el VIN ya está registrado
-    if db.query(Vehiculo).filter(Vehiculo.vin == datos.vin).first():
-        raise HTTPException(status_code=400, detail="El VIN ya está registrado en otro vehículo.")
-    
-    # Agregar los datos de revisión al vehículo
-    nuevo_vehiculo = Vehiculo(
-        marca=datos.marca,
-        modelo=datos.modelo,
-        year=datos.year,
-        rpm=datos.rpm,
-        velocidad=datos.velocidad,
-        vin=datos.vin,
-        revision=str(datos.revision),
-        usuario_id=usuario.id
-    )
-    
-    db.add(nuevo_vehiculo)
-    db.commit()
+    if db.query(Vehiculo).filter(Vehiculo.vin == datos.vin.strip()).first():
+        raise HTTPException(status_code=400, detail="El número de VIN ya está registrado. Debe ser único por vehículo.")
+
+    try:
+        nuevo_vehiculo = Vehiculo(
+            marca=datos.marca.strip(),
+            modelo=datos.modelo.strip(),
+            year=datos.year,
+            rpm=datos.rpm,
+            velocidad=datos.velocidad,
+            vin=datos.vin.strip(),
+            revision=str(datos.revision),
+            usuario_id=usuario.id
+        )
+        db.add(nuevo_vehiculo)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error al guardar el vehículo: {str(e)}")
+
     return {"mensaje": "Vehículo guardado correctamente", "id": nuevo_vehiculo.id}
 
 # Endpoint para que el cliente de Python envíe errores OBD-II
 @app.post("/guardar-errores/")
-def guardar_errores(datos: ErrorVehiculoRegistro, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
-    vehiculo = db.query(Vehiculo).filter(Vehiculo.id == datos.vehiculo_id, Vehiculo.usuario_id == usuario.id).first()
+def guardar_errores(
+    datos: ErrorVehiculoRegistro, 
+    usuario: Usuario = Depends(obtener_usuario_desde_token), 
+    db: Session = Depends(get_db)
+):
+    # Validar el ID del vehículo
+    if not isinstance(datos.vehiculo_id, int) or datos.vehiculo_id <= 0:
+        raise HTTPException(status_code=400, detail="El ID del vehículo debe ser un número entero positivo.")
+
+    # Validar lista de códigos
+    if not isinstance(datos.codigo_dtc, list) or len(datos.codigo_dtc) == 0:
+        raise HTTPException(status_code=400, detail="Debe proporcionar al menos un código DTC.")
+    
+    codigos_limpios = [c.strip() for c in datos.codigo_dtc if c and c.strip()]
+    if not codigos_limpios:
+        raise HTTPException(status_code=400, detail="Todos los códigos DTC están vacíos o en blanco.")
+    
+    if len(set(codigos_limpios)) != len(codigos_limpios):
+        raise HTTPException(status_code=400, detail="Hay códigos DTC duplicados en la lista.")
+
+    # Verificar propiedad del vehículo
+    vehiculo = db.query(Vehiculo).filter(
+        Vehiculo.id == datos.vehiculo_id, 
+        Vehiculo.usuario_id == usuario.id
+    ).first()
+
     if vehiculo is None:
-        raise HTTPException(status_code=404, detail="Vehículo no encontrado para el usuario.")
+        raise HTTPException(status_code=404, detail="No se encontró un vehículo con ese ID para el usuario autenticado.")
 
-    for codigo in datos.codigo_dtc:
-        error = ErrorVehiculo(vehiculo_id=vehiculo.id, codigo_dtc=codigo)
-        db.add(error)
+    try:
+        for codigo in codigos_limpios:
+            error = ErrorVehiculo(vehiculo_id=vehiculo.id, codigo_dtc=codigo)
+            db.add(error)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"No se pudieron guardar los errores del vehículo: {str(e)}")
 
-    db.commit()
     return {"mensaje": "Errores del vehículo guardados correctamente"}
 
 # Endpoint para obtener vehículos del usuario autenticado
 @app.get("/mis-vehiculos/")
-def obtener_vehiculos(usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
-    vehiculos = db.query(Vehiculo).filter(Vehiculo.usuario_id == usuario.id).all()
-    return vehiculos
+def obtener_vehiculos(
+    usuario: Usuario = Depends(obtener_usuario_desde_token), 
+    db: Session = Depends(get_db)
+):
+    try:
+        vehiculos = db.query(Vehiculo).filter(Vehiculo.usuario_id == usuario.id).all()
+        if not vehiculos:
+            return {"mensaje": "No hay vehículos registrados para este usuario.", "vehiculos": []}
+        return {"vehiculos": vehiculos}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al obtener los vehículos: {str(e)}")
 
 # Endpoint para obtener un vehiculo especifico del usuario autenticado
 @app.get("/mis-vehiculos/{vehiculo_id}")
@@ -259,50 +335,82 @@ def obtener_errores(vehiculo_id: int, usuario: Usuario = Depends(obtener_usuario
     return errores
 
 @app.post("/crear-informe/{vehiculo_id}")
-def crear_informe(vehiculo_id: int, request: InformeRequest, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
-    vehiculo = db.query(Vehiculo).filter_by(id=vehiculo_id, usuario_id=usuario.id).first()
-    if not vehiculo:
-        raise HTTPException(status_code=404, detail="Vehículo no encontrado")
+def crear_informe(
+    vehiculo_id: int, 
+    request: InformeRequest, 
+    usuario: Usuario = Depends(obtener_usuario_desde_token), 
+    db: Session = Depends(get_db)
+):
+    if not request.email or "@" not in request.email:
+        raise HTTPException(status_code=400, detail="Debe proporcionar un email válido para enviar el informe.")
 
-    token = str(uuid.uuid4())
-    informe = InformeCompartido(token=token, vehiculo_id=vehiculo.id, email_cliente=request.email)
-    db.add(informe)
-    db.commit()
+    try:
+        vehiculo = db.query(Vehiculo).filter_by(id=vehiculo_id, usuario_id=usuario.id).first()
+        if not vehiculo:
+            raise HTTPException(status_code=404, detail="No se encontró un vehículo con ese ID para el usuario autenticado.")
 
-    enlace = f"https://anthonyx82.ddns.net/taller-front/informe/{token}"
-    mensaje = MessageSchema(
-        subject="Tu informe del vehículo",
-        recipients=[request.email],
-        body=f"Hola, aquí tienes el informe de tu vehículo: {enlace}",
-        subtype="plain"
-    )
-    # Descomentar una vez configurado el correo
-    # fm.send_message(mensaje)
+        token = str(uuid.uuid4())
+        informe = InformeCompartido(
+            token=token,
+            vehiculo_id=vehiculo.id,
+            email_cliente=request.email
+        )
+        db.add(informe)
+        db.commit()
 
-    return {"mensaje": "Informe creado y enviado al email", "token": token, "enlace": enlace}
+        enlace = f"https://anthonyx82.ddns.net/taller-front/informe/{token}"
 
+        mensaje = MessageSchema(
+            subject="Tu informe del vehículo",
+            recipients=[request.email],
+            body=f"Hola, aquí tienes el informe de tu vehículo: {enlace}",
+            subtype="plain"
+        )
+        # Enviar correo solo si el sistema está configurado
+        # await fm.send_message(mensaje)
 
+        return {"mensaje": "Informe creado y enviado al email", "token": token, "enlace": enlace}
+
+    except HTTPException:
+        raise  # Relevantar tal cual si ya se lanzó arriba
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error al crear el informe: {str(e)}")
+
+# Acceso al informe generado
 @app.get("/informe/{token}")
 def ver_informe(token: str, db: Session = Depends(get_db)):
-    informe = db.query(InformeCompartido).filter_by(token=token).first()
-    if not informe:
-        raise HTTPException(status_code=404, detail="Informe no encontrado")
+    try:
+        if not token or len(token) < 10:
+            raise HTTPException(status_code=400, detail="El token proporcionado no es válido.")
 
-    vehiculo = db.query(Vehiculo).filter_by(id=informe.vehiculo_id).first()
-    errores = db.query(ErrorVehiculo).filter_by(vehiculo_id=vehiculo.id).all()
+        informe = db.query(InformeCompartido).filter_by(token=token).first()
+        if not informe:
+            raise HTTPException(status_code=404, detail="No se encontró un informe con el token proporcionado.")
 
-    return {
-        "vehiculo": {
-            "marca": vehiculo.marca,
-            "modelo": vehiculo.modelo,
-            "year": vehiculo.year,
-            "vin": vehiculo.vin,
-            "rpm": vehiculo.rpm,
-            "velocidad": vehiculo.velocidad,
-            "revision": vehiculo.revision
-        },
-        "errores": [e.codigo_dtc for e in errores]
-    }
+        vehiculo = db.query(Vehiculo).filter_by(id=informe.vehiculo_id).first()
+        if not vehiculo:
+            raise HTTPException(status_code=404, detail="El vehículo relacionado con este informe ya no existe.")
+
+        errores = db.query(ErrorVehiculo).filter_by(vehiculo_id=vehiculo.id).all()
+
+        return {
+            "vehiculo": {
+                "marca": vehiculo.marca,
+                "modelo": vehiculo.modelo,
+                "year": vehiculo.year,
+                "vin": vehiculo.vin,
+                "rpm": vehiculo.rpm,
+                "velocidad": vehiculo.velocidad,
+                "revision": vehiculo.revision
+            },
+            "errores": [e.codigo_dtc for e in errores] if errores else []
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error interno al obtener el informe: {str(e)}")
 
 @app.get("/car-imagery/")
 def get_car_image(searchTerm: str):
@@ -317,42 +425,84 @@ def get_car_image(searchTerm: str):
 # Endpoint para editar vehículo
 @app.put("/editar-vehiculo/{vehiculo_id}")
 def editar_vehiculo(
-    vehiculo_id: int, 
+    vehiculo_id: int,
     datos: VehiculoEdicion,
-    usuario: Usuario = Depends(obtener_usuario_desde_token), 
+    usuario: Usuario = Depends(obtener_usuario_desde_token),
     db: Session = Depends(get_db)
 ):
-    vehiculo = db.query(Vehiculo).filter(Vehiculo.id == vehiculo_id, Vehiculo.usuario_id == usuario.id).first()
-    
-    if vehiculo is None:
-        raise HTTPException(status_code=404, detail="Vehículo no encontrado")
-    
-    # Verificar que el nuevo VIN no esté en otro vehículo
-    if vehiculo.vin != datos.vin and db.query(Vehiculo).filter(Vehiculo.vin == datos.vin).first():
-        raise HTTPException(status_code=400, detail="El VIN ya está registrado en otro vehículo.")
+    try:
+        # Validación básica
+        if not datos.vin or len(datos.vin) != 17:
+            raise HTTPException(status_code=400, detail="El VIN debe tener exactamente 17 caracteres.")
 
-    # Actualizar solo los campos permitidos
-    vehiculo.marca = datos.marca
-    vehiculo.modelo = datos.modelo
-    vehiculo.year = datos.year
-    vehiculo.rpm = datos.rpm
-    vehiculo.velocidad = datos.velocidad
-    vehiculo.vin = datos.vin
+        vehiculo = db.query(Vehiculo).filter(
+            Vehiculo.id == vehiculo_id,
+            Vehiculo.usuario_id == usuario.id
+        ).first()
 
-    db.commit()
-    return {"mensaje": "Vehículo actualizado correctamente"}
+        if vehiculo is None:
+            raise HTTPException(status_code=404, detail="No se encontró un vehículo con ese ID asociado al usuario.")
+
+        if vehiculo.vin != datos.vin:
+            vin_existente = db.query(Vehiculo).filter(Vehiculo.vin == datos.vin).first()
+            if vin_existente:
+                raise HTTPException(status_code=400, detail="El VIN proporcionado ya está registrado en otro vehículo.")
+
+        # Actualizar campos
+        vehiculo.marca = datos.marca
+        vehiculo.modelo = datos.modelo
+        vehiculo.year = datos.year
+        vehiculo.rpm = datos.rpm
+        vehiculo.velocidad = datos.velocidad
+        vehiculo.vin = datos.vin
+
+        db.commit()
+        return {"mensaje": "Vehículo actualizado correctamente"}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ocurrió un error al editar el vehículo: {str(e)}")
 
 # Endpoint para eliminar vehículo
 @app.delete("/eliminar-vehiculo/{vehiculo_id}")
-def eliminar_vehiculo(vehiculo_id: int, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
-    vehiculo = db.query(Vehiculo).filter(Vehiculo.id == vehiculo_id, Vehiculo.usuario_id == usuario.id).first()
-    if vehiculo is None:
-        raise HTTPException(status_code=404, detail="Vehículo no encontrado")
-    
-    db.query(ErrorVehiculo).filter(ErrorVehiculo.vehiculo_id == vehiculo.id).delete()
-    db.delete(vehiculo)
-    db.commit()
-    return {"mensaje": "Vehículo eliminado correctamente"}
+def eliminar_vehiculo(
+    vehiculo_id: int,
+    usuario: Usuario = Depends(obtener_usuario_desde_token),
+    db: Session = Depends(get_db)
+):
+    try:
+        vehiculo = db.query(Vehiculo).filter(
+            Vehiculo.id == vehiculo_id,
+            Vehiculo.usuario_id == usuario.id
+        ).first()
+
+        if vehiculo is None:
+            raise HTTPException(
+                status_code=404,
+                detail="No se encontró un vehículo con ese ID asociado al usuario."
+            )
+
+        # Eliminar errores asociados primero
+        errores_eliminados = db.query(ErrorVehiculo).filter(
+            ErrorVehiculo.vehiculo_id == vehiculo.id
+        ).delete()
+
+        db.delete(vehiculo)
+        db.commit()
+
+        return {
+            "mensaje": "Vehículo eliminado correctamente",
+            "errores_eliminados": errores_eliminados
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Ocurrió un error al eliminar el vehículo: {str(e)}"
+        )
 
 # Endpoint de saludo
 @app.get("/saludo")
