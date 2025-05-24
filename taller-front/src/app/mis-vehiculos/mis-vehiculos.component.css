@@ -182,8 +182,8 @@ button:not(.icon-button):hover {
     color: #555;
 }
 
-.material-icons.red {
-    color: red;
+.delete-red {
+    color: red !important;
 }
 
 /* Estilos para el modal de detalles del vehículo */
