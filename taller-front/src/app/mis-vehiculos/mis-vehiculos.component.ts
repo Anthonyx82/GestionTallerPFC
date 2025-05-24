@@ -24,7 +24,7 @@ export class MisVehiculosComponent {
   ngOnInit() {
     this.http.get('https://anthonyx82.ddns.net/taller/api/mis-vehiculos/').subscribe({
       next: (data: any) => {
-        this.vehiculos = data;
+        this.vehiculos = data.vehiculos ?? [];
         if (this.vehiculos.length === 0) {
           this.cargando = false;
         } else {
