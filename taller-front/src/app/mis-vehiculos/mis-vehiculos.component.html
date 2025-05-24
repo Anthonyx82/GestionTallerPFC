@@ -84,10 +84,18 @@
     <p><strong>VIN:</strong> {{ vehiculoSeleccionado.vin }}</p> <!-- 🔹 Agregado VIN -->
     <p><strong>RPM:</strong> {{ vehiculoSeleccionado.rpm }}</p>
     <p><strong>Velocidad:</strong> {{ vehiculoSeleccionado.velocidad }} km/h</p>
-    <h4>Errores:</h4>
-    <ul>
-      <li *ngFor="let error of vehiculoSeleccionado.errores">{{ error.codigo_dtc }}</li>
-    </ul>
+    <p><strong>Errores</strong></p>
+
+    <ng-container *ngIf="vehiculoSeleccionado.errores.length > 0; else noErrores">
+      <ul>
+        <li *ngFor="let error of vehiculoSeleccionado.errores">{{ error.codigo_dtc }}</li>
+      </ul>
+    </ng-container>
+
+    <ng-template #noErrores>
+      <p>No se han detectado fallos</p>
+    </ng-template>
+
     <button class="download-button" (click)="solicitarInforme(vehiculoSeleccionado.id)">📄 Descargar Informe</button>
   </div>
 </div>
