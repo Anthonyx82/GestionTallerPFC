@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-mis-vehiculos',
   standalone: true,
-  imports: [RouterModule, CommonModule, MatIconModule, MatButtonModule],
+  imports: [RouterModule, CommonModule, MatIconModule, MatButtonModule, FormsModule],
   templateUrl: './mis-vehiculos.component.html',
   styleUrls: ['./mis-vehiculos.component.css']
 })
