@@ -249,6 +249,38 @@ button:not(.icon-button):hover {
     /* Color ligeramente más oscuro al hacer hover */
 }
 
+/* Sección para enviar informe */
+.email-section {
+    margin-top: 30px;
+    background-color: #fff5e6;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(255, 111, 0, 0.1);
+}
+
+.email-section label {
+    font-size: 1rem;
+    color: #ff6f00;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.email-section .email-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid #ffbf80;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: border 0.3s ease-in-out;
+}
+
+.email-section .email-input:focus {
+    border-color: #ff6f00;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 111, 0, 0.3);
+}
+
 @media (max-width: 768px) {
     .modal-content {
         width: 95%;

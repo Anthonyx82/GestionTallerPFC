@@ -96,14 +96,17 @@
       <p>No se han detectado fallos</p>
     </ng-template>
 
-    <!-- Agrega esto dentro de .modal-content al final -->
     <div class="email-section">
       <label for="emailInput"><strong>Email del cliente:</strong></label>
-      <input id="emailInput" type="email" [(ngModel)]="emailCliente" placeholder="cliente@ejemplo.com">
-      <button class="download-button" (click)="solicitarInformeConEmail(vehiculoSeleccionado.id)">📄 Enviar
-        Informe</button>
+      <input id="emailInput" type="email" [(ngModel)]="emailCliente" placeholder="cliente@ejemplo.com"
+        class="email-input" />
+
+      <button (click)="solicitarInformeConEmail(vehiculoSeleccionado.id)">
+        📄 Enviar Informe al Email
+      </button>
     </div>
-    
+
+
   </div>
 </div>
 
