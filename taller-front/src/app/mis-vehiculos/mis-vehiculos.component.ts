@@ -18,6 +18,7 @@ export class MisVehiculosComponent {
   vehiculoSeleccionado: any = null;
   cargando: boolean = true;
   imagenesCargadas: number = 0;
+  emailCliente: string = '';
 
   constructor(private router: Router) { }
 
@@ -84,19 +85,22 @@ export class MisVehiculosComponent {
     });
   }
 
-  solicitarInforme(vehiculoId: number) {
-    const email = prompt("Introduce el email del cliente:");
-    if (!email) return;
-
+  solicitarInformeConEmail(vehiculoId: number) {
+    if (!this.emailCliente || !this.emailCliente.includes('@')) {
+      alert('Por favor, introduce un email válido.');
+      return;
+    }
+  
     this.http.post<{ enlace: string }>(
       `https://anthonyx82.ddns.net/taller/api/crear-informe/${vehiculoId}`,
-      { email: email },
+      { email: this.emailCliente },
       { headers: { 'Content-Type': 'application/json' } }
     ).subscribe(res => {
       alert("Informe generado y enviado por correo. También puedes copiar este enlace: " + res.enlace);
       navigator.clipboard.writeText(res.enlace);
+      this.emailCliente = ''; // limpiar campo después del envío
     });
-  }
+  }  
 
   cerrarDetalles(): void {
     this.vehiculoSeleccionado = null;
