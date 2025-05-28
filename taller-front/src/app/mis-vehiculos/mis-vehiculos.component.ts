@@ -99,7 +99,7 @@ export class MisVehiculosComponent {
     ).subscribe(res => {
       alert("Informe generado y enviado por correo. También puedes copiar este enlace: " + res.enlace);
       navigator.clipboard.writeText(res.enlace);
-      this.emailCliente = ''; // limpiar campo después del envío
+      this.emailCliente = '';
     });
   }  
 

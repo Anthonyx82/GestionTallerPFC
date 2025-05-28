@@ -17,7 +17,6 @@ from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session, relationship
-from pydantic import EmailStr
 
 # Configuración de la base de datos
 DATABASE_URL = os.getenv("DATABASE_URL", "mysql+pymysql://user:password@db/talleres")
@@ -366,7 +365,7 @@ async def crear_informe(
 
         mensaje = MessageSchema(
             subject="Tu informe del vehículo",
-            recipients=[EmailStr(request.email)],
+            recipients=[request.email],
             body=f"Hola, aquí tienes el informe de tu vehículo: {enlace}",
             subtype="plain"
         )
