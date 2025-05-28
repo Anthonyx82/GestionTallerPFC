@@ -8,7 +8,6 @@ from tkinter import messagebox, Toplevel, StringVar, IntVar, Canvas, Label, Chec
 from PIL import Image, ImageTk
 import ctypes
 
-
 API_URL = "https://anthonyx82.ddns.net/taller/api"
 token = None
 selected_port = None
@@ -18,6 +17,13 @@ partes_generales = ["Motor", "Chasis", "Caja de cambios"]
 detalles_motor = ["Correa distribución", "Filtro aire", "Bujías", "Inyectores", "Aceite", "Refrigerante", "Batería", "Alternador", "Turbocompresor"]
 detalles_chasis = ["Suspensión", "Frenos", "Rótulas", "Amortiguadores", "Discos", "Pastillas", "Dirección", "Eje delantero", "Eje trasero", "Ruedas"]
 detalles_caja = ["Aceite transmisión", "Sincronizadores", "Embrague", "Convertidor par", "Engranajes", "Sensor velocidad", "Palanca", "Juntas"]
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except AttributeError:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 def obtener_token():
     login_button.config(text="Logueando...")
@@ -155,7 +161,7 @@ def enviar_datos():
 
 def mostrar_imagen(parent, ruta):
     try:
-        img = Image.open(ruta)
+        img = Image.open(resource_path(ruta))
         img_tk = ImageTk.PhotoImage(img)
 
         label_img = Label(parent, image=img_tk)
@@ -181,7 +187,7 @@ def mostrar_modal_revision():
     modal.title("Revisión de partes del vehículo")
     modal.configure(bg="#ECF0F1")  # Fondo gris clarito
 
-    img = Image.open("images/vehiculo_xray.png")
+    img = Image.open(resource_path("images/vehiculo_xray.png"))
     original_width, original_height = img.size
     escala = 0.8
     nuevo_ancho = int(original_width * escala)
@@ -261,7 +267,7 @@ def mostrar_modal_detalle():
 
         ruta_imagen = f"images/{parte.lower()}_xray.png"
         try:
-            img = Image.open(ruta_imagen)
+            img = Image.open(resource_path(ruta_imagen))
             original_width, original_height = img.size
             escala = 0.8
             nuevo_ancho = int(original_width * escala)
@@ -362,7 +368,7 @@ ctypes.windll.shcore.SetProcessDpiAwareness(1)
 ventana = ttk.Window(themename="minty")
 ventana.state("zoomed")
 ventana.minsize(320, 500)
-ventana.iconbitmap(r"../taller-front/public/favicon.ico")
+ventana.iconbitmap(resource_path("favicon.ico"))
 ventana.title("Cliente OBD-II")
 ventana.configure(bg="#F8F9FA")  # Fondo más claro y moderno
 contenedor_central = ttk.Frame(ventana, padding=40, style="light")

@@ -13,4 +13,7 @@ project-back-api/vehiculos.db
 .DS_Store
 Thumbs.db
 
-taller-back-api/client.exe
+# Archivos de compilaciom
+taller-back-api/build/
+taller-back-api/dist/
+taller-back-api/client.spec
