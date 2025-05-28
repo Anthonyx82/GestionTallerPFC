@@ -337,7 +337,7 @@ def obtener_errores(vehiculo_id: int, usuario: Usuario = Depends(obtener_usuario
     return errores
 
 @app.post("/crear-informe/{vehiculo_id}")
-def crear_informe(
+async def crear_informe(
     vehiculo_id: int, 
     request: InformeRequest, 
     usuario: Usuario = Depends(obtener_usuario_desde_token), 
