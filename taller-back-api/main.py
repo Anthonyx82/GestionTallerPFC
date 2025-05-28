@@ -417,7 +417,7 @@ async def crear_informe(
             <a href="{enlace}" class="boton">Ver Informe</a>
             <p style="margin-top: 20px;">Gracias por confiar en nosotros.</p>
             <div class="footer">
-              Este mensaje fue enviado automáticamente. Por favor, no respondas a este correo.
+              Para cualquier duda puede contestar a este correo electronico.
             </div>
           </div>
         </body>
