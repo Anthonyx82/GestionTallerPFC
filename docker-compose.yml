@@ -24,6 +24,15 @@ services:
     restart: always
     environment:
       DATABASE_URL: ${DATABASE_URL}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_FROM: ${MAIL_FROM}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_SERVER: ${MAIL_SERVER}
+      MAIL_STARTTLS: ${MAIL_STARTTLS}
+      MAIL_SSL_TLS: ${MAIL_SSL_TLS}
+      USE_CREDENTIALS: ${USE_CREDENTIALS}
+      VALIDATE_CERTS: ${VALIDATE_CERTS}
     depends_on:
       db:
         condition: service_healthy
