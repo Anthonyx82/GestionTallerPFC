@@ -25,16 +25,18 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 # Configuracion del servidor de correo
-#conf = ConnectionConfig(
-#    MAIL_USERNAME="tucorreo@example.com",
-#    MAIL_PASSWORD="tu_contraseña",
-#    MAIL_FROM="tucorreo@example.com",
-#    MAIL_PORT=587,
-#    MAIL_SERVER="smtp.tu-servidor.com",
-#    MAIL_TLS=True,
-#    MAIL_SSL=False,
-#    USE_CREDENTIALS=True
-#)
+conf = ConnectionConfig(
+    MAIL_USERNAME="5b1b65995c423e5cb717b43504f35a97",
+    MAIL_PASSWORD="18d5863f9e959f640332cff4519d3a57",
+    MAIL_FROM="antonio@anthonyx82.ddns.net",
+    MAIL_PORT=587,
+    MAIL_SERVER="in-v3.mailjet.com",
+    MAIL_TLS=True,
+    MAIL_SSL=False,
+    USE_CREDENTIALS=True,
+    VALIDATE_CERTS=True
+)
+fm = FastMail(conf)
 
 # Clave secreta y configuración de JWT
 SECRET_KEY = "clave-secreta-super-segura"
@@ -367,7 +369,7 @@ def crear_informe(
             subtype="plain"
         )
         # Enviar correo solo si el sistema está configurado
-        # await fm.send_message(mensaje)
+        await fm.send_message(mensaje)
 
         return {"mensaje": "Informe creado y enviado al email", "token": token, "enlace": enlace}
 
