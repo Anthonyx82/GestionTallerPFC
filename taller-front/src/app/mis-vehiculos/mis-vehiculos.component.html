@@ -81,7 +81,7 @@
     <span class="close" (click)="cerrarDetalles()">&times;</span>
     <h3>{{ vehiculoSeleccionado.marca }} {{ vehiculoSeleccionado.modelo }}</h3>
     <p><strong>Año:</strong> {{ vehiculoSeleccionado.year }}</p>
-    <p><strong>VIN:</strong> {{ vehiculoSeleccionado.vin }}</p> <!-- 🔹 Agregado VIN -->
+    <p><strong>VIN:</strong> {{ vehiculoSeleccionado.vin }}</p>
     <p><strong>RPM:</strong> {{ vehiculoSeleccionado.rpm }}</p>
     <p><strong>Velocidad:</strong> {{ vehiculoSeleccionado.velocidad }} km/h</p>
     <p><strong>Errores</strong></p>
@@ -100,6 +100,12 @@
       <label for="emailInput"><strong>Email del cliente:</strong></label>
       <input id="emailInput" type="email" [(ngModel)]="emailCliente" placeholder="cliente@ejemplo.com"
         class="email-input" />
+
+      <div *ngIf="mensaje"
+        [ngClass]="{'mensaje-error': tipoMensaje === 'error', 'mensaje-exito': tipoMensaje === 'exito'}"
+        class="mensaje-flotante">
+        {{ mensaje }}
+      </div>
 
       <button (click)="solicitarInformeConEmail(vehiculoSeleccionado.id)">
         📄 Enviar Informe al Email

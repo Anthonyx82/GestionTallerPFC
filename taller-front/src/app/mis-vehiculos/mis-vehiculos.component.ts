@@ -20,6 +20,8 @@ export class MisVehiculosComponent {
   cargando: boolean = true;
   imagenesCargadas: number = 0;
   emailCliente: string = '';
+  mensaje: string = '';
+  tipoMensaje: 'error' | 'exito' = 'exito';
 
   constructor(private router: Router) { }
 
@@ -38,6 +40,12 @@ export class MisVehiculosComponent {
         this.cargando = false;
       }
     });
+  }
+
+  mostrarMensaje(mensaje: string, tipo: 'error' | 'exito' = 'exito') {
+    this.mensaje = mensaje;
+    this.tipoMensaje = tipo;
+    setTimeout(() => this.mensaje = '', 5000);
   }
 
   cargarImagenesVehiculos(): void {
@@ -88,20 +96,26 @@ export class MisVehiculosComponent {
 
   solicitarInformeConEmail(vehiculoId: number) {
     if (!this.emailCliente || !this.emailCliente.includes('@')) {
-      alert('Por favor, introduce un email válido.');
+      this.mostrarMensaje('Por favor, introduce un email válido.', 'error');
       return;
     }
-  
+
     this.http.post<{ enlace: string }>(
       `https://anthonyx82.ddns.net/taller/api/crear-informe/${vehiculoId}`,
       { email: this.emailCliente },
       { headers: { 'Content-Type': 'application/json' } }
-    ).subscribe(res => {
-      alert("Informe generado y enviado por correo. También puedes copiar este enlace: " + res.enlace);
-      navigator.clipboard.writeText(res.enlace);
-      this.emailCliente = '';
+    ).subscribe({
+      next: (res) => {
+        this.mostrarMensaje('Informe generado y enviado por correo.');
+        navigator.clipboard.writeText(res.enlace);
+        this.emailCliente = '';
+      },
+      error: () => {
+        this.mostrarMensaje('Error al generar el informe.', 'error');
+      }
     });
-  }  
+  }
+
 
   cerrarDetalles(): void {
     this.vehiculoSeleccionado = null;

@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common'; // <-- IMPORTAR CommonModule
+import { CommonModule } from '@angular/common';
+import { ErrorMessageComponent } from '../../shared/error-message/error-message.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule], // <-- AÑADIR CommonModule AQUÍ
+  imports: [FormsModule, CommonModule, ErrorMessageComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
