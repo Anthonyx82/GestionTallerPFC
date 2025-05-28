@@ -76,7 +76,11 @@ class Vehiculo(Base):
     usuario = relationship("Usuario", back_populates="vehiculos")
 
     # Relación con ErrorVehiculo (uno a muchos)
-    errores = relationship("ErrorVehiculo", back_populates="vehiculo")
+    errores = relationship("ErrorVehiculo", back_populates="vehiculo", cascade="all, delete-orphan")
+    
+    # Relación con InformeCompartido (uno a muchos)
+    informes_compartidos = relationship("InformeCompartido", back_populates="vehiculo", cascade="all, delete-orphan")
+
 
 class ErrorVehiculo(Base):
     __tablename__ = "errores_vehiculos"
@@ -95,7 +99,8 @@ class InformeCompartido(Base):
     email_cliente = Column(String(255))
     creado_en = Column(String(255), default=lambda: datetime.utcnow().isoformat())
 
-    vehiculo = relationship("Vehiculo")
+    # Relación con Vehiculo (muchos a uno)
+    vehiculo = relationship("Vehiculo", back_populates="informes_compartidos")
 
 # Crear tablas si no existen
 Base.metadata.create_all(bind=engine)

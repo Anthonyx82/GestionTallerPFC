@@ -36,7 +36,7 @@ def obtener_token():
 
     response = requests.post(
         f"{API_URL}/login",
-        json={"username": "test1", "password": "Ams1313*"}
+        json={"username": usuario, "password": password}
     )
     
     if response.status_code == 200:
