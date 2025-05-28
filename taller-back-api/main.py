@@ -364,11 +364,68 @@ async def crear_informe(
         enlace = f"https://anthonyx82.ddns.net/taller-front/informe/{token}"
 
         mensaje = MessageSchema(
-            subject="Tu informe del vehículo",
-            recipients=[request.email],
-            body=f"Hola, aquí tienes el informe de tu vehículo: {enlace}",
-            subtype="plain"
+        subject="Tu informe del vehículo",
+        recipients=[request.email],
+        body=f"""
+        <html>
+        <head>
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+            body {{
+              font-family: 'Poppins', sans-serif;
+              background-color: #ffffff;
+              color: #333333;
+              padding: 20px;
+            }}
+            .container {{
+              max-width: 600px;
+              margin: 0 auto;
+              border: 1px solid #e0e0e0;
+              border-radius: 8px;
+              padding: 30px;
+              background-color: #fafafa;
+            }}
+            .titulo {{
+              color: #ff6f00;
+              font-size: 24px;
+              font-weight: 600;
+              margin-bottom: 20px;
+            }}
+            .boton {{
+              display: inline-block;
+              margin-top: 20px;
+              padding: 12px 24px;
+              background-color: #ff6f00;
+              color: white;
+              text-decoration: none;
+              border-radius: 6px;
+              font-weight: 500;
+            }}
+            .footer {{
+              margin-top: 40px;
+              font-size: 12px;
+              color: #999;
+              text-align: center;
+            }}
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="titulo">Informe de tu vehículo</div>
+            <p>Hola,</p>
+            <p>Has solicitado acceder al informe de tu vehículo. Puedes visualizarlo en el siguiente enlace seguro:</p>
+            <a href="{enlace}" class="boton">Ver Informe</a>
+            <p style="margin-top: 20px;">Gracias por confiar en nosotros.</p>
+            <div class="footer">
+              Este mensaje fue enviado automáticamente. Por favor, no respondas a este correo.
+            </div>
+          </div>
+        </body>
+        </html>
+        """,
+        subtype="html"
         )
+        
         # Enviar correo solo si el sistema está configurado
         await fm.send_message(mensaje)
 
