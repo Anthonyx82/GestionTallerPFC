@@ -17,6 +17,7 @@ from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session, relationship
+from pydantic import EmailStr
 
 # Configuración de la base de datos
 DATABASE_URL = os.getenv("DATABASE_URL", "mysql+pymysql://user:password@db/talleres")
@@ -31,11 +32,12 @@ conf = ConnectionConfig(
     MAIL_FROM="antonio@anthonyx82.ddns.net",
     MAIL_PORT=587,
     MAIL_SERVER="in-v3.mailjet.com",
-    MAIL_TLS=True,
-    MAIL_SSL=False,
+    MAIL_STARTTLS=True,
+    MAIL_SSL_TLS=False,
     USE_CREDENTIALS=True,
     VALIDATE_CERTS=True
 )
+
 fm = FastMail(conf)
 
 # Clave secreta y configuración de JWT
@@ -364,7 +366,7 @@ async def crear_informe(
 
         mensaje = MessageSchema(
             subject="Tu informe del vehículo",
-            recipients=[request.email],
+            recipients=[EmailStr(request.email)],
             body=f"Hola, aquí tienes el informe de tu vehículo: {enlace}",
             subtype="plain"
         )
