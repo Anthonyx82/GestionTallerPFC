@@ -19,7 +19,7 @@
                 </div>
             </div>
             <button type="submit">Entrar</button>
-            <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+            <app-error-message [message]="errorMessage"></app-error-message>
         </form>
     </div>
 </div>
