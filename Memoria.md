@@ -187,6 +187,8 @@ Se desarrollará paso a paso con capturas. Incluirá:
   * [Traefik](https://doc.traefik.io/traefik/)
   * [Glances](https://glances.readthedocs.io/en/develop/)
   * [Kuma](https://github.com/louislam/uptime-kuma/wiki)
+  * [Jaeger](https://www.jaegertracing.io/docs/1.6/getting-started/)
+  * [Prometheus](https://doc.traefik.io/traefik/observability/metrics/prometheus/)
   * [Debian 12](https://www.debian.org/index.es.html)
 
 * ChatGPT para resolver dudas técnicas y generar ejemplos de código
