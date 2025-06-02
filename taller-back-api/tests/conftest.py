@@ -2,10 +2,9 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from main import Base, get_db, app
-from fastapi.testclient import TestClient
-from fastapi_mail import FastMail
 from fastapi_mail import FastMail, ConnectionConfig
 from unittest.mock import AsyncMock
+from httpx import AsyncClient, ASGITransport
 
 # Base de datos SQLite en memoria
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
@@ -39,6 +38,6 @@ def anyio_backend():
 
 @pytest.fixture
 async def client():
-    from httpx import AsyncClient
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
         yield ac
