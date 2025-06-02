@@ -1,0 +1,21 @@
+services:
+  api-test:
+    build:
+      context: ./taller-back-api
+    container_name: api_taller_test
+    environment:
+      DATABASE_URL: "sqlite:///:memory:"
+      MAIL_USERNAME: "test_user"
+      MAIL_PASSWORD: "test_pass"
+      MAIL_FROM: "test@example.com"
+      MAIL_PORT: 587
+      MAIL_SERVER: "smtp.test.com"
+      MAIL_STARTTLS: "True"
+      MAIL_SSL_TLS: "False"
+      USE_CREDENTIALS: "True"
+      VALIDATE_CERTS: "False"
+    command: >
+      sh -c "pytest tests/ --disable-warnings -v"
+    volumes:
+      - ./taller-back-api:/app
+    working_dir: /app
