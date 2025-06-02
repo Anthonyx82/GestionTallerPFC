@@ -1,7 +1,11 @@
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from main import Base, get_db, app
+try:
+    from main import Base, get_db, app
+except Exception as e:
+    print("ERROR IMPORTANDO main:", e)
+    raise
 from fastapi.testclient import TestClient
 from fastapi_mail import FastMail
 from fastapi_mail.email_utils import config

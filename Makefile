@@ -1,7 +1,7 @@
 .PHONY: test test-local test-docker build up down logs
 
 test:
-	docker compose -f docker-compose.test.yml up --build --abort-on-container-exit
+	docker compose -f docker-compose.test.yml up --build
 
 test-local:
 	pytest tests/ --disable-warnings -v
