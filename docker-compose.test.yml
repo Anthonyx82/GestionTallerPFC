@@ -19,4 +19,3 @@ services:
       sh -c "pytest tests/ --disable-warnings -v"
     volumes:
       - ./taller-back-api:/app
-    working_dir: /app
