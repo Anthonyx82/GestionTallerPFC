@@ -1,8 +1,7 @@
 services:
+  
   api-test:
-    build:
-      context: ./taller-back-api
-      dockerfile: Dockerfile.test
+    build: ./taller-back-api
     container_name: api_taller_test
     environment:
       DATABASE_URL: "sqlite:///:memory:"
@@ -17,5 +16,3 @@ services:
       VALIDATE_CERTS: "False"
     command: >
       sh -c "pytest tests/ --disable-warnings -v"
-    volumes:
-      - ./taller-back-api:/app
