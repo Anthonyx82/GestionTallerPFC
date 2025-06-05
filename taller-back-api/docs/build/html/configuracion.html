@@ -246,39 +246,90 @@
         <article role="main" id="furo-main-content">
           <section id="configuracion-del-proyecto">
 <h1>Configuración del Proyecto<a class="headerlink" href="#configuracion-del-proyecto" title="Link to this heading">¶</a></h1>
-<p>Este proyecto cuenta con una configuración flexible basada en variables de entorno y herramientas integradas para seguridad y mensajería.</p>
-<section id="base-de-datos">
-<h2>Base de Datos<a class="headerlink" href="#base-de-datos" title="Link to this heading">¶</a></h2>
+<p>En esta sección se describe la configuración general del proyecto, desde la conexión a la base de datos hasta los parámetros de correo y seguridad. Toda la configuración se basa en variables de entorno que puedes definir en un archivo <cite>.env</cite> o directamente en tu entorno.</p>
+<nav class="contents local" id="contenido">
 <ul class="simple">
-<li><p>URL: definida en <cite>DATABASE_URL</cite>.</p></li>
-<li><p>Motor: MySQL con PyMySQL.</p></li>
-<li><p>ORM: SQLAlchemy.</p></li>
-<li><p>Sesiones: <cite>SessionLocal()</cite>.</p></li>
+<li><p><a class="reference internal" href="#configuracion-de-entorno" id="id6">Configuración de Entorno</a></p></li>
+<li><p><a class="reference internal" href="#base-de-datos" id="id7">Base de Datos</a></p></li>
+<li><p><a class="reference internal" href="#correo-electronico" id="id8">Correo Electrónico</a></p></li>
+<li><p><a class="reference internal" href="#seguridad" id="id9">Seguridad</a></p></li>
+<li><p><a class="reference internal" href="#dependencias-reutilizables" id="id10">Dependencias reutilizables</a></p></li>
+<li><p><a class="reference internal" href="#autenticacion-y-usuarios" id="id11">Autenticación y Usuarios</a></p></li>
+<li><p><a class="reference internal" href="#gestion-de-vehiculos" id="id12">Gestión de Vehículos</a></p></li>
+<li><p><a class="reference internal" href="#gestion-de-errores-obd-ii" id="id13">Gestión de Errores OBD-II</a></p></li>
+<li><p><a class="reference internal" href="#generacion-y-consulta-de-informes" id="id14">Generación y Consulta de Informes</a></p></li>
+<li><p><a class="reference internal" href="#servicio-de-imagenes-de-vehiculo" id="id15">Servicio de Imágenes de Vehículo</a></p></li>
+<li><p><a class="reference internal" href="#endpoint-de-prueba-salud" id="id16">Endpoint de Prueba / Salud</a></p></li>
 </ul>
+</nav>
+<section id="configuracion-de-entorno">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Configuración de Entorno</a><a class="headerlink" href="#configuracion-de-entorno" title="Link to this heading">¶</a></h2>
+<p>Para que la aplicación funcione correctamente, debes definir las siguientes variables de entorno (pueden estar en un archivo <cite>.env</cite>):</p>
+</section>
+<section id="base-de-datos">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Base de Datos</a><a class="headerlink" href="#base-de-datos" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>URL</strong>: obtenida desde <code class="docutils literal notranslate"><span class="pre">DATABASE_URL</span></code>.</p></li>
+<li><p><strong>Motor</strong>: MySQL con el driver PyMySQL.</p></li>
+<li><p><strong>ORM</strong>: SQLAlchemy.</p></li>
+<li><p><strong>Sesiones</strong>: se genera con <code class="docutils literal notranslate"><span class="pre">SessionLocal()</span></code> por request.</p></li>
+</ul>
+<p>Declaración en código (<code class="docutils literal notranslate"><span class="pre">main.py</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Configuración de la base de datos</span>
+<span class="n">DATABASE_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DATABASE_URL&quot;</span><span class="p">,</span> <span class="s2">&quot;mysql+pymysql://user:password@db/talleres&quot;</span><span class="p">)</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">DATABASE_URL</span><span class="p">)</span>
+<span class="n">SessionLocal</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="n">autocommit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">autoflush</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+</pre></div>
+</div>
 </section>
 <section id="correo-electronico">
-<h2>Correo Electrónico<a class="headerlink" href="#correo-electronico" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Correo Electrónico</a><a class="headerlink" href="#correo-electronico" title="Link to this heading">¶</a></h2>
+<p>La aplicación utiliza <strong>FastAPI-Mail</strong> para el envío de correos electrónicos (por ejemplo, para enviar informes generados).</p>
 <ul class="simple">
-<li><p>Envío mediante <cite>FastAPI-Mail</cite>.</p></li>
-<li><p>Configuración por variables de entorno:
-- Usuario, contraseña, puerto, servidor SMTP.</p></li>
-<li><p>Soporta TLS y SSL.</p></li>
+<li><p>Se configuran las credenciales y parámetros de SMTP en la clase <code class="docutils literal notranslate"><span class="pre">ConnectionConfig</span></code>.</p></li>
+<li><p>Se soporta TLS y SSL según las variables <code class="docutils literal notranslate"><span class="pre">MAIL_STARTTLS</span></code> y <code class="docutils literal notranslate"><span class="pre">MAIL_SSL_TLS</span></code>.</p></li>
+<li><p>Ejemplo de uso en <code class="docutils literal notranslate"><span class="pre">main.py</span></code>:</p></li>
 </ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">conf</span> <span class="o">=</span> <span class="n">ConnectionConfig</span><span class="p">(</span>
+    <span class="n">MAIL_USERNAME</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MAIL_USERNAME&quot;</span><span class="p">),</span>
+    <span class="n">MAIL_PASSWORD</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MAIL_PASSWORD&quot;</span><span class="p">),</span>
+    <span class="n">MAIL_FROM</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MAIL_FROM&quot;</span><span class="p">),</span>
+    <span class="n">MAIL_PORT</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MAIL_PORT&quot;</span><span class="p">,</span> <span class="mi">587</span><span class="p">)),</span>
+    <span class="n">MAIL_SERVER</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MAIL_SERVER&quot;</span><span class="p">),</span>
+    <span class="n">MAIL_STARTTLS</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MAIL_STARTTLS&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">,</span>
+    <span class="n">MAIL_SSL_TLS</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MAIL_SSL_TLS&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">,</span>
+    <span class="n">USE_CREDENTIALS</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;USE_CREDENTIALS&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">,</span>
+    <span class="n">VALIDATE_CERTS</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;VALIDATE_CERTS&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span>
+<span class="p">)</span>
+<span class="n">fm</span> <span class="o">=</span> <span class="n">FastMail</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <section id="seguridad">
-<h2>Seguridad<a class="headerlink" href="#seguridad" title="Link to this heading">¶</a></h2>
-<ul class="simple">
-<li><p><cite>JWT</cite>: para autenticación de usuarios.</p></li>
-<li><p><cite>bcrypt</cite>: para encriptar contraseñas.</p></li>
-<li><p><cite>OAuth2PasswordBearer</cite>: extracción automática del token.</p></li>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Seguridad</a><a class="headerlink" href="#seguridad" title="Link to this heading">¶</a></h2>
+<p>La autenticación y autorización se basan en JWT. A continuación se detallan los componentes clave:</p>
+<ul>
+<li><p><strong>SECRET_KEY</strong>: clave secreta para firmar y verificar tokens JWT. Defínela en la variable de entorno <code class="docutils literal notranslate"><span class="pre">SECRET_KEY</span></code> o déjala en el código como fallback.</p></li>
+<li><p><strong>ALGORITHM</strong>: algoritmo para JWT, por defecto <code class="docutils literal notranslate"><span class="pre">HS256</span></code>.</p></li>
+<li><p><strong>ACCESS_TOKEN_EXPIRE_MINUTES</strong>: tiempo de expiración del token (en minutos). Se obtiene de la variable de entorno <code class="docutils literal notranslate"><span class="pre">ACCESS_TOKEN_EXPIRE_MINUTES</span></code> o usa 300 por defecto.</p></li>
+<li><p>Para hashear contraseñas se utiliza <code class="docutils literal notranslate"><span class="pre">bcrypt</span></code> a través de <code class="docutils literal notranslate"><span class="pre">passlib</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pwd_context</span> <span class="o">=</span> <span class="n">CryptContext</span><span class="p">(</span><span class="n">schemes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;bcrypt&quot;</span><span class="p">],</span> <span class="n">deprecated</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Para extraer el token de las peticiones, se usa <code class="docutils literal notranslate"><span class="pre">OAuth2PasswordBearer(tokenUrl=&quot;login&quot;)</span></code>.</p></li>
 </ul>
+<p>Flujo de autenticación en <code class="docutils literal notranslate"><span class="pre">main.py</span></code>:</p>
+<ol class="arabic simple">
+<li><p><strong>Registro</strong>: el endpoint <code class="docutils literal notranslate"><span class="pre">/register</span></code> recibe un <code class="docutils literal notranslate"><span class="pre">UsuarioRegistro</span></code> (username + password), hashea la contraseña y la almacena.</p></li>
+<li><p><strong>Login</strong>: el endpoint <code class="docutils literal notranslate"><span class="pre">/login</span></code> recibe un <code class="docutils literal notranslate"><span class="pre">UsuarioLogin</span></code>, verifica credenciales y, si es válido, genera un JWT con <code class="docutils literal notranslate"><span class="pre">crear_token</span></code>.</p></li>
+<li><p><strong>Dependencia ``obtener_usuario_desde_token``</strong>: se encarga de decodificar el JWT, extraer el <code class="docutils literal notranslate"><span class="pre">sub</span></code> (username) y cargar el usuario desde la base de datos. Si no encuentra usuario o el token está expirado, lanza <code class="docutils literal notranslate"><span class="pre">HTTPException(401)</span></code>.</p></li>
+</ol>
 </section>
 <section id="dependencias-reutilizables">
-<h2>Dependencias reutilizables<a class="headerlink" href="#dependencias-reutilizables" title="Link to this heading">¶</a></h2>
-<ul class="simple">
-<li><p><cite>get_db()</cite>: genera una sesión DB por request.</p></li>
-<li><p><cite>obtener_usuario_actual()</cite>: extrae el usuario desde el token JWT.</p></li>
-</ul>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Dependencias reutilizables</a><a class="headerlink" href="#dependencias-reutilizables" title="Link to this heading">¶</a></h2>
+<p>A continuación se listan las funciones que puedes reusar en tus endpoints:</p>
 <dl class="py function" id="module-main">
 <dt class="sig sig-object py" id="main.get_db">
 <span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">get_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#get_db"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#main.get_db" title="Link to this definition">¶</a></dt>
@@ -286,6 +337,93 @@
 <p>Se utiliza con <cite>Depends(get_db)</cite> para abrir una sesión, cederla al endpoint y cerrarla automáticamente.</p>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="main.obtener_usuario_desde_token">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">obtener_usuario_desde_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Depends(OAuth2PasswordBearer)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Depends(get_db)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#obtener_usuario_desde_token"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#main.obtener_usuario_desde_token" title="Link to this definition">¶</a></dt>
+<dd><p>Extrae y valida el usuario actual a partir del token JWT proporcionado.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>token</strong> (<em>str</em>) – Token JWT incluido en el encabezado de autorización.</p></li>
+<li><p><strong>db</strong> (<em>Session</em>) – Sesión de base de datos.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Instancia del usuario autenticado.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="modelos.html#main.Usuario" title="main.Usuario">Usuario</a></p>
+</dd>
+<dt class="field-even">Muestra<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>HTTPException 401</strong> – Si el token es inválido o ha expirado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_db()</span></code>:
+- Abre una sesión de base de datos (SQLAlchemy) y la cierra automáticamente al salir del contexto.
+- Uso típico:</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/ruta_ejemplo&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ejemplo</span><span class="p">(</span><span class="n">db</span><span class="p">:</span> <span class="n">Session</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_db</span><span class="p">)):</span>
+    <span class="c1"># db es una sesión válida</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">obtener_usuario_desde_token</span></code>:
+- Extrae el token JWT del encabezado <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> y devuelve la instancia de <code class="docutils literal notranslate"><span class="pre">Usuario</span></code> correspondiente.
+- Uso típico:</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/ruta_protegida&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">protegida</span><span class="p">(</span><span class="n">usuario</span><span class="p">:</span> <span class="n">Usuario</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">obtener_usuario_desde_token</span><span class="p">)):</span>
+    <span class="c1"># usuario es el objeto Usuario autenticado</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p>—</p>
+<p>## endpoints.rst</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>rst
+Endpoints de la API
+===================</p>
+<p>En este documento se describen todos los endpoints disponibles en la API, organizados por funcionalidad: autenticación, gestión de vehículos, errores y generación de informes.</p>
+</section>
+<section id="autenticacion-y-usuarios">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Autenticación y Usuarios</a><a class="headerlink" href="#autenticacion-y-usuarios" title="Link to this heading">¶</a></h2>
+<p>### Registro de Usuario</p>
+<p>### Login / Obtención de Token</p>
+</section>
+<section id="gestion-de-vehiculos">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Gestión de Vehículos</a><a class="headerlink" href="#gestion-de-vehiculos" title="Link to this heading">¶</a></h2>
+<p>Todos los endpoints de esta sección requieren autenticación previa (token JWT en Header: <code class="docutils literal notranslate"><span class="pre">Authorization:</span> <span class="pre">Bearer</span> <span class="pre">&lt;token&gt;</span></code>).</p>
+<p>### Guardar Vehículo</p>
+<p>### Listar Vehículos del Usuario</p>
+<p>### Obtener Vehículo Específico</p>
+<p>### Editar Vehículo</p>
+<p>### Eliminar Vehículo</p>
+</section>
+<section id="gestion-de-errores-obd-ii">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Gestión de Errores OBD-II</a><a class="headerlink" href="#gestion-de-errores-obd-ii" title="Link to this heading">¶</a></h2>
+<p>Todos los endpoints de esta sección requieren autenticación previa.</p>
+<p>### Guardar Errores de Vehículo</p>
+<p>### Obtener Errores de un Vehículo</p>
+</section>
+<section id="generacion-y-consulta-de-informes">
+<h2><a class="toc-backref" href="#id14" role="doc-backlink">Generación y Consulta de Informes</a><a class="headerlink" href="#generacion-y-consulta-de-informes" title="Link to this heading">¶</a></h2>
+<p>### Crear Informe para un Vehículo</p>
+<p>### Ver Informe Público</p>
+</section>
+<section id="servicio-de-imagenes-de-vehiculo">
+<h2><a class="toc-backref" href="#id15" role="doc-backlink">Servicio de Imágenes de Vehículo</a><a class="headerlink" href="#servicio-de-imagenes-de-vehiculo" title="Link to this heading">¶</a></h2>
+<p>### Obtener URL de Imagen de Vehículo</p>
+</section>
+<section id="endpoint-de-prueba-salud">
+<h2><a class="toc-backref" href="#id16" role="doc-backlink">Endpoint de Prueba / Salud</a><a class="headerlink" href="#endpoint-de-prueba-salud" title="Link to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -337,13 +475,21 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Configuración del Proyecto</a><ul>
+<li><a class="reference internal" href="#configuracion-de-entorno">Configuración de Entorno</a></li>
 <li><a class="reference internal" href="#base-de-datos">Base de Datos</a></li>
 <li><a class="reference internal" href="#correo-electronico">Correo Electrónico</a></li>
 <li><a class="reference internal" href="#seguridad">Seguridad</a></li>
 <li><a class="reference internal" href="#dependencias-reutilizables">Dependencias reutilizables</a><ul>
 <li><a class="reference internal" href="#main.get_db"><code class="docutils literal notranslate"><span class="pre">get_db()</span></code></a></li>
+<li><a class="reference internal" href="#main.obtener_usuario_desde_token"><code class="docutils literal notranslate"><span class="pre">obtener_usuario_desde_token()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#autenticacion-y-usuarios">Autenticación y Usuarios</a></li>
+<li><a class="reference internal" href="#gestion-de-vehiculos">Gestión de Vehículos</a></li>
+<li><a class="reference internal" href="#gestion-de-errores-obd-ii">Gestión de Errores OBD-II</a></li>
+<li><a class="reference internal" href="#generacion-y-consulta-de-informes">Generación y Consulta de Informes</a></li>
+<li><a class="reference internal" href="#servicio-de-imagenes-de-vehiculo">Servicio de Imágenes de Vehículo</a></li>
+<li><a class="reference internal" href="#endpoint-de-prueba-salud">Endpoint de Prueba / Salud</a></li>
 </ul>
 </li>
 </ul>

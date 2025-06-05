@@ -246,25 +246,399 @@
         <article role="main" id="furo-main-content">
           <section id="modelos-de-datos">
 <h1>Modelos de Datos<a class="headerlink" href="#modelos-de-datos" title="Link to this heading">¶</a></h1>
-<section id="modelos-orm-sqlalchemy">
-<h2>Modelos ORM (SQLAlchemy)<a class="headerlink" href="#modelos-orm-sqlalchemy" title="Link to this heading">¶</a></h2>
-<p>Los modelos ORM representan las tablas en la base de datos. Están definidos con SQLAlchemy e incluyen relaciones entre entidades.</p>
+<p>En esta sección se describen en detalle los <strong>modelos ORM</strong> (SQLAlchemy) y los <strong>modelos de validación</strong> (Pydantic) definidos en <cite>main.py</cite>. Se incluyen tablas con atributos, tipos, relaciones y ejemplos de uso.</p>
+<nav class="contents local" id="contenido">
 <ul class="simple">
-<li><p><cite>Usuario</cite>: representa un usuario registrado.</p></li>
-<li><p><cite>Vehiculo</cite>: vehículo asociado a un usuario.</p></li>
-<li><p><cite>ErrorVehiculo</cite>: errores OBD-II asociados a un vehículo.</p></li>
-<li><p><cite>InformeCompartido</cite>: informes generados para ser enviados por correo.</p></li>
+<li><p><a class="reference internal" href="#modelos-orm-sqlalchemy" id="id1">Modelos ORM (SQLAlchemy)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#ejemplo-de-esquema-en-sql" id="id2">Ejemplo de Esquema en SQL</a></p></li>
 </ul>
+</li>
+<li><p><a class="reference internal" href="#modelos-de-validacion-pydantic" id="id3">Modelos de Validación (Pydantic)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#validaciones-clave" id="id4">Validaciones Clave</a></p></li>
+<li><p><a class="reference internal" href="#ejemplo-de-uso-en-un-endpoint" id="id5">Ejemplo de Uso en un Endpoint</a></p></li>
+<li><p><a class="reference internal" href="#referencia-automatica" id="id6">Referencia Automática</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="modelos-orm-sqlalchemy">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Modelos ORM (SQLAlchemy)</a><a class="headerlink" href="#modelos-orm-sqlalchemy" title="Link to this heading">¶</a></h2>
+<p>Los modelos ORM representan las tablas de la base de datos, heredan de <cite>Base</cite> y están definidos en <cite>main.py</cite>. A continuación se listan sus atributos principales, tipos y descripciones.</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 45.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Clase</strong></p></th>
+<th class="head"><p><strong>Atributo</strong></p></th>
+<th class="head"><p><strong>Tipo</strong></p></th>
+<th class="head"><p><strong>Descripción</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Usuario</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">id</span></code></p></td>
+<td><p>Integer (PK)</p></td>
+<td><p>Identificador único autoincremental.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Usuario</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">username</span></code></p></td>
+<td><p>String(255), único</p></td>
+<td><p>Nombre de usuario (único).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Usuario</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">password_hash</span></code></p></td>
+<td><p>String(255)</p></td>
+<td><p>Contraseña almacenada (hash bcrypt).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Usuario</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">vehiculos</span></code></p></td>
+<td><p>Relationship</p></td>
+<td><p>Relación uno-a-muchos con <code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">id</span></code></p></td>
+<td><p>Integer (PK)</p></td>
+<td><p>Identificador del vehículo.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">marca</span></code></p></td>
+<td><p>String(255)</p></td>
+<td><p>Marca del vehículo.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">modelo</span></code></p></td>
+<td><p>String(255)</p></td>
+<td><p>Modelo del vehículo.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">year</span></code></p></td>
+<td><p>Integer</p></td>
+<td><p>Año de fabricación (YYYY).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rpm</span></code></p></td>
+<td><p>Integer</p></td>
+<td><p>Revoluciones por minuto.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">velocidad</span></code></p></td>
+<td><p>Integer</p></td>
+<td><p>Velocidad actual en km/h.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">vin</span></code></p></td>
+<td><p>String(17), único</p></td>
+<td><p>Número VIN (único, 17 caracteres).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">revision</span></code></p></td>
+<td><p>String(255)</p></td>
+<td><p>JSON serializado con detalles de la revisión.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">usuario_id</span></code></p></td>
+<td><p>Integer (FK)</p></td>
+<td><p>Clave foránea a <code class="docutils literal notranslate"><span class="pre">Usuario.id</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">errores</span></code></p></td>
+<td><p>Relationship</p></td>
+<td><p>Relación uno-a-muchos con <code class="docutils literal notranslate"><span class="pre">ErrorVehiculo</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">informes_compartidos</span></code></p></td>
+<td><p>Relationship</p></td>
+<td><p>Relación uno-a-muchos con <code class="docutils literal notranslate"><span class="pre">InformeCompartido</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ErrorVehiculo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">id</span></code></p></td>
+<td><p>Integer (PK)</p></td>
+<td><p>Identificador del error DTC.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ErrorVehiculo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">vehiculo_id</span></code></p></td>
+<td><p>Integer (FK)</p></td>
+<td><p>Clave foránea a <code class="docutils literal notranslate"><span class="pre">Vehiculo.id</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ErrorVehiculo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">codigo_dtc</span></code></p></td>
+<td><p>String(255)</p></td>
+<td><p>Código OBD-II (p. ej., «P0301»).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ErrorVehiculo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">vehiculo</span></code></p></td>
+<td><p>Relationship</p></td>
+<td><p>Vínculo inverso a <code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">InformeCompartido</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">id</span></code></p></td>
+<td><p>Integer (PK)</p></td>
+<td><p>Identificador del informe.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">InformeCompartido</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">token</span></code></p></td>
+<td><p>String(100), único</p></td>
+<td><p>Token UUID público para compartir.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">InformeCompartido</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">vehiculo_id</span></code></p></td>
+<td><p>Integer (FK)</p></td>
+<td><p>Clave foránea a <code class="docutils literal notranslate"><span class="pre">Vehiculo.id</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">InformeCompartido</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">email_cliente</span></code></p></td>
+<td><p>String(255)</p></td>
+<td><p>Email del destinatario.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">InformeCompartido</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">creado_en</span></code></p></td>
+<td><p>DateTime</p></td>
+<td><p>Fecha y hora de creación (UTC).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Relaciones entre Tablas</strong>:</p>
+<ul>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Usuario</span></code> ↔ <code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code></dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>Uno a muchos:</dt><dd><ul>
+<li><dl class="simple">
+<dt>En <cite>Usuario</cite>:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">`python</span>
+<span class="pre">vehiculos</span> <span class="pre">=</span> <span class="pre">relationship(&quot;Vehiculo&quot;,</span> <span class="pre">back_populates=&quot;usuario&quot;,</span> <span class="pre">cascade=&quot;all,</span> <span class="pre">delete-orphan&quot;)</span>
+<span class="pre">`</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>En <cite>Vehiculo</cite>:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">`python</span>
+<span class="pre">usuario</span> <span class="pre">=</span> <span class="pre">relationship(&quot;Usuario&quot;,</span> <span class="pre">back_populates=&quot;vehiculos&quot;)</span>
+<span class="pre">`</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code> ↔ <code class="docutils literal notranslate"><span class="pre">ErrorVehiculo</span></code></dt><dd><ul>
+<li><dl>
+<dt>Uno a muchos:</dt><dd><ul class="simple">
+<li><p>En <cite>Vehiculo</cite>:</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">`python</span>
+<span class="pre">errores</span> <span class="pre">=</span> <span class="pre">relationship(&quot;ErrorVehiculo&quot;,</span> <span class="pre">back_populates=&quot;vehiculo&quot;,</span> <span class="pre">cascade=&quot;all,</span> <span class="pre">delete-orphan&quot;)</span>
+<span class="pre">`</span></code>
+- En <cite>ErrorVehiculo</cite>:
+<code class="docutils literal notranslate"><span class="pre">`python</span>
+<span class="pre">vehiculo</span> <span class="pre">=</span> <span class="pre">relationship(&quot;Vehiculo&quot;,</span> <span class="pre">back_populates=&quot;errores&quot;)</span>
+<span class="pre">`</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code> ↔ <code class="docutils literal notranslate"><span class="pre">InformeCompartido</span></code></dt><dd><ul>
+<li><dl>
+<dt>Uno a muchos:</dt><dd><ul class="simple">
+<li><p>En <cite>Vehiculo</cite>:</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">`python</span>
+<span class="pre">informes_compartidos</span> <span class="pre">=</span> <span class="pre">relationship(&quot;InformeCompartido&quot;,</span> <span class="pre">back_populates=&quot;vehiculo&quot;,</span> <span class="pre">cascade=&quot;all,</span> <span class="pre">delete-orphan&quot;)</span>
+<span class="pre">`</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><p>En <cite>InformeCompartido</cite>:
+<code class="docutils literal notranslate"><span class="pre">`python</span>
+<span class="pre">vehiculo</span> <span class="pre">=</span> <span class="pre">relationship(&quot;Vehiculo&quot;,</span> <span class="pre">back_populates=&quot;informes_compartidos&quot;)</span>
+<span class="pre">`</span></code></p></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+</li>
+</ul>
+<section id="ejemplo-de-esquema-en-sql">
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">Ejemplo de Esquema en SQL</a><a class="headerlink" href="#ejemplo-de-esquema-en-sql" title="Link to this heading">¶</a></h3>
+<p>A modo de referencia, a continuación se muestra un esquema simplificado en SQL que refleja la estructura anterior:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">usuarios</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">username</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">password_hash</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">vehiculos</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">marca</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">modelo</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">year</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">rpm</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">velocidad</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">vin</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">revision</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">usuario_id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">usuario_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">usuarios</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">error_vehiculo</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">vehiculo_id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">codigo_dtc</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">vehiculo_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">vehiculos</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">informes_compartidos</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">token</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">vehiculo_id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">email_cliente</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">creado_en</span><span class="w"> </span><span class="n">DATETIME</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">vehiculo_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">vehiculos</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="modelos-de-validacion-pydantic">
-<h2>Modelos de validación (Pydantic)<a class="headerlink" href="#modelos-de-validacion-pydantic" title="Link to this heading">¶</a></h2>
-<p>Los modelos Pydantic se utilizan para validar entradas y salidas en la API:</p>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Modelos de Validación (Pydantic)</a><a class="headerlink" href="#modelos-de-validacion-pydantic" title="Link to this heading">¶</a></h2>
+<p>Los modelos Pydantic garantizan que las peticiones entrantes y salidas cumplan con un esquema específico. Se utilizan en los endpoints para validar datos de usuario, vehículo, errores e informes.</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 16.7%" />
+<col style="width: 41.7%" />
+<col style="width: 41.7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Clase</strong></p></th>
+<th class="head"><p><strong>Campos</strong></p></th>
+<th class="head"><p><strong>Descripción</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">UsuarioRegistro</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">username</span></code> (string, obligatorio, mínimo 3 caracteres)</p></td>
+<td><p>Nombre de usuario.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">UsuarioRegistro</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">password</span></code> (string, obligatorio, mínimo 6 caracteres)</p></td>
+<td><p>Contraseña.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">UsuarioLogin</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">username</span></code> (string, obligatorio)</p></td>
+<td><p>Nombre de usuario.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">UsuarioLogin</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">password</span></code> (string, obligatorio)</p></td>
+<td><p>Contraseña.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">marca</span></code> (string, obligatorio)</p></td>
+<td><p>Marca del vehículo.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">modelo</span></code> (string, obligatorio)</p></td>
+<td><p>Modelo del vehículo.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">year</span></code> (integer, obligatorio, YYYY)</p></td>
+<td><p>Año de fabricación.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rpm</span></code> (integer, obligatorio)</p></td>
+<td><p>Revoluciones por minuto.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">velocidad</span></code> (integer, obligatorio)</p></td>
+<td><p>Velocidad actual en km/h.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">vin</span></code> (string de longitud 17, obligatorio)</p></td>
+<td><p>Número VIN único.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">revision</span></code> (dict con claves obligatorias y opcionales)</p></td>
+<td><p>Detalles de revisión: <code class="docutils literal notranslate"><span class="pre">tipo</span></code>, <code class="docutils literal notranslate"><span class="pre">fecha</span></code>, <code class="docutils literal notranslate"><span class="pre">observaciones</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">VehiculoEdicion</span></code></p></td>
+<td><p>(mismos campos que <code class="docutils literal notranslate"><span class="pre">VehiculoRegistro</span></code> excepto <code class="docutils literal notranslate"><span class="pre">revision</span></code>)</p></td>
+<td><p>Usado para actualizar vehículos existentes.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ErrorVehiculoRegistro</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">vehiculo_id</span></code> (integer, obligatorio)</p></td>
+<td><p>ID del vehículo.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ErrorVehiculoRegistro</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">codigo_dtc</span></code> (list[string], obligatorio)</p></td>
+<td><p>Lista de códigos DTC.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">InformeRequest</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">email</span></code> (string, obligatorio, debe contener «&#64;»)</p></td>
+<td><p>Email del cliente.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="validaciones-clave">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Validaciones Clave</a><a class="headerlink" href="#validaciones-clave" title="Link to this heading">¶</a></h3>
 <ul class="simple">
-<li><p><cite>UsuarioRegistro</cite>, <cite>UsuarioLogin</cite>: manejo de usuarios.</p></li>
-<li><p><cite>VehiculoRegistro</cite>, <cite>VehiculoEdicion</cite>: datos de los vehículos.</p></li>
-<li><p><cite>ErrorVehiculoRegistro</cite>: errores recibidos desde el cliente OBD.</p></li>
-<li><p><cite>InformeRequest</cite>: datos para enviar el informe por email.</p></li>
+<li><p>En <code class="docutils literal notranslate"><span class="pre">UsuarioRegistro</span></code> y <code class="docutils literal notranslate"><span class="pre">UsuarioLogin</span></code> se verifica longitud mínima de <cite>username</cite> y <cite>password</cite>.</p></li>
+<li><p>En <code class="docutils literal notranslate"><span class="pre">VehiculoRegistro</span></code> y <code class="docutils literal notranslate"><span class="pre">VehiculoEdicion</span></code> se exige que <cite>vin</cite> sea exactamente 17 caracteres y único en la base de datos.</p></li>
+<li><p>En <code class="docutils literal notranslate"><span class="pre">ErrorVehiculoRegistro</span></code> se valida que <cite>vehiculo_id</cite> exista y que la lista <cite>codigo_dtc</cite> no esté vacía ni tenga duplicados.</p></li>
+<li><p>En <code class="docutils literal notranslate"><span class="pre">InformeRequest</span></code> se comprueba que <cite>email</cite> contenga el carácter “&#64;”.</p></li>
 </ul>
+</section>
+<section id="ejemplo-de-uso-en-un-endpoint">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Ejemplo de Uso en un Endpoint</a><a class="headerlink" href="#ejemplo-de-uso-en-un-endpoint" title="Link to this heading">¶</a></h3>
+<p>Por ejemplo, en el endpoint <cite>/guardar-vehiculo/</cite>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/guardar-vehiculo/&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">crear_vehiculo</span><span class="p">(</span>
+    <span class="n">vehiculo</span><span class="p">:</span> <span class="n">VehiculoRegistro</span><span class="p">,</span>
+    <span class="n">db</span><span class="p">:</span> <span class="n">Session</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_db</span><span class="p">),</span>
+    <span class="n">usuario</span><span class="p">:</span> <span class="n">Usuario</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">obtener_usuario_desde_token</span><span class="p">)</span>
+<span class="p">):</span>
+    <span class="c1"># Aquí &#39;vehiculo&#39; ya está validado por Pydantic:</span>
+    <span class="c1">#   vehiculo.marca (str), vehiculo.modelo (str), vehiculo.vin (str de 17 chars), etc.</span>
+    <span class="n">nuevo</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Vehiculo</span><span class="p">(</span>
+        <span class="n">marca</span><span class="o">=</span><span class="n">vehiculo</span><span class="o">.</span><span class="n">marca</span><span class="p">,</span>
+        <span class="n">modelo</span><span class="o">=</span><span class="n">vehiculo</span><span class="o">.</span><span class="n">modelo</span><span class="p">,</span>
+        <span class="n">year</span><span class="o">=</span><span class="n">vehiculo</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+        <span class="n">rpm</span><span class="o">=</span><span class="n">vehiculo</span><span class="o">.</span><span class="n">rpm</span><span class="p">,</span>
+        <span class="n">velocidad</span><span class="o">=</span><span class="n">vehiculo</span><span class="o">.</span><span class="n">velocidad</span><span class="p">,</span>
+        <span class="n">vin</span><span class="o">=</span><span class="n">vehiculo</span><span class="o">.</span><span class="n">vin</span><span class="p">,</span>
+        <span class="n">revision</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">vehiculo</span><span class="o">.</span><span class="n">revision</span><span class="p">),</span>
+        <span class="n">usuario_id</span><span class="o">=</span><span class="n">usuario</span><span class="o">.</span><span class="n">id</span>
+    <span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nuevo</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">nuevo</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;mensaje&quot;</span><span class="p">:</span> <span class="s2">&quot;Vehículo guardado correctamente&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">nuevo</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="referencia-automatica">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Referencia Automática</a><a class="headerlink" href="#referencia-automatica" title="Link to this heading">¶</a></h3>
+<p>Para revisar el código completo de cada clase (atributos adicionales, métodos, relaciones, validaciones), se ha añadido la directiva <cite>.. automodule:: main</cite> más abajo:</p>
 <dl class="py class" id="module-main">
 <dt class="sig sig-object py" id="main.Base">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">Base</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.Base" title="Link to this definition">¶</a></dt>
@@ -274,6 +648,16 @@
 <li><p>Las credenciales y parámetros se cargan desde variables de entorno.</p></li>
 <li><p><cite>FastMail</cite> se instancia con esta configuración para ser usado en envíos.</p></li>
 </ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Base.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MetaData</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">MetaData()</span></em><a class="headerlink" href="#main.Base.metadata" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Base.registry">
+<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">registry</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;sqlalchemy.orm.decl_api.registry</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#main.Base.registry" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -289,6 +673,26 @@ codigo_dtc (str): Código de diagnóstico (ej. P0301).</p>
 <dt>Relaciones:</dt><dd><p>vehiculo (Vehiculo): Vehículo asociado.</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.ErrorVehiculo.codigo_dtc">
+<span class="sig-name descname"><span class="pre">codigo_dtc</span></span><a class="headerlink" href="#main.ErrorVehiculo.codigo_dtc" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.ErrorVehiculo.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#main.ErrorVehiculo.id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.ErrorVehiculo.vehiculo">
+<span class="sig-name descname"><span class="pre">vehiculo</span></span><a class="headerlink" href="#main.ErrorVehiculo.vehiculo" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.ErrorVehiculo.vehiculo_id">
+<span class="sig-name descname"><span class="pre">vehiculo_id</span></span><a class="headerlink" href="#main.ErrorVehiculo.vehiculo_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -302,10 +706,20 @@ vehiculo_id (int): ID del vehículo al que se le asocian los errores.</p>
 </dd>
 </dl>
 <dl class="py attribute">
+<dt class="sig sig-object py" id="main.ErrorVehiculoRegistro.codigo_dtc">
+<span class="sig-name descname"><span class="pre">codigo_dtc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#main.ErrorVehiculoRegistro.codigo_dtc" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="main.ErrorVehiculoRegistro.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#main.ErrorVehiculoRegistro.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.ErrorVehiculoRegistro.vehiculo_id">
+<span class="sig-name descname"><span class="pre">vehiculo_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#main.ErrorVehiculoRegistro.vehiculo_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -324,6 +738,36 @@ creado_en (str): Fecha y hora de creación del informe (ISO format).</p>
 <dt>Relaciones:</dt><dd><p>vehiculo (Vehiculo): Vehículo asociado.</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.InformeCompartido.creado_en">
+<span class="sig-name descname"><span class="pre">creado_en</span></span><a class="headerlink" href="#main.InformeCompartido.creado_en" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.InformeCompartido.email_cliente">
+<span class="sig-name descname"><span class="pre">email_cliente</span></span><a class="headerlink" href="#main.InformeCompartido.email_cliente" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.InformeCompartido.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#main.InformeCompartido.id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.InformeCompartido.token">
+<span class="sig-name descname"><span class="pre">token</span></span><a class="headerlink" href="#main.InformeCompartido.token" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.InformeCompartido.vehiculo">
+<span class="sig-name descname"><span class="pre">vehiculo</span></span><a class="headerlink" href="#main.InformeCompartido.vehiculo" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.InformeCompartido.vehiculo_id">
+<span class="sig-name descname"><span class="pre">vehiculo_id</span></span><a class="headerlink" href="#main.InformeCompartido.vehiculo_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -335,6 +779,11 @@ creado_en (str): Fecha y hora de creación del informe (ISO format).</p>
 <dt>Atributos:</dt><dd><p>email (str): Dirección de email del cliente destinatario.</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.InformeRequest.email">
+<span class="sig-name descname"><span class="pre">email</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#main.InformeRequest.email" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="main.InformeRequest.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#main.InformeRequest.model_config" title="Link to this definition">¶</a></dt>
@@ -356,6 +805,26 @@ password_hash (str): Contraseña hasheada con bcrypt.</p>
 <dt>Relaciones:</dt><dd><p>vehiculos (List[Vehiculo]): Lista de vehículos registrados por el usuario.</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Usuario.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#main.Usuario.id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Usuario.password_hash">
+<span class="sig-name descname"><span class="pre">password_hash</span></span><a class="headerlink" href="#main.Usuario.password_hash" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Usuario.username">
+<span class="sig-name descname"><span class="pre">username</span></span><a class="headerlink" href="#main.Usuario.username" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Usuario.vehiculos">
+<span class="sig-name descname"><span class="pre">vehiculos</span></span><a class="headerlink" href="#main.Usuario.vehiculos" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -374,6 +843,16 @@ password (str): Contraseña en texto plano.</p>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.UsuarioLogin.password">
+<span class="sig-name descname"><span class="pre">password</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#main.UsuarioLogin.password" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.UsuarioLogin.username">
+<span class="sig-name descname"><span class="pre">username</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#main.UsuarioLogin.username" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -391,6 +870,16 @@ password (str): Contraseña en texto plano.</p>
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#main.UsuarioRegistro.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.UsuarioRegistro.password">
+<span class="sig-name descname"><span class="pre">password</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#main.UsuarioRegistro.password" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.UsuarioRegistro.username">
+<span class="sig-name descname"><span class="pre">username</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#main.UsuarioRegistro.username" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -415,6 +904,66 @@ errores (List[ErrorVehiculo]): Lista de errores asociados.
 informes_compartidos (List[InformeCompartido]): Informes generados con token público.</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Vehiculo.errores">
+<span class="sig-name descname"><span class="pre">errores</span></span><a class="headerlink" href="#main.Vehiculo.errores" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Vehiculo.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#main.Vehiculo.id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Vehiculo.informes_compartidos">
+<span class="sig-name descname"><span class="pre">informes_compartidos</span></span><a class="headerlink" href="#main.Vehiculo.informes_compartidos" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Vehiculo.marca">
+<span class="sig-name descname"><span class="pre">marca</span></span><a class="headerlink" href="#main.Vehiculo.marca" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Vehiculo.modelo">
+<span class="sig-name descname"><span class="pre">modelo</span></span><a class="headerlink" href="#main.Vehiculo.modelo" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Vehiculo.revision">
+<span class="sig-name descname"><span class="pre">revision</span></span><a class="headerlink" href="#main.Vehiculo.revision" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Vehiculo.rpm">
+<span class="sig-name descname"><span class="pre">rpm</span></span><a class="headerlink" href="#main.Vehiculo.rpm" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Vehiculo.usuario">
+<span class="sig-name descname"><span class="pre">usuario</span></span><a class="headerlink" href="#main.Vehiculo.usuario" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Vehiculo.usuario_id">
+<span class="sig-name descname"><span class="pre">usuario_id</span></span><a class="headerlink" href="#main.Vehiculo.usuario_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Vehiculo.velocidad">
+<span class="sig-name descname"><span class="pre">velocidad</span></span><a class="headerlink" href="#main.Vehiculo.velocidad" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Vehiculo.vin">
+<span class="sig-name descname"><span class="pre">vin</span></span><a class="headerlink" href="#main.Vehiculo.vin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Vehiculo.year">
+<span class="sig-name descname"><span class="pre">year</span></span><a class="headerlink" href="#main.Vehiculo.year" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -432,10 +981,40 @@ vin (str): Número VIN del vehículo.</p>
 </dd>
 </dl>
 <dl class="py attribute">
+<dt class="sig sig-object py" id="main.VehiculoEdicion.marca">
+<span class="sig-name descname"><span class="pre">marca</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#main.VehiculoEdicion.marca" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="main.VehiculoEdicion.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#main.VehiculoEdicion.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.VehiculoEdicion.modelo">
+<span class="sig-name descname"><span class="pre">modelo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#main.VehiculoEdicion.modelo" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.VehiculoEdicion.rpm">
+<span class="sig-name descname"><span class="pre">rpm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#main.VehiculoEdicion.rpm" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.VehiculoEdicion.velocidad">
+<span class="sig-name descname"><span class="pre">velocidad</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#main.VehiculoEdicion.velocidad" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.VehiculoEdicion.vin">
+<span class="sig-name descname"><span class="pre">vin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#main.VehiculoEdicion.vin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.VehiculoEdicion.year">
+<span class="sig-name descname"><span class="pre">year</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#main.VehiculoEdicion.year" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -455,10 +1034,45 @@ revision (dict): Detalles de la revisión técnica (estructura flexible).</p>
 </dd>
 </dl>
 <dl class="py attribute">
+<dt class="sig sig-object py" id="main.VehiculoRegistro.marca">
+<span class="sig-name descname"><span class="pre">marca</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#main.VehiculoRegistro.marca" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="main.VehiculoRegistro.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#main.VehiculoRegistro.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.VehiculoRegistro.modelo">
+<span class="sig-name descname"><span class="pre">modelo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#main.VehiculoRegistro.modelo" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.VehiculoRegistro.revision">
+<span class="sig-name descname"><span class="pre">revision</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#main.VehiculoRegistro.revision" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.VehiculoRegistro.rpm">
+<span class="sig-name descname"><span class="pre">rpm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#main.VehiculoRegistro.rpm" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.VehiculoRegistro.velocidad">
+<span class="sig-name descname"><span class="pre">velocidad</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#main.VehiculoRegistro.velocidad" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.VehiculoRegistro.vin">
+<span class="sig-name descname"><span class="pre">vin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#main.VehiculoRegistro.vin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.VehiculoRegistro.year">
+<span class="sig-name descname"><span class="pre">year</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#main.VehiculoRegistro.year" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -857,6 +1471,7 @@ revision (dict): Detalles de la revisión técnica (estructura flexible).</p>
 
 </section>
 </section>
+</section>
 
         </article>
       </div>
@@ -914,35 +1529,99 @@ revision (dict): Detalles de la revisión técnica (estructura flexible).</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Modelos de Datos</a><ul>
-<li><a class="reference internal" href="#modelos-orm-sqlalchemy">Modelos ORM (SQLAlchemy)</a></li>
-<li><a class="reference internal" href="#modelos-de-validacion-pydantic">Modelos de validación (Pydantic)</a><ul>
-<li><a class="reference internal" href="#main.Base"><code class="docutils literal notranslate"><span class="pre">Base</span></code></a></li>
-<li><a class="reference internal" href="#main.ErrorVehiculo"><code class="docutils literal notranslate"><span class="pre">ErrorVehiculo</span></code></a></li>
-<li><a class="reference internal" href="#main.ErrorVehiculoRegistro"><code class="docutils literal notranslate"><span class="pre">ErrorVehiculoRegistro</span></code></a><ul>
-<li><a class="reference internal" href="#main.ErrorVehiculoRegistro.model_config"><code class="docutils literal notranslate"><span class="pre">ErrorVehiculoRegistro.model_config</span></code></a></li>
+<li><a class="reference internal" href="#modelos-orm-sqlalchemy">Modelos ORM (SQLAlchemy)</a><ul>
+<li><a class="reference internal" href="#ejemplo-de-esquema-en-sql">Ejemplo de Esquema en SQL</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#main.InformeCompartido"><code class="docutils literal notranslate"><span class="pre">InformeCompartido</span></code></a></li>
+<li><a class="reference internal" href="#modelos-de-validacion-pydantic">Modelos de Validación (Pydantic)</a><ul>
+<li><a class="reference internal" href="#validaciones-clave">Validaciones Clave</a></li>
+<li><a class="reference internal" href="#ejemplo-de-uso-en-un-endpoint">Ejemplo de Uso en un Endpoint</a></li>
+<li><a class="reference internal" href="#referencia-automatica">Referencia Automática</a><ul>
+<li><a class="reference internal" href="#main.Base"><code class="docutils literal notranslate"><span class="pre">Base</span></code></a><ul>
+<li><a class="reference internal" href="#main.Base.metadata"><code class="docutils literal notranslate"><span class="pre">Base.metadata</span></code></a></li>
+<li><a class="reference internal" href="#main.Base.registry"><code class="docutils literal notranslate"><span class="pre">Base.registry</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#main.ErrorVehiculo"><code class="docutils literal notranslate"><span class="pre">ErrorVehiculo</span></code></a><ul>
+<li><a class="reference internal" href="#main.ErrorVehiculo.codigo_dtc"><code class="docutils literal notranslate"><span class="pre">ErrorVehiculo.codigo_dtc</span></code></a></li>
+<li><a class="reference internal" href="#main.ErrorVehiculo.id"><code class="docutils literal notranslate"><span class="pre">ErrorVehiculo.id</span></code></a></li>
+<li><a class="reference internal" href="#main.ErrorVehiculo.vehiculo"><code class="docutils literal notranslate"><span class="pre">ErrorVehiculo.vehiculo</span></code></a></li>
+<li><a class="reference internal" href="#main.ErrorVehiculo.vehiculo_id"><code class="docutils literal notranslate"><span class="pre">ErrorVehiculo.vehiculo_id</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#main.ErrorVehiculoRegistro"><code class="docutils literal notranslate"><span class="pre">ErrorVehiculoRegistro</span></code></a><ul>
+<li><a class="reference internal" href="#main.ErrorVehiculoRegistro.codigo_dtc"><code class="docutils literal notranslate"><span class="pre">ErrorVehiculoRegistro.codigo_dtc</span></code></a></li>
+<li><a class="reference internal" href="#main.ErrorVehiculoRegistro.model_config"><code class="docutils literal notranslate"><span class="pre">ErrorVehiculoRegistro.model_config</span></code></a></li>
+<li><a class="reference internal" href="#main.ErrorVehiculoRegistro.vehiculo_id"><code class="docutils literal notranslate"><span class="pre">ErrorVehiculoRegistro.vehiculo_id</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#main.InformeCompartido"><code class="docutils literal notranslate"><span class="pre">InformeCompartido</span></code></a><ul>
+<li><a class="reference internal" href="#main.InformeCompartido.creado_en"><code class="docutils literal notranslate"><span class="pre">InformeCompartido.creado_en</span></code></a></li>
+<li><a class="reference internal" href="#main.InformeCompartido.email_cliente"><code class="docutils literal notranslate"><span class="pre">InformeCompartido.email_cliente</span></code></a></li>
+<li><a class="reference internal" href="#main.InformeCompartido.id"><code class="docutils literal notranslate"><span class="pre">InformeCompartido.id</span></code></a></li>
+<li><a class="reference internal" href="#main.InformeCompartido.token"><code class="docutils literal notranslate"><span class="pre">InformeCompartido.token</span></code></a></li>
+<li><a class="reference internal" href="#main.InformeCompartido.vehiculo"><code class="docutils literal notranslate"><span class="pre">InformeCompartido.vehiculo</span></code></a></li>
+<li><a class="reference internal" href="#main.InformeCompartido.vehiculo_id"><code class="docutils literal notranslate"><span class="pre">InformeCompartido.vehiculo_id</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#main.InformeRequest"><code class="docutils literal notranslate"><span class="pre">InformeRequest</span></code></a><ul>
+<li><a class="reference internal" href="#main.InformeRequest.email"><code class="docutils literal notranslate"><span class="pre">InformeRequest.email</span></code></a></li>
 <li><a class="reference internal" href="#main.InformeRequest.model_config"><code class="docutils literal notranslate"><span class="pre">InformeRequest.model_config</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#main.Usuario"><code class="docutils literal notranslate"><span class="pre">Usuario</span></code></a></li>
+<li><a class="reference internal" href="#main.Usuario"><code class="docutils literal notranslate"><span class="pre">Usuario</span></code></a><ul>
+<li><a class="reference internal" href="#main.Usuario.id"><code class="docutils literal notranslate"><span class="pre">Usuario.id</span></code></a></li>
+<li><a class="reference internal" href="#main.Usuario.password_hash"><code class="docutils literal notranslate"><span class="pre">Usuario.password_hash</span></code></a></li>
+<li><a class="reference internal" href="#main.Usuario.username"><code class="docutils literal notranslate"><span class="pre">Usuario.username</span></code></a></li>
+<li><a class="reference internal" href="#main.Usuario.vehiculos"><code class="docutils literal notranslate"><span class="pre">Usuario.vehiculos</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#main.UsuarioLogin"><code class="docutils literal notranslate"><span class="pre">UsuarioLogin</span></code></a><ul>
 <li><a class="reference internal" href="#main.UsuarioLogin.model_config"><code class="docutils literal notranslate"><span class="pre">UsuarioLogin.model_config</span></code></a></li>
+<li><a class="reference internal" href="#main.UsuarioLogin.password"><code class="docutils literal notranslate"><span class="pre">UsuarioLogin.password</span></code></a></li>
+<li><a class="reference internal" href="#main.UsuarioLogin.username"><code class="docutils literal notranslate"><span class="pre">UsuarioLogin.username</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#main.UsuarioRegistro"><code class="docutils literal notranslate"><span class="pre">UsuarioRegistro</span></code></a><ul>
 <li><a class="reference internal" href="#main.UsuarioRegistro.model_config"><code class="docutils literal notranslate"><span class="pre">UsuarioRegistro.model_config</span></code></a></li>
+<li><a class="reference internal" href="#main.UsuarioRegistro.password"><code class="docutils literal notranslate"><span class="pre">UsuarioRegistro.password</span></code></a></li>
+<li><a class="reference internal" href="#main.UsuarioRegistro.username"><code class="docutils literal notranslate"><span class="pre">UsuarioRegistro.username</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#main.Vehiculo"><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code></a></li>
+<li><a class="reference internal" href="#main.Vehiculo"><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code></a><ul>
+<li><a class="reference internal" href="#main.Vehiculo.errores"><code class="docutils literal notranslate"><span class="pre">Vehiculo.errores</span></code></a></li>
+<li><a class="reference internal" href="#main.Vehiculo.id"><code class="docutils literal notranslate"><span class="pre">Vehiculo.id</span></code></a></li>
+<li><a class="reference internal" href="#main.Vehiculo.informes_compartidos"><code class="docutils literal notranslate"><span class="pre">Vehiculo.informes_compartidos</span></code></a></li>
+<li><a class="reference internal" href="#main.Vehiculo.marca"><code class="docutils literal notranslate"><span class="pre">Vehiculo.marca</span></code></a></li>
+<li><a class="reference internal" href="#main.Vehiculo.modelo"><code class="docutils literal notranslate"><span class="pre">Vehiculo.modelo</span></code></a></li>
+<li><a class="reference internal" href="#main.Vehiculo.revision"><code class="docutils literal notranslate"><span class="pre">Vehiculo.revision</span></code></a></li>
+<li><a class="reference internal" href="#main.Vehiculo.rpm"><code class="docutils literal notranslate"><span class="pre">Vehiculo.rpm</span></code></a></li>
+<li><a class="reference internal" href="#main.Vehiculo.usuario"><code class="docutils literal notranslate"><span class="pre">Vehiculo.usuario</span></code></a></li>
+<li><a class="reference internal" href="#main.Vehiculo.usuario_id"><code class="docutils literal notranslate"><span class="pre">Vehiculo.usuario_id</span></code></a></li>
+<li><a class="reference internal" href="#main.Vehiculo.velocidad"><code class="docutils literal notranslate"><span class="pre">Vehiculo.velocidad</span></code></a></li>
+<li><a class="reference internal" href="#main.Vehiculo.vin"><code class="docutils literal notranslate"><span class="pre">Vehiculo.vin</span></code></a></li>
+<li><a class="reference internal" href="#main.Vehiculo.year"><code class="docutils literal notranslate"><span class="pre">Vehiculo.year</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#main.VehiculoEdicion"><code class="docutils literal notranslate"><span class="pre">VehiculoEdicion</span></code></a><ul>
+<li><a class="reference internal" href="#main.VehiculoEdicion.marca"><code class="docutils literal notranslate"><span class="pre">VehiculoEdicion.marca</span></code></a></li>
 <li><a class="reference internal" href="#main.VehiculoEdicion.model_config"><code class="docutils literal notranslate"><span class="pre">VehiculoEdicion.model_config</span></code></a></li>
+<li><a class="reference internal" href="#main.VehiculoEdicion.modelo"><code class="docutils literal notranslate"><span class="pre">VehiculoEdicion.modelo</span></code></a></li>
+<li><a class="reference internal" href="#main.VehiculoEdicion.rpm"><code class="docutils literal notranslate"><span class="pre">VehiculoEdicion.rpm</span></code></a></li>
+<li><a class="reference internal" href="#main.VehiculoEdicion.velocidad"><code class="docutils literal notranslate"><span class="pre">VehiculoEdicion.velocidad</span></code></a></li>
+<li><a class="reference internal" href="#main.VehiculoEdicion.vin"><code class="docutils literal notranslate"><span class="pre">VehiculoEdicion.vin</span></code></a></li>
+<li><a class="reference internal" href="#main.VehiculoEdicion.year"><code class="docutils literal notranslate"><span class="pre">VehiculoEdicion.year</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#main.VehiculoRegistro"><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro</span></code></a><ul>
+<li><a class="reference internal" href="#main.VehiculoRegistro.marca"><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro.marca</span></code></a></li>
 <li><a class="reference internal" href="#main.VehiculoRegistro.model_config"><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro.model_config</span></code></a></li>
+<li><a class="reference internal" href="#main.VehiculoRegistro.modelo"><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro.modelo</span></code></a></li>
+<li><a class="reference internal" href="#main.VehiculoRegistro.revision"><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro.revision</span></code></a></li>
+<li><a class="reference internal" href="#main.VehiculoRegistro.rpm"><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro.rpm</span></code></a></li>
+<li><a class="reference internal" href="#main.VehiculoRegistro.velocidad"><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro.velocidad</span></code></a></li>
+<li><a class="reference internal" href="#main.VehiculoRegistro.vin"><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro.vin</span></code></a></li>
+<li><a class="reference internal" href="#main.VehiculoRegistro.year"><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro.year</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#main.crear_informe"><code class="docutils literal notranslate"><span class="pre">crear_informe()</span></code></a></li>
@@ -962,6 +1641,8 @@ revision (dict): Detalles de la revisión técnica (estructura flexible).</p>
 <li><a class="reference internal" href="#main.saludo"><code class="docutils literal notranslate"><span class="pre">saludo()</span></code></a></li>
 <li><a class="reference internal" href="#main.ver_informe"><code class="docutils literal notranslate"><span class="pre">ver_informe()</span></code></a></li>
 <li><a class="reference internal" href="#main.verificar_password"><code class="docutils literal notranslate"><span class="pre">verificar_password()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

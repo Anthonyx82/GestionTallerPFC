@@ -246,59 +246,57 @@
         <article role="main" id="furo-main-content">
           <section id="taller-api-documentation">
 <h1>Taller API documentation<a class="headerlink" href="#taller-api-documentation" title="Link to this heading">¶</a></h1>
-<p>Add your content using <code class="docutils literal notranslate"><span class="pre">reStructuredText</span></code> syntax. See the
-<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText</a>
-documentation for details.</p>
+<p>Bienvenido al sistema de documentación de la API de gestión de vehículos e informes de diagnóstico. Aquí encontrarás toda la información necesaria para entender cómo consumir nuestros endpoints, los modelos de datos y la configuración del proyecto.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contenido:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="introduccion.html">Introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduccion.html">Introducción</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduccion.html#publico-objetivo">Público Objetivo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduccion.html#tecnologias-principales">Tecnologías Principales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduccion.html#estructura-de-la-documentacion">Estructura de la Documentación</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduccion.html#requisitos-previos">Requisitos Previos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduccion.html#buenas-practicas">Buenas Prácticas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduccion.html#licencia-y-contribucion">Licencia y Contribución</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduccion.html#contacto">Contacto</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="endpoints.html">Endpoints de la API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.Base"><code class="docutils literal notranslate"><span class="pre">Base</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.ErrorVehiculo"><code class="docutils literal notranslate"><span class="pre">ErrorVehiculo</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.ErrorVehiculoRegistro"><code class="docutils literal notranslate"><span class="pre">ErrorVehiculoRegistro</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.InformeCompartido"><code class="docutils literal notranslate"><span class="pre">InformeCompartido</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.InformeRequest"><code class="docutils literal notranslate"><span class="pre">InformeRequest</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.Usuario"><code class="docutils literal notranslate"><span class="pre">Usuario</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.UsuarioLogin"><code class="docutils literal notranslate"><span class="pre">UsuarioLogin</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.UsuarioRegistro"><code class="docutils literal notranslate"><span class="pre">UsuarioRegistro</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.Vehiculo"><code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.VehiculoEdicion"><code class="docutils literal notranslate"><span class="pre">VehiculoEdicion</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.VehiculoRegistro"><code class="docutils literal notranslate"><span class="pre">VehiculoRegistro</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.crear_informe"><code class="docutils literal notranslate"><span class="pre">crear_informe()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.crear_token"><code class="docutils literal notranslate"><span class="pre">crear_token()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.editar_vehiculo"><code class="docutils literal notranslate"><span class="pre">editar_vehiculo()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.eliminar_vehiculo"><code class="docutils literal notranslate"><span class="pre">eliminar_vehiculo()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.fm"><code class="docutils literal notranslate"><span class="pre">fm</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.get_car_image"><code class="docutils literal notranslate"><span class="pre">get_car_image()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.get_db"><code class="docutils literal notranslate"><span class="pre">get_db()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.guardar_errores"><code class="docutils literal notranslate"><span class="pre">guardar_errores()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.guardar_vehiculo"><code class="docutils literal notranslate"><span class="pre">guardar_vehiculo()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.login"><code class="docutils literal notranslate"><span class="pre">login()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.obtener_errores"><code class="docutils literal notranslate"><span class="pre">obtener_errores()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.obtener_usuario_desde_token"><code class="docutils literal notranslate"><span class="pre">obtener_usuario_desde_token()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.obtener_vehiculo"><code class="docutils literal notranslate"><span class="pre">obtener_vehiculo()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.obtener_vehiculos"><code class="docutils literal notranslate"><span class="pre">obtener_vehiculos()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.register"><code class="docutils literal notranslate"><span class="pre">register()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.saludo"><code class="docutils literal notranslate"><span class="pre">saludo()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.ver_informe"><code class="docutils literal notranslate"><span class="pre">ver_informe()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="endpoints.html#main.verificar_password"><code class="docutils literal notranslate"><span class="pre">verificar_password()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="endpoints.html#autenticacion-y-usuarios">Autenticación y Usuarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="endpoints.html#gestion-de-vehiculos">Gestión de Vehículos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="endpoints.html#gestion-de-errores-obd-ii">Gestión de Errores OBD-II</a></li>
+<li class="toctree-l2"><a class="reference internal" href="endpoints.html#generacion-y-consulta-de-informes">Generación y Consulta de Informes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="endpoints.html#servicio-de-imagenes-de-vehiculo">Servicio de Imágenes de Vehículo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="endpoints.html#endpoint-de-prueba-salud">Endpoint de Prueba / Salud</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modelos.html">Modelos de Datos</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modelos.html#modelos-orm-sqlalchemy">Modelos ORM (SQLAlchemy)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modelos.html#modelos-de-validacion-pydantic">Modelos de validación (Pydantic)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modelos.html#modelos-de-validacion-pydantic">Modelos de Validación (Pydantic)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuracion.html">Configuración del Proyecto</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuracion.html#configuracion-de-entorno">Configuración de Entorno</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuracion.html#base-de-datos">Base de Datos</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuracion.html#correo-electronico">Correo Electrónico</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuracion.html#seguridad">Seguridad</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuracion.html#dependencias-reutilizables">Dependencias reutilizables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuracion.html#autenticacion-y-usuarios">Autenticación y Usuarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuracion.html#gestion-de-vehiculos">Gestión de Vehículos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuracion.html#gestion-de-errores-obd-ii">Gestión de Errores OBD-II</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuracion.html#generacion-y-consulta-de-informes">Generación y Consulta de Informes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuracion.html#servicio-de-imagenes-de-vehiculo">Servicio de Imágenes de Vehículo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuracion.html#endpoint-de-prueba-salud">Endpoint de Prueba / Salud</a></li>
 </ul>
 </li>
 </ul>
 </div>
+<p>Esta documentación está estructurada de la siguiente manera:</p>
+<ul class="simple">
+<li><p><strong>Introducción</strong>: visión general del proyecto, tecnologías utilizadas y objetivos.</p></li>
+<li><p><strong>Endpoints</strong>: listado completo de rutas disponibles, con ejemplos, parámetros y respuestas.</p></li>
+<li><p><strong>Modelos de Datos</strong>: descripción de las entidades ORM (SQLAlchemy) y los esquemas de validación (Pydantic).</p></li>
+<li><p><strong>Configuración</strong>: detalles sobre variables de entorno, conexión a bases de datos, correo electrónico, JWT y seguridad.</p></li>
+</ul>
 </section>
 
         </article>

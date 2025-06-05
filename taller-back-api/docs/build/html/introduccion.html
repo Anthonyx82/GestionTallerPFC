@@ -178,7 +178,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -238,7 +238,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -246,24 +246,109 @@
         <article role="main" id="furo-main-content">
           <section id="introduccion">
 <h1>Introducción<a class="headerlink" href="#introduccion" title="Link to this heading">¶</a></h1>
-<p>Bienvenido a la documentación técnica de la API de gestión de vehículos e informes de diagnóstico.</p>
-<p>Este sistema permite registrar usuarios, añadir vehículos, capturar errores OBD-II (DTC), generar informes personalizados y compartirlos mediante enlaces públicos enviados por correo electrónico.</p>
-<p>Tecnologías utilizadas:</p>
+<p>Bienvenido a la documentación técnica de la <strong>API de gestión de vehículos e informes de diagnóstico</strong>. Esta API permite:</p>
 <ul class="simple">
-<li><p><strong>FastAPI</strong>: para la creación de endpoints RESTful modernos.</p></li>
-<li><p><strong>SQLAlchemy</strong>: ORM para gestión de base de datos relacional.</p></li>
-<li><p><strong>Pydantic</strong>: validación de datos.</p></li>
-<li><p><strong>JWT (JSON Web Tokens)</strong>: autenticación y autorización.</p></li>
-<li><p><strong>FastAPI-Mail</strong>: envío de correos con informes.</p></li>
-<li><p><strong>MySQL</strong>: base de datos principal.</p></li>
-<li><p><strong>Sphinx</strong>: generación de esta documentación.</p></li>
+<li><p>Registrar usuarios y autenticarlos mediante JWT.</p></li>
+<li><p>Añadir vehículos a la cuenta de usuario, junto con sus datos OBD-II en tiempo real.</p></li>
+<li><p>Almacenar y consultar errores OBD-II (códigos DTC) asociados a cada vehículo.</p></li>
+<li><p>Generar informes de diagnóstico y enviarlos por correo a los clientes.</p></li>
+<li><p>Compartir informes mediante enlaces públicos protegidos con un token UUID.</p></li>
 </ul>
-<p>Esta documentación se divide en las siguientes secciones:</p>
+<section id="publico-objetivo">
+<h2>Público Objetivo<a class="headerlink" href="#publico-objetivo" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Descripción de los endpoints disponibles.</p></li>
-<li><p>Modelos de datos (ORM y Pydantic).</p></li>
-<li><p>Configuración del sistema (DB, correo, JWT, etc.).</p></li>
+<li><p>Desarrolladores que estén integrando una solución de telemetría OBD-II.</p></li>
+<li><p>Equipos de soporte técnico que necesiten generar y enviar informes de fallos a clientes.</p></li>
+<li><p>Administradores de flotas que quieran mantener un registro de diagnósticos remotos.</p></li>
 </ul>
+</section>
+<section id="tecnologias-principales">
+<h2>Tecnologías Principales<a class="headerlink" href="#tecnologias-principales" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>FastAPI</strong>:
+- Framework web para construir APIs RESTful de alto rendimiento.
+- Documentación automática en Swagger (<code class="docutils literal notranslate"><span class="pre">/docs</span></code>) y ReDoc (<code class="docutils literal notranslate"><span class="pre">/redoc</span></code>).</p></li>
+<li><p><strong>SQLAlchemy</strong>:
+- ORM para gestionar la base de datos relacional MySQL.
+- Modelado de entidades como <code class="docutils literal notranslate"><span class="pre">Usuario</span></code>, <code class="docutils literal notranslate"><span class="pre">Vehiculo</span></code>, <code class="docutils literal notranslate"><span class="pre">ErrorVehiculo</span></code> e <code class="docutils literal notranslate"><span class="pre">InformeCompartido</span></code>.</p></li>
+<li><p><strong>Pydantic</strong>:
+- Validación y serialización de datos en entradas y respuestas.</p></li>
+<li><p><strong>JWT (JSON Web Tokens)</strong>:
+- Autenticación sin estado (stateless).
+- Expiración configurable.</p></li>
+<li><p><strong>FastAPI-Mail</strong>:
+- Envío de correos electrónicos con plantillas HTML para los informes.
+- Compatible con TLS/SSL y validación de certificados.</p></li>
+<li><p><strong>MySQL</strong>:
+- Sistema de gestión de base de datos relacional.
+- Se puede ajustar el motor/host/credenciales a través de <code class="docutils literal notranslate"><span class="pre">DATABASE_URL</span></code>.</p></li>
+<li><p><strong>Sphinx</strong>:
+- Generación de la documentación estática en formato HTML/Markdown/PDF.
+- Uso de directivas como <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">automodule::</span></code> para extraer docstrings de <code class="docutils literal notranslate"><span class="pre">main.py</span></code>.</p></li>
+</ul>
+</section>
+<section id="estructura-de-la-documentacion">
+<h2>Estructura de la Documentación<a class="headerlink" href="#estructura-de-la-documentacion" title="Link to this heading">¶</a></h2>
+<p>Esta documentación se divide en:</p>
+<ol class="arabic simple">
+<li><p><strong>Introducción</strong>: visión global, tecnologías y esquema de carpetas.</p></li>
+<li><p><strong>Endpoints</strong>: descripción detallada de cada ruta, sus parámetros y ejemplos.</p></li>
+<li><p><strong>Modelos de Datos</strong>: descripción de cada clase ORM y modelo Pydantic.</p></li>
+<li><p><strong>Configuración</strong>: variables de entorno necesarias y explicación de la configuración del proyecto.</p></li>
+</ol>
+</section>
+<section id="requisitos-previos">
+<h2>Requisitos Previos<a class="headerlink" href="#requisitos-previos" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Python 3.9+</p></li>
+<li><p>MySQL (o servidor compatible)</p></li>
+<li><p>Dependencias del proyecto definidas en <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> (FastAPI, SQLAlchemy, Pydantic, FastAPI-Mail, python-dotenv, etc.)</p></li>
+</ul>
+<p>Para ejecutar localmente:</p>
+<ol class="arabic">
+<li><p>Clona el repositorio.</p></li>
+<li><p>Crea un entorno virtual:
+<code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">venv</span> <span class="pre">venv</span>
+<span class="pre">source</span> <span class="pre">venv/bin/activate</span>
+<span class="pre">`</span></code></p></li>
+<li><p>Instala las dependencias del proyecto:
+<code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements.txt</span>
+<span class="pre">`</span></code></p></li>
+<li><p>Configura las variables de entorno necesarias creando un archivo <cite>.env</cite> en la raíz del proyecto. Puedes usar como base un archivo <cite>env.example</cite>.</p></li>
+<li><p>Ejecuta la aplicación usando Uvicorn:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">uvicorn</span> <span class="pre">main:app</span> <span class="pre">--reload</span>
+<span class="pre">`</span></code></p>
+</li>
+</ol>
+</section>
+<section id="buenas-practicas">
+<h2>Buenas Prácticas<a class="headerlink" href="#buenas-practicas" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Mantén las variables de entorno fuera del control de versiones (<cite>.gitignore</cite>).</p></li>
+<li><p>Usa HTTPS y certificados válidos en producción.</p></li>
+<li><p>Cambia la clave <cite>SECRET_KEY</cite> y el <cite>ALGORITHM</cite> antes de desplegar.</p></li>
+<li><p>Implementa control de errores en el frontend para manejar respuestas <cite>401</cite>, <cite>403</cite>, <cite>422</cite>, etc.</p></li>
+<li><p>Revisa los logs para rastrear errores en endpoints como <cite>/crear-informe/</cite>.</p></li>
+</ul>
+</section>
+<section id="licencia-y-contribucion">
+<h2>Licencia y Contribución<a class="headerlink" href="#licencia-y-contribucion" title="Link to this heading">¶</a></h2>
+<p>Este proyecto se entrega con fines educativos y está licenciado bajo los términos definidos en el archivo <cite>LICENSE</cite>.</p>
+<p>Si deseas contribuir:</p>
+<ul class="simple">
+<li><p>Realiza un fork del repositorio.</p></li>
+<li><p>Crea una rama para tu mejora o corrección: <cite>git checkout -b feature/nombre</cite>.</p></li>
+<li><p>Haz tus commits siguiendo buenas prácticas de formato y mensajes.</p></li>
+<li><p>Envía un Pull Request para revisión.</p></li>
+</ul>
+</section>
+<section id="contacto">
+<h2>Contacto<a class="headerlink" href="#contacto" title="Link to this heading">¶</a></h2>
+<p>Para dudas, errores o sugerencias, puedes abrir un issue en GitHub o contactar directamente con el equipo de desarrollo.</p>
+</section>
 </section>
 
         </article>
@@ -309,8 +394,33 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Introducción</a><ul>
+<li><a class="reference internal" href="#publico-objetivo">Público Objetivo</a></li>
+<li><a class="reference internal" href="#tecnologias-principales">Tecnologías Principales</a></li>
+<li><a class="reference internal" href="#estructura-de-la-documentacion">Estructura de la Documentación</a></li>
+<li><a class="reference internal" href="#requisitos-previos">Requisitos Previos</a></li>
+<li><a class="reference internal" href="#buenas-practicas">Buenas Prácticas</a></li>
+<li><a class="reference internal" href="#licencia-y-contribucion">Licencia y Contribución</a></li>
+<li><a class="reference internal" href="#contacto">Contacto</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
