@@ -22,12 +22,25 @@ load_dotenv()
 import os
 
 # Configuración de la base de datos
+"""
+Configuración de la base de datos:
+
+- Se establece la conexión con el motor de base de datos (MySQL por defecto).
+- Se define `SessionLocal` como el generador de sesiones SQLAlchemy.
+- `Base` se utiliza como clase base para los modelos ORM declarativos.
+"""
 DATABASE_URL = os.getenv("DATABASE_URL", "mysql+pymysql://user:password@db/talleres")
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 # Configuracion del servidor de correo
+"""
+Configuración del sistema de envío de correos (FastAPI Mail):
+
+- Las credenciales y parámetros se cargan desde variables de entorno.
+- `FastMail` se instancia con esta configuración para ser usado en envíos.
+"""
 conf = ConnectionConfig(
     MAIL_USERNAME=os.getenv("MAIL_USERNAME"),
     MAIL_PASSWORD=os.getenv("MAIL_PASSWORD"),
@@ -43,6 +56,13 @@ conf = ConnectionConfig(
 fm = FastMail(conf)
 
 # Clave secreta y configuración de JWT
+"""
+Configuración de seguridad:
+
+- `SECRET_KEY`, `ALGORITHM` y tiempo de expiración definen la seguridad del JWT.
+- `pwd_context` se usa para hashear contraseñas con bcrypt.
+- `oauth2_scheme` se usa como dependencia para extraer el token del header Authorization.
+"""
 SECRET_KEY = "clave-secreta-super-segura"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 300
@@ -55,6 +75,17 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 # Modelos de la base de datos
 class Usuario(Base):
+    """
+    Modelo ORM que representa a los usuarios del sistema.
+
+    Atributos:
+        id (int): ID autoincremental (clave primaria).
+        username (str): Nombre de usuario, único.
+        password_hash (str): Contraseña hasheada con bcrypt.
+
+    Relaciones:
+        vehiculos (List[Vehiculo]): Lista de vehículos registrados por el usuario.
+    """
     __tablename__ = "usuarios"
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(255), unique=True, index=True)
@@ -64,6 +95,25 @@ class Usuario(Base):
     vehiculos = relationship("Vehiculo", back_populates="usuario")
 
 class Vehiculo(Base):
+    """
+    Modelo ORM que representa un vehículo registrado.
+
+    Atributos:
+        id (int): ID del vehículo.
+        marca (str): Marca del vehículo.
+        modelo (str): Modelo del vehículo.
+        year (int): Año de fabricación.
+        rpm (int): Revoluciones por minuto.
+        velocidad (int): Velocidad actual.
+        vin (str): Número VIN único del vehículo.
+        revision (str): Información de revisión técnica.
+        usuario_id (int): ID del usuario al que pertenece el vehículo.
+
+    Relaciones:
+        usuario (Usuario): Usuario propietario.
+        errores (List[ErrorVehiculo]): Lista de errores asociados.
+        informes_compartidos (List[InformeCompartido]): Informes generados con token público.
+    """
     __tablename__ = "vehiculos"
     id = Column(Integer, primary_key=True, index=True)
     marca = Column(String(255), index=True)
@@ -86,6 +136,17 @@ class Vehiculo(Base):
 
 
 class ErrorVehiculo(Base):
+    """
+    Modelo ORM que almacena los errores OBD-II (códigos DTC) de un vehículo.
+
+    Atributos:
+        id (int): ID del error.
+        vehiculo_id (int): ID del vehículo asociado.
+        codigo_dtc (str): Código de diagnóstico (ej. P0301).
+
+    Relaciones:
+        vehiculo (Vehiculo): Vehículo asociado.
+    """
     __tablename__ = "errores_vehiculos"
     id = Column(Integer, primary_key=True, index=True)
     vehiculo_id = Column(Integer, ForeignKey('vehiculos.id'))  # FK hacia Vehiculo
@@ -95,6 +156,19 @@ class ErrorVehiculo(Base):
     vehiculo = relationship("Vehiculo", back_populates="errores")
 
 class InformeCompartido(Base):
+    """
+    Modelo ORM que representa un informe compartido con un cliente por email.
+
+    Atributos:
+        id (int): ID del informe.
+        token (str): Token único para acceder al informe.
+        vehiculo_id (int): ID del vehículo relacionado.
+        email_cliente (str): Email al que se envía el informe.
+        creado_en (str): Fecha y hora de creación del informe (ISO format).
+
+    Relaciones:
+        vehiculo (Vehiculo): Vehículo asociado.
+    """
     __tablename__ = "informes_compartidos"
     id = Column(Integer, primary_key=True)
     token = Column(String(100), unique=True, index=True, default=lambda: str(uuid.uuid4()))
@@ -122,6 +196,11 @@ app.add_middleware(
 
 # Dependencia para obtener la sesión de la base de datos
 def get_db():
+    """
+    Dependencia de FastAPI para obtener una sesión de base de datos.
+
+    Se utiliza con `Depends(get_db)` para abrir una sesión, cederla al endpoint y cerrarla automáticamente.
+    """
     db = SessionLocal()
     try:
         yield db
@@ -130,16 +209,52 @@ def get_db():
 
 # Función para verificar contraseña
 def verificar_password(plain_password, hashed_password):
+    """
+    Verifica si una contraseña en texto plano coincide con su hash almacenado.
+
+    Args:
+        password_plano (str): Contraseña proporcionada por el usuario.
+        password_hash (str): Hash almacenado en la base de datos.
+
+    Returns:
+        bool: True si coinciden, False si no.
+    """
     return pwd_context.verify(plain_password, hashed_password)
 
 # Función para generar tokens
 def crear_token(data: dict, expira_en: int = ACCESS_TOKEN_EXPIRE_MINUTES):
+    """
+    Genera un token JWT con los datos proporcionados y un tiempo de expiración opcional.
+
+    Args:
+        datos (dict): Datos a incluir en el payload del token.
+        tiempo_expiracion (Optional[timedelta]): Tiempo personalizado de expiración. Si no se especifica, se usarán 30 minutos por defecto.
+
+    Returns:
+        str: Token JWT firmado.
+
+    Raises:
+        Exception: Si hay un error al codificar el token.
+    """
     to_encode = data.copy()
     to_encode.update({"exp": datetime.utcnow() + timedelta(minutes=expira_en)})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 # Función para verificar token
 def obtener_usuario_desde_token(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    """
+    Extrae y valida el usuario actual a partir del token JWT proporcionado.
+
+    Args:
+        token (str): Token JWT incluido en el encabezado de autorización.
+        db (Session): Sesión de base de datos.
+
+    Returns:
+        Usuario: Instancia del usuario autenticado.
+
+    Raises:
+        HTTPException 401: Si el token es inválido o ha expirado.
+    """
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username = payload.get("sub")
@@ -152,14 +267,40 @@ def obtener_usuario_desde_token(token: str = Depends(oauth2_scheme), db: Session
 
 # Modelos Pydantic para peticiones
 class UsuarioRegistro(BaseModel):
+    """
+    Modelo de solicitud para registrar un nuevo usuario.
+
+    Atributos:
+        username (str): Nombre de usuario.
+        password (str): Contraseña en texto plano.
+    """
     username: str
     password: str
 
 class UsuarioLogin(BaseModel):
+    """
+    Modelo de solicitud para iniciar sesión de usuario.
+
+    Atributos:
+        username (str): Nombre de usuario.
+        password (str): Contraseña en texto plano.
+    """
     username: str
     password: str
 
 class VehiculoRegistro(BaseModel):
+    """
+    Modelo de solicitud para registrar un nuevo vehículo.
+
+    Atributos:
+        marca (str): Marca del vehículo.
+        modelo (str): Modelo del vehículo.
+        year (int): Año del vehículo.
+        rpm (int): RPM del motor.
+        velocidad (int): Velocidad del vehículo.
+        vin (str): Número VIN único del vehículo.
+        revision (dict): Detalles de la revisión técnica (estructura flexible).
+    """
     marca: str
     modelo: str
     year: int
@@ -168,14 +309,18 @@ class VehiculoRegistro(BaseModel):
     vin: str
     revision: dict
 
-class ErrorVehiculoRegistro(BaseModel):
-    codigo_dtc: list[str]
-    vehiculo_id: int
-    
-class InformeRequest(BaseModel):
-    email: str
-    
 class VehiculoEdicion(BaseModel):
+    """
+    Modelo de solicitud para editar un vehículo existente.
+
+    Atributos:
+        marca (str): Marca del vehículo.
+        modelo (str): Modelo del vehículo.
+        year (int): Año de fabricación.
+        rpm (int): Revoluciones por minuto.
+        velocidad (int): Velocidad actual.
+        vin (str): Número VIN del vehículo.
+    """
     marca: str
     modelo: str
     year: int
@@ -183,9 +328,43 @@ class VehiculoEdicion(BaseModel):
     velocidad: int
     vin: str
 
+class ErrorVehiculoRegistro(BaseModel):
+    """
+    Modelo de solicitud para registrar errores OBD-II de un vehículo.
+
+    Atributos:
+        codigo_dtc (list[str]): Lista de códigos DTC (códigos de diagnóstico).
+        vehiculo_id (int): ID del vehículo al que se le asocian los errores.
+    """
+    codigo_dtc: list[str]
+    vehiculo_id: int
+    
+class InformeRequest(BaseModel):
+    """
+    Modelo de solicitud para generar y enviar un informe por correo.
+
+    Atributos:
+        email (str): Dirección de email del cliente destinatario.
+    """
+    email: str
+    
+
 # Endpoint para registro de usuario
 @app.post("/register")
 def register(datos: UsuarioRegistro, db: Session = Depends(get_db)):
+    """
+    Registra un nuevo usuario en la base de datos.
+
+    Args:
+        datos (UsuarioRegistro): Objeto que contiene el nombre de usuario y la contraseña.
+        db (Session): Sesión activa de la base de datos, proporcionada por FastAPI.
+
+    Returns:
+        dict: Un mensaje indicando si el usuario fue registrado exitosamente.
+
+    Raises:
+        HTTPException 400: Si los campos son inválidos o el nombre de usuario ya existe.
+    """
     if not datos.username or len(datos.username.strip()) < 3:
         raise HTTPException(status_code=400, detail="El nombre de usuario es obligatorio y debe tener al menos 3 caracteres.")
     if not datos.password or len(datos.password) < 6:
@@ -204,6 +383,21 @@ def register(datos: UsuarioRegistro, db: Session = Depends(get_db)):
 # Endpoint para autenticación y obtención del token JWT
 @app.post("/login")
 def login(datos: UsuarioLogin, db: Session = Depends(get_db)):
+    """
+    Autentica al usuario y devuelve un token JWT válido.
+
+    Args:
+        datos (UsuarioLogin): Credenciales de usuario.
+        db (Session): Sesión activa de la base de datos.
+
+    Returns:
+        dict: Token JWT si la autenticación fue exitosa.
+
+    Raises:
+        HTTPException 400: Datos inválidos.
+        HTTPException 401: Usuario no encontrado o contraseña incorrecta.
+        HTTPException 500: Error al generar el token.
+    """
     if not datos.username or len(datos.username.strip()) < 3:
         raise HTTPException(status_code=400, detail="Debes ingresar un nombre de usuario válido.")
     
@@ -227,11 +421,21 @@ def login(datos: UsuarioLogin, db: Session = Depends(get_db)):
 
 # Endpoint para que el cliente de Python envíe datos OBD-II
 @app.post("/guardar-vehiculo/")
-def guardar_vehiculo(
-    datos: VehiculoRegistro, 
-    usuario: Usuario = Depends(obtener_usuario_desde_token), 
-    db: Session = Depends(get_db)
-):
+def guardar_vehiculo(datos: VehiculoRegistro, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+    """
+    Guarda un nuevo vehículo en la base de datos asociado al usuario autenticado.
+
+    Args:
+        vehiculo (VehiculoBase): Datos del vehículo (marca, modelo, año, color, etc.).
+        db (Session): Sesión de base de datos.
+        usuario (Usuario): Usuario autenticado, extraído desde el token JWT.
+
+    Returns:
+        dict: Mensaje de confirmación.
+
+    Raises:
+        HTTPException 401: Si no se proporciona un token válido.
+    """
     # Validaciones básicas
     if not datos.vin or len(datos.vin.strip()) != 17:
         raise HTTPException(status_code=400, detail="El VIN debe contener exactamente 17 caracteres.")
@@ -275,11 +479,28 @@ def guardar_vehiculo(
 
 # Endpoint para que el cliente de Python envíe errores OBD-II
 @app.post("/guardar-errores/")
-def guardar_errores(
-    datos: ErrorVehiculoRegistro, 
-    usuario: Usuario = Depends(obtener_usuario_desde_token), 
-    db: Session = Depends(get_db)
-):
+def guardar_errores(datos: ErrorVehiculoRegistro, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+    """
+    Guarda una lista de códigos de error OBD-II (DTC) asociados a un vehículo del usuario autenticado.
+
+    Este endpoint es utilizado por el cliente Python que recibe errores del escáner OBD-II y los envía al backend para su almacenamiento.
+
+    Args:
+        datos (ErrorVehiculoRegistro): Objeto que contiene el ID del vehículo y una lista de códigos DTC.
+        usuario (Usuario): Usuario autenticado, obtenido desde el token JWT.
+        db (Session): Sesión activa de la base de datos.
+
+    Returns:
+        dict: Mensaje de confirmación si los errores fueron guardados correctamente.
+
+    Raises:
+        HTTPException 400:
+            - Si el ID del vehículo no es válido (no entero o negativo).
+            - Si la lista de códigos está vacía o contiene valores vacíos.
+            - Si hay códigos DTC duplicados.
+        HTTPException 404: Si el vehículo no pertenece al usuario autenticado.
+        HTTPException 500: Si ocurre un error inesperado al guardar en la base de datos.
+    """
     # Validar el ID del vehículo
     if not isinstance(datos.vehiculo_id, int) or datos.vehiculo_id <= 0:
         raise HTTPException(status_code=400, detail="El ID del vehículo debe ser un número entero positivo.")
@@ -317,10 +538,17 @@ def guardar_errores(
 
 # Endpoint para obtener vehículos del usuario autenticado
 @app.get("/mis-vehiculos/")
-def obtener_vehiculos(
-    usuario: Usuario = Depends(obtener_usuario_desde_token), 
-    db: Session = Depends(get_db)
-):
+def obtener_vehiculos(usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+    """
+    Obtiene todos los vehículos registrados por el usuario autenticado.
+
+    Args:
+        db (Session): Sesión de base de datos.
+        usuario (Usuario): Usuario autenticado mediante JWT.
+
+    Returns:
+        List[VehiculoBase]: Lista de vehículos asociados al usuario.
+    """
     try:
         vehiculos = db.query(Vehiculo).filter(Vehiculo.usuario_id == usuario.id).all()
         if not vehiculos:
@@ -332,6 +560,20 @@ def obtener_vehiculos(
 # Endpoint para obtener un vehiculo especifico del usuario autenticado
 @app.get("/mis-vehiculos/{vehiculo_id}")
 def obtener_vehiculo(vehiculo_id: int, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+    """
+    Recupera la información de un vehículo específico registrado por el usuario autenticado.
+
+    Args:
+        vehiculo_id (int): ID del vehículo a consultar.
+        usuario (Usuario): Usuario autenticado mediante JWT.
+        db (Session): Sesión activa de la base de datos.
+
+    Returns:
+        Vehiculo: Objeto del vehículo solicitado.
+
+    Raises:
+        HTTPException 404: Si el vehículo no pertenece al usuario o no existe.
+    """
     vehiculo = db.query(Vehiculo).filter(Vehiculo.id == vehiculo_id, Vehiculo.usuario_id == usuario.id).first()
     if vehiculo is None:
         raise HTTPException(status_code=404, detail="Vehículo no encontrado")
@@ -340,18 +582,46 @@ def obtener_vehiculo(vehiculo_id: int, usuario: Usuario = Depends(obtener_usuari
 # Endpoint para obtener los errores de un vehículo específico del usuario autenticado
 @app.get("/mis-errores/{vehiculo_id}")
 def obtener_errores(vehiculo_id: int, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+    """
+    Devuelve todos los errores DTC (códigos OBD-II) asociados a un vehículo del usuario autenticado.
+
+    Args:
+        vehiculo_id (int): ID del vehículo para el que se desean consultar los errores.
+        usuario (Usuario): Usuario autenticado mediante JWT.
+        db (Session): Sesión activa de la base de datos.
+
+    Returns:
+        List[ErrorVehiculo]: Lista de errores registrados.
+
+    Raises:
+        HTTPException 404: Si no existen errores para ese vehículo.
+    """
     errores = db.query(ErrorVehiculo).filter(ErrorVehiculo.vehiculo_id == vehiculo_id).all()
     if not errores:
         raise HTTPException(status_code=404, detail="No se encontraron errores para este vehículo.")
     return errores
 
 @app.post("/crear-informe/{vehiculo_id}")
-async def crear_informe(
-    vehiculo_id: int, 
-    request: InformeRequest, 
-    usuario: Usuario = Depends(obtener_usuario_desde_token), 
-    db: Session = Depends(get_db)
-):
+async def crear_informe(vehiculo_id: int, request: InformeRequest, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+    """
+    Crea un informe de errores del vehículo y lo envía al email del cliente.
+
+    Este endpoint genera un enlace único que da acceso a una vista del informe de diagnóstico del vehículo. Se envía un correo al cliente con dicho enlace.
+
+    Args:
+        vehiculo_id (int): ID del vehículo del que se desea generar el informe.
+        request (InformeRequest): Objeto que contiene el email del cliente.
+        usuario (Usuario): Usuario autenticado mediante JWT.
+        db (Session): Sesión activa de la base de datos.
+
+    Returns:
+        dict: Mensaje de éxito, token generado y enlace de acceso.
+
+    Raises:
+        HTTPException 400: Si el email no es válido.
+        HTTPException 404: Si el vehículo no pertenece al usuario.
+        HTTPException 500: Si ocurre un error al guardar el informe o enviar el correo.
+    """
     if not request.email or "@" not in request.email:
         raise HTTPException(status_code=400, detail="Debe proporcionar un email válido para enviar el informe.")
 
@@ -448,6 +718,22 @@ async def crear_informe(
 # Acceso al informe generado
 @app.get("/informe/{token}")
 def ver_informe(token: str, db: Session = Depends(get_db)):
+    """
+    Devuelve los datos del informe generado a partir de un token único.
+
+    Este endpoint permite el acceso público a un informe de diagnóstico de vehículo mediante un enlace con token generado previamente. No requiere autenticación, pero valida que el token sea legítimo.
+
+    Args:
+        token (str): Token único del informe generado.
+
+    Returns:
+        dict: Información del vehículo (marca, modelo, año, etc.) y lista de errores DTC.
+
+    Raises:
+        HTTPException 400: Si el token no es válido o demasiado corto.
+        HTTPException 404: Si no se encuentra el informe, el vehículo o los errores asociados.
+        HTTPException 500: Si ocurre un error inesperado al procesar la solicitud.
+    """
     try:
         if not token or len(token) < 10:
             raise HTTPException(status_code=400, detail="El token proporcionado no es válido.")
@@ -482,6 +768,20 @@ def ver_informe(token: str, db: Session = Depends(get_db)):
 
 @app.get("/car-imagery/")
 def get_car_image(searchTerm: str):
+    """
+    Obtiene una URL de imagen representativa de un vehículo usando el término de búsqueda proporcionado.
+
+    Este endpoint consulta la API externa de carimagery.com para devolver la URL de una imagen que coincida con el término (por ejemplo, "Toyota Corolla 2020").
+
+    Args:
+        searchTerm (str): Término de búsqueda del vehículo (marca, modelo, año, etc.).
+
+    Returns:
+        str: URL de la imagen del vehículo.
+
+    Raises:
+        HTTPException 500: Si hay un error al consultar la API externa.
+    """
     url = f"https://www.carimagery.com/api.asmx/GetImageUrl?searchTerm={searchTerm}"
     try:
         response = requests.get(url)
@@ -492,12 +792,22 @@ def get_car_image(searchTerm: str):
 
 # Endpoint para editar vehículo
 @app.put("/editar-vehiculo/{vehiculo_id}")
-def editar_vehiculo(
-    vehiculo_id: int,
-    datos: VehiculoEdicion,
-    usuario: Usuario = Depends(obtener_usuario_desde_token),
-    db: Session = Depends(get_db)
-):
+def editar_vehiculo(vehiculo_id: int, datos: VehiculoEdicion, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+    """
+    Actualiza los datos de un vehículo existente del usuario autenticado.
+
+    Args:
+        vehiculo_id (int): ID del vehículo a modificar.
+        datos_actualizados (VehiculoBase): Nuevos datos del vehículo.
+        db (Session): Sesión de base de datos.
+        usuario (Usuario): Usuario autenticado.
+
+    Returns:
+        dict: Mensaje de éxito.
+
+    Raises:
+        HTTPException 404: Si el vehículo no existe o no pertenece al usuario.
+    """
     try:
         # Validación básica
         if not datos.vin or len(datos.vin) != 17:
@@ -534,11 +844,21 @@ def editar_vehiculo(
 
 # Endpoint para eliminar vehículo
 @app.delete("/eliminar-vehiculo/{vehiculo_id}")
-def eliminar_vehiculo(
-    vehiculo_id: int,
-    usuario: Usuario = Depends(obtener_usuario_desde_token),
-    db: Session = Depends(get_db)
-):
+def eliminar_vehiculo(vehiculo_id: int, usuario: Usuario = Depends(obtener_usuario_desde_token), db: Session = Depends(get_db)):
+    """
+    Elimina un vehículo registrado por el usuario autenticado.
+
+    Args:
+        vehiculo_id (int): ID del vehículo a eliminar.
+        db (Session): Sesión de base de datos.
+        usuario (Usuario): Usuario autenticado mediante JWT.
+
+    Returns:
+        dict: Mensaje de éxito.
+
+    Raises:
+        HTTPException 404: Si el vehículo no existe o no pertenece al usuario.
+    """
     try:
         vehiculo = db.query(Vehiculo).filter(
             Vehiculo.id == vehiculo_id,
@@ -575,4 +895,12 @@ def eliminar_vehiculo(
 # Endpoint de saludo
 @app.get("/saludo")
 async def saludo():
+    """
+    Devuelve un mensaje simple para verificar que la API está activa.
+
+    Este endpoint puede utilizarse para pruebas de conectividad o para confirmar que el backend está desplegado correctamente.
+
+    Returns:
+        dict: Mensaje de saludo indicando que la API funciona.
+    """
     return {"mensaje": "¡La API está funcionando correctamente!"}
