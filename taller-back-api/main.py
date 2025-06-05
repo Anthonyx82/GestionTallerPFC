@@ -180,7 +180,8 @@ class InformeCompartido(Base):
     vehiculo = relationship("Vehiculo", back_populates="informes_compartidos")
 
 # Crear tablas si no existen
-Base.metadata.create_all(bind=engine)
+if __name__ == "__main__":
+    Base.metadata.create_all(bind=engine)
 
 # Iniciar FastAPI
 app = FastAPI(root_path="/taller/api")

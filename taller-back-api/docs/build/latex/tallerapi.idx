@@ -1,0 +1,124 @@
+\indexentry{module@\spxentry{module}!main@\spxentry{main}|hyperpage}{5}
+\indexentry{main@\spxentry{main}!module@\spxentry{module}|hyperpage}{5}
+\indexentry{Base (clase en main)@\spxentry{Base}\spxextra{clase en main}|hyperpage}{5}
+\indexentry{metadata (atributo de main.Base)@\spxentry{metadata}\spxextra{atributo de main.Base}|hyperpage}{5}
+\indexentry{registry (atributo de main.Base)@\spxentry{registry}\spxextra{atributo de main.Base}|hyperpage}{5}
+\indexentry{ErrorVehiculo (clase en main)@\spxentry{ErrorVehiculo}\spxextra{clase en main}|hyperpage}{5}
+\indexentry{codigo\_dtc (atributo de main.ErrorVehiculo)@\spxentry{codigo\_dtc}\spxextra{atributo de main.ErrorVehiculo}|hyperpage}{5}
+\indexentry{id (atributo de main.ErrorVehiculo)@\spxentry{id}\spxextra{atributo de main.ErrorVehiculo}|hyperpage}{5}
+\indexentry{vehiculo (atributo de main.ErrorVehiculo)@\spxentry{vehiculo}\spxextra{atributo de main.ErrorVehiculo}|hyperpage}{5}
+\indexentry{vehiculo\_id (atributo de main.ErrorVehiculo)@\spxentry{vehiculo\_id}\spxextra{atributo de main.ErrorVehiculo}|hyperpage}{5}
+\indexentry{ErrorVehiculoRegistro (clase en main)@\spxentry{ErrorVehiculoRegistro}\spxextra{clase en main}|hyperpage}{5}
+\indexentry{codigo\_dtc (atributo de main.ErrorVehiculoRegistro)@\spxentry{codigo\_dtc}\spxextra{atributo de main.ErrorVehiculoRegistro}|hyperpage}{6}
+\indexentry{model\_config (atributo de main.ErrorVehiculoRegistro)@\spxentry{model\_config}\spxextra{atributo de main.ErrorVehiculoRegistro}|hyperpage}{6}
+\indexentry{vehiculo\_id (atributo de main.ErrorVehiculoRegistro)@\spxentry{vehiculo\_id}\spxextra{atributo de main.ErrorVehiculoRegistro}|hyperpage}{6}
+\indexentry{InformeCompartido (clase en main)@\spxentry{InformeCompartido}\spxextra{clase en main}|hyperpage}{6}
+\indexentry{creado\_en (atributo de main.InformeCompartido)@\spxentry{creado\_en}\spxextra{atributo de main.InformeCompartido}|hyperpage}{6}
+\indexentry{email\_cliente (atributo de main.InformeCompartido)@\spxentry{email\_cliente}\spxextra{atributo de main.InformeCompartido}|hyperpage}{6}
+\indexentry{id (atributo de main.InformeCompartido)@\spxentry{id}\spxextra{atributo de main.InformeCompartido}|hyperpage}{6}
+\indexentry{token (atributo de main.InformeCompartido)@\spxentry{token}\spxextra{atributo de main.InformeCompartido}|hyperpage}{6}
+\indexentry{vehiculo (atributo de main.InformeCompartido)@\spxentry{vehiculo}\spxextra{atributo de main.InformeCompartido}|hyperpage}{6}
+\indexentry{vehiculo\_id (atributo de main.InformeCompartido)@\spxentry{vehiculo\_id}\spxextra{atributo de main.InformeCompartido}|hyperpage}{6}
+\indexentry{InformeRequest (clase en main)@\spxentry{InformeRequest}\spxextra{clase en main}|hyperpage}{6}
+\indexentry{email (atributo de main.InformeRequest)@\spxentry{email}\spxextra{atributo de main.InformeRequest}|hyperpage}{6}
+\indexentry{model\_config (atributo de main.InformeRequest)@\spxentry{model\_config}\spxextra{atributo de main.InformeRequest}|hyperpage}{6}
+\indexentry{Usuario (clase en main)@\spxentry{Usuario}\spxextra{clase en main}|hyperpage}{6}
+\indexentry{id (atributo de main.Usuario)@\spxentry{id}\spxextra{atributo de main.Usuario}|hyperpage}{7}
+\indexentry{password\_hash (atributo de main.Usuario)@\spxentry{password\_hash}\spxextra{atributo de main.Usuario}|hyperpage}{7}
+\indexentry{username (atributo de main.Usuario)@\spxentry{username}\spxextra{atributo de main.Usuario}|hyperpage}{7}
+\indexentry{vehiculos (atributo de main.Usuario)@\spxentry{vehiculos}\spxextra{atributo de main.Usuario}|hyperpage}{7}
+\indexentry{UsuarioLogin (clase en main)@\spxentry{UsuarioLogin}\spxextra{clase en main}|hyperpage}{7}
+\indexentry{model\_config (atributo de main.UsuarioLogin)@\spxentry{model\_config}\spxextra{atributo de main.UsuarioLogin}|hyperpage}{7}
+\indexentry{password (atributo de main.UsuarioLogin)@\spxentry{password}\spxextra{atributo de main.UsuarioLogin}|hyperpage}{7}
+\indexentry{username (atributo de main.UsuarioLogin)@\spxentry{username}\spxextra{atributo de main.UsuarioLogin}|hyperpage}{7}
+\indexentry{UsuarioRegistro (clase en main)@\spxentry{UsuarioRegistro}\spxextra{clase en main}|hyperpage}{7}
+\indexentry{model\_config (atributo de main.UsuarioRegistro)@\spxentry{model\_config}\spxextra{atributo de main.UsuarioRegistro}|hyperpage}{7}
+\indexentry{password (atributo de main.UsuarioRegistro)@\spxentry{password}\spxextra{atributo de main.UsuarioRegistro}|hyperpage}{7}
+\indexentry{username (atributo de main.UsuarioRegistro)@\spxentry{username}\spxextra{atributo de main.UsuarioRegistro}|hyperpage}{7}
+\indexentry{Vehiculo (clase en main)@\spxentry{Vehiculo}\spxextra{clase en main}|hyperpage}{7}
+\indexentry{errores (atributo de main.Vehiculo)@\spxentry{errores}\spxextra{atributo de main.Vehiculo}|hyperpage}{7}
+\indexentry{id (atributo de main.Vehiculo)@\spxentry{id}\spxextra{atributo de main.Vehiculo}|hyperpage}{8}
+\indexentry{informes\_compartidos (atributo de main.Vehiculo)@\spxentry{informes\_compartidos}\spxextra{atributo de main.Vehiculo}|hyperpage}{8}
+\indexentry{marca (atributo de main.Vehiculo)@\spxentry{marca}\spxextra{atributo de main.Vehiculo}|hyperpage}{8}
+\indexentry{modelo (atributo de main.Vehiculo)@\spxentry{modelo}\spxextra{atributo de main.Vehiculo}|hyperpage}{8}
+\indexentry{revision (atributo de main.Vehiculo)@\spxentry{revision}\spxextra{atributo de main.Vehiculo}|hyperpage}{8}
+\indexentry{rpm (atributo de main.Vehiculo)@\spxentry{rpm}\spxextra{atributo de main.Vehiculo}|hyperpage}{8}
+\indexentry{usuario (atributo de main.Vehiculo)@\spxentry{usuario}\spxextra{atributo de main.Vehiculo}|hyperpage}{8}
+\indexentry{usuario\_id (atributo de main.Vehiculo)@\spxentry{usuario\_id}\spxextra{atributo de main.Vehiculo}|hyperpage}{8}
+\indexentry{velocidad (atributo de main.Vehiculo)@\spxentry{velocidad}\spxextra{atributo de main.Vehiculo}|hyperpage}{8}
+\indexentry{vin (atributo de main.Vehiculo)@\spxentry{vin}\spxextra{atributo de main.Vehiculo}|hyperpage}{8}
+\indexentry{year (atributo de main.Vehiculo)@\spxentry{year}\spxextra{atributo de main.Vehiculo}|hyperpage}{8}
+\indexentry{VehiculoEdicion (clase en main)@\spxentry{VehiculoEdicion}\spxextra{clase en main}|hyperpage}{8}
+\indexentry{marca (atributo de main.VehiculoEdicion)@\spxentry{marca}\spxextra{atributo de main.VehiculoEdicion}|hyperpage}{8}
+\indexentry{model\_config (atributo de main.VehiculoEdicion)@\spxentry{model\_config}\spxextra{atributo de main.VehiculoEdicion}|hyperpage}{8}
+\indexentry{modelo (atributo de main.VehiculoEdicion)@\spxentry{modelo}\spxextra{atributo de main.VehiculoEdicion}|hyperpage}{8}
+\indexentry{rpm (atributo de main.VehiculoEdicion)@\spxentry{rpm}\spxextra{atributo de main.VehiculoEdicion}|hyperpage}{8}
+\indexentry{velocidad (atributo de main.VehiculoEdicion)@\spxentry{velocidad}\spxextra{atributo de main.VehiculoEdicion}|hyperpage}{8}
+\indexentry{vin (atributo de main.VehiculoEdicion)@\spxentry{vin}\spxextra{atributo de main.VehiculoEdicion}|hyperpage}{8}
+\indexentry{year (atributo de main.VehiculoEdicion)@\spxentry{year}\spxextra{atributo de main.VehiculoEdicion}|hyperpage}{8}
+\indexentry{VehiculoRegistro (clase en main)@\spxentry{VehiculoRegistro}\spxextra{clase en main}|hyperpage}{8}
+\indexentry{marca (atributo de main.VehiculoRegistro)@\spxentry{marca}\spxextra{atributo de main.VehiculoRegistro}|hyperpage}{8}
+\indexentry{model\_config (atributo de main.VehiculoRegistro)@\spxentry{model\_config}\spxextra{atributo de main.VehiculoRegistro}|hyperpage}{9}
+\indexentry{modelo (atributo de main.VehiculoRegistro)@\spxentry{modelo}\spxextra{atributo de main.VehiculoRegistro}|hyperpage}{9}
+\indexentry{revision (atributo de main.VehiculoRegistro)@\spxentry{revision}\spxextra{atributo de main.VehiculoRegistro}|hyperpage}{9}
+\indexentry{rpm (atributo de main.VehiculoRegistro)@\spxentry{rpm}\spxextra{atributo de main.VehiculoRegistro}|hyperpage}{9}
+\indexentry{velocidad (atributo de main.VehiculoRegistro)@\spxentry{velocidad}\spxextra{atributo de main.VehiculoRegistro}|hyperpage}{9}
+\indexentry{vin (atributo de main.VehiculoRegistro)@\spxentry{vin}\spxextra{atributo de main.VehiculoRegistro}|hyperpage}{9}
+\indexentry{year (atributo de main.VehiculoRegistro)@\spxentry{year}\spxextra{atributo de main.VehiculoRegistro}|hyperpage}{9}
+\indexentry{crear\_informe() (en el módulo main)@\spxentry{crear\_informe()}\spxextra{en el módulo main}|hyperpage}{9}
+\indexentry{crear\_token() (en el módulo main)@\spxentry{crear\_token()}\spxextra{en el módulo main}|hyperpage}{9}
+\indexentry{editar\_vehiculo() (en el módulo main)@\spxentry{editar\_vehiculo()}\spxextra{en el módulo main}|hyperpage}{10}
+\indexentry{eliminar\_vehiculo() (en el módulo main)@\spxentry{eliminar\_vehiculo()}\spxextra{en el módulo main}|hyperpage}{10}
+\indexentry{fm (en el módulo main)@\spxentry{fm}\spxextra{en el módulo main}|hyperpage}{10}
+\indexentry{get\_car\_image() (en el módulo main)@\spxentry{get\_car\_image()}\spxextra{en el módulo main}|hyperpage}{10}
+\indexentry{get\_db() (en el módulo main)@\spxentry{get\_db()}\spxextra{en el módulo main}|hyperpage}{11}
+\indexentry{guardar\_errores() (en el módulo main)@\spxentry{guardar\_errores()}\spxextra{en el módulo main}|hyperpage}{11}
+\indexentry{guardar\_vehiculo() (en el módulo main)@\spxentry{guardar\_vehiculo()}\spxextra{en el módulo main}|hyperpage}{11}
+\indexentry{login() (en el módulo main)@\spxentry{login()}\spxextra{en el módulo main}|hyperpage}{12}
+\indexentry{obtener\_errores() (en el módulo main)@\spxentry{obtener\_errores()}\spxextra{en el módulo main}|hyperpage}{12}
+\indexentry{obtener\_usuario\_desde\_token() (en el módulo main)@\spxentry{obtener\_usuario\_desde\_token()}\spxextra{en el módulo main}|hyperpage}{12}
+\indexentry{obtener\_vehiculo() (en el módulo main)@\spxentry{obtener\_vehiculo()}\spxextra{en el módulo main}|hyperpage}{12}
+\indexentry{obtener\_vehiculos() (en el módulo main)@\spxentry{obtener\_vehiculos()}\spxextra{en el módulo main}|hyperpage}{13}
+\indexentry{register() (en el módulo main)@\spxentry{register()}\spxextra{en el módulo main}|hyperpage}{13}
+\indexentry{saludo() (en el módulo main)@\spxentry{saludo()}\spxextra{en el módulo main}|hyperpage}{13}
+\indexentry{ver\_informe() (en el módulo main)@\spxentry{ver\_informe()}\spxextra{en el módulo main}|hyperpage}{14}
+\indexentry{verificar\_password() (en el módulo main)@\spxentry{verificar\_password()}\spxextra{en el módulo main}|hyperpage}{14}
+\indexentry{module@\spxentry{module}!main@\spxentry{main}|hyperpage}{15}
+\indexentry{main@\spxentry{main}!module@\spxentry{module}|hyperpage}{15}
+\indexentry{Base (clase en main)@\spxentry{Base}\spxextra{clase en main}|hyperpage}{15}
+\indexentry{ErrorVehiculo (clase en main)@\spxentry{ErrorVehiculo}\spxextra{clase en main}|hyperpage}{15}
+\indexentry{ErrorVehiculoRegistro (clase en main)@\spxentry{ErrorVehiculoRegistro}\spxextra{clase en main}|hyperpage}{16}
+\indexentry{model\_config (atributo de main.ErrorVehiculoRegistro)@\spxentry{model\_config}\spxextra{atributo de main.ErrorVehiculoRegistro}|hyperpage}{16}
+\indexentry{InformeCompartido (clase en main)@\spxentry{InformeCompartido}\spxextra{clase en main}|hyperpage}{16}
+\indexentry{InformeRequest (clase en main)@\spxentry{InformeRequest}\spxextra{clase en main}|hyperpage}{16}
+\indexentry{model\_config (atributo de main.InformeRequest)@\spxentry{model\_config}\spxextra{atributo de main.InformeRequest}|hyperpage}{16}
+\indexentry{Usuario (clase en main)@\spxentry{Usuario}\spxextra{clase en main}|hyperpage}{16}
+\indexentry{UsuarioLogin (clase en main)@\spxentry{UsuarioLogin}\spxextra{clase en main}|hyperpage}{16}
+\indexentry{model\_config (atributo de main.UsuarioLogin)@\spxentry{model\_config}\spxextra{atributo de main.UsuarioLogin}|hyperpage}{17}
+\indexentry{UsuarioRegistro (clase en main)@\spxentry{UsuarioRegistro}\spxextra{clase en main}|hyperpage}{17}
+\indexentry{model\_config (atributo de main.UsuarioRegistro)@\spxentry{model\_config}\spxextra{atributo de main.UsuarioRegistro}|hyperpage}{17}
+\indexentry{Vehiculo (clase en main)@\spxentry{Vehiculo}\spxextra{clase en main}|hyperpage}{17}
+\indexentry{VehiculoEdicion (clase en main)@\spxentry{VehiculoEdicion}\spxextra{clase en main}|hyperpage}{17}
+\indexentry{model\_config (atributo de main.VehiculoEdicion)@\spxentry{model\_config}\spxextra{atributo de main.VehiculoEdicion}|hyperpage}{17}
+\indexentry{VehiculoRegistro (clase en main)@\spxentry{VehiculoRegistro}\spxextra{clase en main}|hyperpage}{17}
+\indexentry{model\_config (atributo de main.VehiculoRegistro)@\spxentry{model\_config}\spxextra{atributo de main.VehiculoRegistro}|hyperpage}{18}
+\indexentry{crear\_informe() (en el módulo main)@\spxentry{crear\_informe()}\spxextra{en el módulo main}|hyperpage}{18}
+\indexentry{crear\_token() (en el módulo main)@\spxentry{crear\_token()}\spxextra{en el módulo main}|hyperpage}{18}
+\indexentry{editar\_vehiculo() (en el módulo main)@\spxentry{editar\_vehiculo()}\spxextra{en el módulo main}|hyperpage}{18}
+\indexentry{eliminar\_vehiculo() (en el módulo main)@\spxentry{eliminar\_vehiculo()}\spxextra{en el módulo main}|hyperpage}{19}
+\indexentry{fm (en el módulo main)@\spxentry{fm}\spxextra{en el módulo main}|hyperpage}{19}
+\indexentry{get\_car\_image() (en el módulo main)@\spxentry{get\_car\_image()}\spxextra{en el módulo main}|hyperpage}{19}
+\indexentry{guardar\_errores() (en el módulo main)@\spxentry{guardar\_errores()}\spxextra{en el módulo main}|hyperpage}{19}
+\indexentry{guardar\_vehiculo() (en el módulo main)@\spxentry{guardar\_vehiculo()}\spxextra{en el módulo main}|hyperpage}{20}
+\indexentry{login() (en el módulo main)@\spxentry{login()}\spxextra{en el módulo main}|hyperpage}{20}
+\indexentry{obtener\_errores() (en el módulo main)@\spxentry{obtener\_errores()}\spxextra{en el módulo main}|hyperpage}{21}
+\indexentry{obtener\_usuario\_desde\_token() (en el módulo main)@\spxentry{obtener\_usuario\_desde\_token()}\spxextra{en el módulo main}|hyperpage}{21}
+\indexentry{obtener\_vehiculo() (en el módulo main)@\spxentry{obtener\_vehiculo()}\spxextra{en el módulo main}|hyperpage}{21}
+\indexentry{obtener\_vehiculos() (en el módulo main)@\spxentry{obtener\_vehiculos()}\spxextra{en el módulo main}|hyperpage}{22}
+\indexentry{register() (en el módulo main)@\spxentry{register()}\spxextra{en el módulo main}|hyperpage}{22}
+\indexentry{saludo() (en el módulo main)@\spxentry{saludo()}\spxextra{en el módulo main}|hyperpage}{22}
+\indexentry{ver\_informe() (en el módulo main)@\spxentry{ver\_informe()}\spxextra{en el módulo main}|hyperpage}{22}
+\indexentry{verificar\_password() (en el módulo main)@\spxentry{verificar\_password()}\spxextra{en el módulo main}|hyperpage}{23}
+\indexentry{module@\spxentry{module}!main@\spxentry{main}|hyperpage}{26}
+\indexentry{main@\spxentry{main}!module@\spxentry{module}|hyperpage}{26}
+\indexentry{get\_db() (en el módulo main)@\spxentry{get\_db()}\spxextra{en el módulo main}|hyperpage}{26}
