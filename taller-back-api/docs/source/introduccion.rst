@@ -66,46 +66,55 @@ Requisitos Previos
 Para ejecutar localmente:
 
 1. Clona el repositorio.
-2. Crea un entorno virtual:  
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-3. Instala las dependencias del proyecto:  
-   ```bash
-   pip install -r requirements.txt
-   ```
+2. Crea un entorno virtual:
 
-4. Configura las variables de entorno necesarias creando un archivo `.env` en la raíz del proyecto. Puedes usar como base un archivo `env.example`.
+   .. code-block:: bash
+
+      python3 -m venv venv
+      source venv/bin/activate
+
+3. Instala las dependencias del proyecto:
+
+   .. code-block:: bash
+
+      pip install -r requirements.txt
+
+4. Configura las variables de entorno necesarias creando un archivo ``.env`` en la raíz del proyecto.  
+   Puedes usar como base un archivo ``.env.example``.
 
 5. Ejecuta la aplicación usando Uvicorn:
 
-   ```bash
-   uvicorn main:app --reload
-   ```
+   .. code-block:: bash
+
+      uvicorn main:app --reload
 
 Buenas Prácticas
-------------------
+----------------
 
-* Mantén las variables de entorno fuera del control de versiones (`.gitignore`).
-* Usa HTTPS y certificados válidos en producción.
-* Cambia la clave `SECRET_KEY` y el `ALGORITHM` antes de desplegar.
-* Implementa control de errores en el frontend para manejar respuestas `401`, `403`, `422`, etc.
-* Revisa los logs para rastrear errores en endpoints como `/crear-informe/`.
+- Mantén las variables de entorno fuera del control de versiones (``.gitignore``).
+- Usa HTTPS y certificados válidos en producción.
+- Cambia la clave ``SECRET_KEY`` y el ``ALGORITHM`` antes de desplegar.
+- Implementa control de errores en el frontend para manejar respuestas ``401``, ``403``, ``422``, etc.
+- Revisa los logs para rastrear errores en endpoints como ``/crear-informe/``.
 
 Licencia y Contribución
-------------------------
+-----------------------
 
-Este proyecto se entrega con fines educativos y está licenciado bajo los términos definidos en el archivo `LICENSE`.
+Este proyecto se entrega con fines educativos y está licenciado bajo los términos definidos en el archivo ``LICENSE``.
 
 Si deseas contribuir:
 
-* Realiza un fork del repositorio.
-* Crea una rama para tu mejora o corrección: `git checkout -b feature/nombre`.
-* Haz tus commits siguiendo buenas prácticas de formato y mensajes.
-* Envía un Pull Request para revisión.
+- Realiza un fork del repositorio.
+- Crea una rama para tu mejora o corrección:
+
+  .. code-block:: bash
+
+     git checkout -b feature/nombre
+
+- Haz tus commits siguiendo buenas prácticas de formato y mensajes.
+- Envía un Pull Request para revisión.
 
 Contacto
-------------------
+--------
 
-Para dudas, errores o sugerencias, puedes abrir un issue en GitHub o contactar directamente con el equipo de desarrollo.
+Para dudas, errores o sugerencias, puedes abrir un issue en GitHub o contactar directamente con el equipo de desarrollo a traves del repositorio de GitHub

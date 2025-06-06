@@ -307,47 +307,54 @@
 <p>Para ejecutar localmente:</p>
 <ol class="arabic">
 <li><p>Clona el repositorio.</p></li>
-<li><p>Crea un entorno virtual:
-<code class="docutils literal notranslate"><span class="pre">`bash</span>
-<span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">venv</span> <span class="pre">venv</span>
-<span class="pre">source</span> <span class="pre">venv/bin/activate</span>
-<span class="pre">`</span></code></p></li>
-<li><p>Instala las dependencias del proyecto:
-<code class="docutils literal notranslate"><span class="pre">`bash</span>
-<span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements.txt</span>
-<span class="pre">`</span></code></p></li>
-<li><p>Configura las variables de entorno necesarias creando un archivo <cite>.env</cite> en la raíz del proyecto. Puedes usar como base un archivo <cite>env.example</cite>.</p></li>
+<li><p>Crea un entorno virtual:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+<span class="nb">source</span><span class="w"> </span>venv/bin/activate
+</pre></div>
+</div>
+</li>
+<li><p>Instala las dependencias del proyecto:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</li>
+<li><p>Configura las variables de entorno necesarias creando un archivo <code class="docutils literal notranslate"><span class="pre">.env</span></code> en la raíz del proyecto.
+Puedes usar como base un archivo <code class="docutils literal notranslate"><span class="pre">.env.example</span></code>.</p></li>
 <li><p>Ejecuta la aplicación usando Uvicorn:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
-<span class="pre">uvicorn</span> <span class="pre">main:app</span> <span class="pre">--reload</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uvicorn<span class="w"> </span>main:app<span class="w"> </span>--reload
+</pre></div>
+</div>
 </li>
 </ol>
 </section>
 <section id="buenas-practicas">
 <h2>Buenas Prácticas<a class="headerlink" href="#buenas-practicas" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Mantén las variables de entorno fuera del control de versiones (<cite>.gitignore</cite>).</p></li>
+<li><p>Mantén las variables de entorno fuera del control de versiones (<code class="docutils literal notranslate"><span class="pre">.gitignore</span></code>).</p></li>
 <li><p>Usa HTTPS y certificados válidos en producción.</p></li>
-<li><p>Cambia la clave <cite>SECRET_KEY</cite> y el <cite>ALGORITHM</cite> antes de desplegar.</p></li>
-<li><p>Implementa control de errores en el frontend para manejar respuestas <cite>401</cite>, <cite>403</cite>, <cite>422</cite>, etc.</p></li>
-<li><p>Revisa los logs para rastrear errores en endpoints como <cite>/crear-informe/</cite>.</p></li>
+<li><p>Cambia la clave <code class="docutils literal notranslate"><span class="pre">SECRET_KEY</span></code> y el <code class="docutils literal notranslate"><span class="pre">ALGORITHM</span></code> antes de desplegar.</p></li>
+<li><p>Implementa control de errores en el frontend para manejar respuestas <code class="docutils literal notranslate"><span class="pre">401</span></code>, <code class="docutils literal notranslate"><span class="pre">403</span></code>, <code class="docutils literal notranslate"><span class="pre">422</span></code>, etc.</p></li>
+<li><p>Revisa los logs para rastrear errores en endpoints como <code class="docutils literal notranslate"><span class="pre">/crear-informe/</span></code>.</p></li>
 </ul>
 </section>
 <section id="licencia-y-contribucion">
 <h2>Licencia y Contribución<a class="headerlink" href="#licencia-y-contribucion" title="Link to this heading">¶</a></h2>
-<p>Este proyecto se entrega con fines educativos y está licenciado bajo los términos definidos en el archivo <cite>LICENSE</cite>.</p>
+<p>Este proyecto se entrega con fines educativos y está licenciado bajo los términos definidos en el archivo <code class="docutils literal notranslate"><span class="pre">LICENSE</span></code>.</p>
 <p>Si deseas contribuir:</p>
-<ul class="simple">
+<ul>
 <li><p>Realiza un fork del repositorio.</p></li>
-<li><p>Crea una rama para tu mejora o corrección: <cite>git checkout -b feature/nombre</cite>.</p></li>
+<li><p>Crea una rama para tu mejora o corrección:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>feature/nombre
+</pre></div>
+</div>
+</li>
 <li><p>Haz tus commits siguiendo buenas prácticas de formato y mensajes.</p></li>
 <li><p>Envía un Pull Request para revisión.</p></li>
 </ul>
 </section>
 <section id="contacto">
 <h2>Contacto<a class="headerlink" href="#contacto" title="Link to this heading">¶</a></h2>
-<p>Para dudas, errores o sugerencias, puedes abrir un issue en GitHub o contactar directamente con el equipo de desarrollo.</p>
+<p>Para dudas, errores o sugerencias, puedes abrir un issue en GitHub o contactar directamente con el equipo de desarrollo a traves del repositorio de GitHub</p>
 </section>
 </section>
 

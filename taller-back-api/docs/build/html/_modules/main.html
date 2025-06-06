@@ -638,17 +638,19 @@
 <span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/register&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="n">datos</span><span class="p">:</span> <span class="n">UsuarioRegistro</span><span class="p">,</span> <span class="n">db</span><span class="p">:</span> <span class="n">Session</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_db</span><span class="p">)):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    **POST** ``/register``</span>
+<span class="sd">    </span>
 <span class="sd">    Registra un nuevo usuario en la base de datos.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        datos (UsuarioRegistro): Objeto que contiene el nombre de usuario y la contraseña.</span>
-<span class="sd">        db (Session): Sesión activa de la base de datos, proporcionada por FastAPI.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        dict: Un mensaje indicando si el usuario fue registrado exitosamente.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        HTTPException 400: Si los campos son inválidos o el nombre de usuario ya existe.</span>
+<span class="sd">    </span>
+<span class="sd">    **Parámetros**:</span>
+<span class="sd">    - ``datos`` (UsuarioRegistro): Objeto que contiene el nombre de usuario y la contraseña.</span>
+<span class="sd">    - ``db`` (Session): Sesión activa de la base de datos, proporcionada por FastAPI.</span>
+<span class="sd">    </span>
+<span class="sd">    **Retorna**:</span>
+<span class="sd">    - ``dict``: Un mensaje indicando si el usuario fue registrado exitosamente.</span>
+<span class="sd">    </span>
+<span class="sd">    **Errores**:</span>
+<span class="sd">    - ``400``: Si los campos son inválidos o el nombre de usuario ya existe.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">datos</span><span class="o">.</span><span class="n">username</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">datos</span><span class="o">.</span><span class="n">username</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;El nombre de usuario es obligatorio y debe tener al menos 3 caracteres.&quot;</span><span class="p">)</span>

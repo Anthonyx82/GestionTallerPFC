@@ -247,49 +247,821 @@
           <section id="endpoints-de-la-api">
 <h1>Endpoints de la API<a class="headerlink" href="#endpoints-de-la-api" title="Link to this heading">¶</a></h1>
 <p>En este documento se describen todos los endpoints disponibles en la API, organizados por funcionalidad. Para cada ruta se indica método HTTP, URL, esquema de datos de entrada/salida, validaciones y ejemplos de uso.</p>
-<nav class="contents local" id="contenido">
-<ul class="simple">
-<li><p><a class="reference internal" href="#autenticacion-y-usuarios" id="id1">Autenticación y Usuarios</a></p></li>
-<li><p><a class="reference internal" href="#gestion-de-vehiculos" id="id2">Gestión de Vehículos</a></p></li>
-<li><p><a class="reference internal" href="#gestion-de-errores-obd-ii" id="id3">Gestión de Errores OBD-II</a></p></li>
-<li><p><a class="reference internal" href="#generacion-y-consulta-de-informes" id="id4">Generación y Consulta de Informes</a></p></li>
-<li><p><a class="reference internal" href="#servicio-de-imagenes-de-vehiculo" id="id5">Servicio de Imágenes de Vehículo</a></p></li>
-<li><p><a class="reference internal" href="#endpoint-de-prueba-salud" id="id6">Endpoint de Prueba / Salud</a></p></li>
-</ul>
-</nav>
 <section id="autenticacion-y-usuarios">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Autenticación y Usuarios</a><a class="headerlink" href="#autenticacion-y-usuarios" title="Link to this heading">¶</a></h2>
-<p>### Registro de Usuario</p>
-<p>### Login / Obtención de Token</p>
+<h2>Autenticación y Usuarios<a class="headerlink" href="#autenticacion-y-usuarios" title="Link to this heading">¶</a></h2>
+<section id="registro-de-usuario">
+<h3>Registro de Usuario<a class="headerlink" href="#registro-de-usuario" title="Link to this heading">¶</a></h3>
+<dl class="http post">
+<dt class="sig sig-object http" id="post--register">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/register</span></span><a class="headerlink" href="#post--register" title="Link to this definition">¶</a></dt>
+<dd><p>Registra un nuevo usuario en la base de datos.</p>
+<p><strong>Request Body</strong> (<code class="docutils literal notranslate"><span class="pre">UsuarioRegistro</span></code>):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">username</span></code> (string, obligatorio, mínimo 3 caracteres)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code> (string, obligatorio, mínimo 6 caracteres)</p></li>
+</ul>
+<p><strong>Ejemplo</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/register</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.ejemplo.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;juanperez&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;secreto123&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Responses</strong>:</p>
+<ul>
+<li><p><strong>200 OK</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;mensaje&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Usuario registrado correctamente&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>400 Bad Request</strong></p>
+<ul class="simple">
+<li><p>Cuando <code class="docutils literal notranslate"><span class="pre">username</span></code> o <code class="docutils literal notranslate"><span class="pre">password</span></code> no cumplen longitud mínima.</p></li>
+<li><p>Si el <code class="docutils literal notranslate"><span class="pre">username</span></code> ya existe.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;El usuario ya existe&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>500 Internal Server Error</strong></p>
+<ul class="simple">
+<li><p>Error inesperado al guardar en la base de datos.</p></li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="login-obtencion-de-token">
+<h3>Login / Obtención de Token<a class="headerlink" href="#login-obtencion-de-token" title="Link to this heading">¶</a></h3>
+<dl class="http post">
+<dt class="sig sig-object http" id="post--login">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/login</span></span><a class="headerlink" href="#post--login" title="Link to this definition">¶</a></dt>
+<dd><p>Autentica al usuario y devuelve un token JWT.</p>
+<p><strong>Request Body</strong> (<code class="docutils literal notranslate"><span class="pre">UsuarioLogin</span></code>):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">username</span></code> (string, obligatorio)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code> (string, obligatorio)</p></li>
+</ul>
+<p><strong>Ejemplo</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/login</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.ejemplo.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;juanperez&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;secreto123&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Responses</strong>:</p>
+<ul>
+<li><p><strong>200 OK</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;access_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;token_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bearer&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>400 Bad Request</strong></p>
+<ul class="simple">
+<li><p>Si <code class="docutils literal notranslate"><span class="pre">username</span></code> o <code class="docutils literal notranslate"><span class="pre">password</span></code> no cumplen requisitos (longitud).</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Las credenciales no cumplen los requisitos mínimos&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>401 Unauthorized</strong></p>
+<ul class="simple">
+<li><p>Usuario no registrado o contraseña incorrecta.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Credenciales inválidas&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>500 Internal Server Error</strong></p>
+<ul class="simple">
+<li><p>Error al generar el token.</p></li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+
+</section>
 </section>
 <section id="gestion-de-vehiculos">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Gestión de Vehículos</a><a class="headerlink" href="#gestion-de-vehiculos" title="Link to this heading">¶</a></h2>
-<p>&gt; <strong>Nota</strong>: todos los endpoints de esta sección requieren que el header <cite>Authorization: Bearer &lt;token&gt;</cite> contenga un JWT válido.</p>
-<p>### Guardar Vehículo</p>
-<p>### Listar Vehículos del Usuario</p>
-<p>### Obtener Vehículo Específico</p>
-<p>### Editar Vehículo</p>
-<p>### Eliminar Vehículo</p>
+<h2>Gestión de Vehículos<a class="headerlink" href="#gestion-de-vehiculos" title="Link to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Todos los endpoints de esta sección requieren que el header <code class="docutils literal notranslate"><span class="pre">Authorization:</span> <span class="pre">Bearer</span> <span class="pre">&lt;token&gt;</span></code> contenga un JWT válido.</p>
+</div>
+<section id="guardar-vehiculo">
+<h3>Guardar Vehículo<a class="headerlink" href="#guardar-vehiculo" title="Link to this heading">¶</a></h3>
+<dl class="http post">
+<dt class="sig sig-object http" id="post--guardar-vehiculo-">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/guardar-vehiculo/</span></span><a class="headerlink" href="#post--guardar-vehiculo-" title="Link to this definition">¶</a></dt>
+<dd><p>Crea un nuevo vehículo y lo asocia al usuario autenticado.</p>
+<p><strong>Request Body</strong> (<code class="docutils literal notranslate"><span class="pre">VehiculoRegistro</span></code>):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">marca</span></code> (string, obligatorio)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">modelo</span></code> (string, obligatorio)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">year</span></code> (integer, obligatorio, p. ej., 2023)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpm</span></code> (integer, obligatorio)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">velocidad</span></code> (integer, obligatorio)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vin</span></code> (string, obligatorio, longitud = 17)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">revision</span></code> (dict JSON, obligatorio)
+- <code class="docutils literal notranslate"><span class="pre">tipo</span></code> (string, obligatorio)
+- <code class="docutils literal notranslate"><span class="pre">fecha</span></code> (string, formato ISO YYYY-MM-DD, obligatorio)
+- <code class="docutils literal notranslate"><span class="pre">observaciones</span></code> (string, opcional)</p></li>
+</ul>
+<p><strong>Ejemplo</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/guardar-vehiculo/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.ejemplo.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJhbGciOi...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;marca&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ford&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;modelo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Focus&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2020</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;rpm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;velocidad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;vin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1HGCM82633A004352&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;revision&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;tipo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;General&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;fecha&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-06-05&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;observaciones&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Cambio aceite&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Responses</strong>:</p>
+<ul>
+<li><p><strong>200 OK</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;mensaje&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vehículo guardado correctamente&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>400 Bad Request</strong></p>
+<ul class="simple">
+<li><p>VIN inválido (no 17 caracteres) o campos faltantes.</p></li>
+<li><p>VIN duplicado.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;VIN inválido o ya registrado&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>401 Unauthorized</strong></p>
+<ul class="simple">
+<li><p>Token ausente, inválido o expirado.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;No autenticado&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>500 Internal Server Error</strong></p>
+<ul class="simple">
+<li><p>Error interno al persistir datos.</p></li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="listar-vehiculos-del-usuario">
+<h3>Listar Vehículos del Usuario<a class="headerlink" href="#listar-vehiculos-del-usuario" title="Link to this heading">¶</a></h3>
+<dl class="http get">
+<dt class="sig sig-object http" id="get--mis-vehiculos-">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/mis-vehiculos/</span></span><a class="headerlink" href="#get--mis-vehiculos-" title="Link to this definition">¶</a></dt>
+<dd><p>Recupera todos los vehículos asociados al usuario autenticado.</p>
+<p><strong>Headers</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Authorization:</span> <span class="pre">Bearer</span> <span class="pre">&lt;token&gt;</span></code> (string, obligatorio)</p></li>
+</ul>
+<p><strong>Ejemplo</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/mis-vehiculos/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.ejemplo.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJhbGciOi...</span>
+</pre></div>
+</div>
+<p><strong>Responses</strong>:</p>
+<ul>
+<li><p><strong>200 OK</strong></p>
+<ul>
+<li><p>Si existen vehículos:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;vehiculos&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;marca&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Toyota&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;modelo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Corolla&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2018</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;rpm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1500</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;velocidad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;vin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;JTDBL40E799017833&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;revision&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;tipo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Anual&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;fecha&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-10&quot;</span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;usuario_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;marca&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Honda&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;modelo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Civic&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2021</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;rpm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1300</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;velocidad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">70</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;vin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2HGFC2F59MH123456&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;revision&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;tipo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Cambio llantas&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;fecha&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-03-20&quot;</span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;usuario_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Si no hay vehículos:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;mensaje&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;No hay vehículos registrados para este usuario.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;vehiculos&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>401 Unauthorized</strong></p>
+<ul class="simple">
+<li><p>Token inválido o expirado.</p></li>
+</ul>
+</li>
+<li><p><strong>500 Internal Server Error</strong></p>
+<ul class="simple">
+<li><p>Error al recuperar datos.</p></li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="obtener-vehiculo-especifico">
+<h3>Obtener Vehículo Específico<a class="headerlink" href="#obtener-vehiculo-especifico" title="Link to this heading">¶</a></h3>
+<dl class="http get">
+<dt class="sig sig-object http" id="get--mis-vehiculos-vehiculo_id">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/mis-vehiculos/{vehiculo_id}</span></span><a class="headerlink" href="#get--mis-vehiculos-vehiculo_id" title="Link to this definition">¶</a></dt>
+<dd><p>Recupera la información de un único vehículo (<code class="docutils literal notranslate"><span class="pre">vehiculo_id</span></code>) si pertenece al usuario.</p>
+<p><strong>URL Parameters</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vehiculo_id</span></code> (integer, obligatorio)</p></li>
+</ul>
+<p><strong>Ejemplo</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/mis-vehiculos/2</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.ejemplo.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJhbGciOi...</span>
+</pre></div>
+</div>
+<p><strong>Responses</strong>:</p>
+<ul>
+<li><p><strong>200 OK</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;marca&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Honda&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;modelo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Civic&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2021</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;rpm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1300</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;velocidad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">70</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;vin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2HGFC2F59MH123456&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;revision&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;tipo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Cambio llantas&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;fecha&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-03-20&quot;</span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;usuario_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>404 Not Found</strong></p>
+<ul class="simple">
+<li><p>El vehículo no existe o no pertenece al usuario.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vehículo no encontrado&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>401 Unauthorized</strong></p>
+<ul class="simple">
+<li><p>Token inválido o expirado.</p></li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="editar-vehiculo">
+<h3>Editar Vehículo<a class="headerlink" href="#editar-vehiculo" title="Link to this heading">¶</a></h3>
+<dl class="http put">
+<dt class="sig sig-object http" id="put--editar-vehiculo-vehiculo_id">
+<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/editar-vehiculo/{vehiculo_id}</span></span><a class="headerlink" href="#put--editar-vehiculo-vehiculo_id" title="Link to this definition">¶</a></dt>
+<dd><p>Actualiza los datos de un vehículo existente.</p>
+<p><strong>URL Parameters</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vehiculo_id</span></code> (integer, obligatorio)</p></li>
+</ul>
+<p><strong>Request Body</strong> (<code class="docutils literal notranslate"><span class="pre">VehiculoEdicion</span></code>):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">marca</span></code> (string, obligatorio)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">modelo</span></code> (string, obligatorio)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">year</span></code> (integer, obligatorio)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpm</span></code> (integer, obligatorio)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">velocidad</span></code> (integer, obligatorio)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vin</span></code> (string, obligatorio, longitud = 17)</p></li>
+</ul>
+<p><strong>Ejemplo</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/editar-vehiculo/2</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.ejemplo.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJhbGciOi...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;marca&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Honda&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;modelo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Civic LX&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2022</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;rpm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1400</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;velocidad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">75</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;vin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2HGFC2F59MH123456&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Responses</strong>:</p>
+<ul>
+<li><p><strong>200 OK</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;mensaje&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vehículo actualizado correctamente&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>400 Bad Request</strong></p>
+<ul class="simple">
+<li><p>VIN inválido o ya registrado en otro vehículo.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;VIN duplicado&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>404 Not Found</strong></p>
+<ul class="simple">
+<li><p>Vehículo no existe o no pertenece al usuario.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vehículo no encontrado&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>401 Unauthorized</strong></p>
+<ul class="simple">
+<li><p>Token inválido o expirado.</p></li>
+</ul>
+</li>
+<li><p><strong>500 Internal Server Error</strong></p>
+<ul class="simple">
+<li><p>Error interno al actualizar.</p></li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="eliminar-vehiculo">
+<h3>Eliminar Vehículo<a class="headerlink" href="#eliminar-vehiculo" title="Link to this heading">¶</a></h3>
+<dl class="http delete">
+<dt class="sig sig-object http" id="delete--eliminar-vehiculo-vehiculo_id">
+<span class="sig-name descname"><span class="pre">DELETE</span> </span><span class="sig-name descname"><span class="pre">/eliminar-vehiculo/{vehiculo_id}</span></span><a class="headerlink" href="#delete--eliminar-vehiculo-vehiculo_id" title="Link to this definition">¶</a></dt>
+<dd><p>Elimina un vehículo y todos sus errores OBD-II asociados (cascade).</p>
+<p><strong>URL Parameters</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vehiculo_id</span></code> (integer, obligatorio)</p></li>
+</ul>
+<p><strong>Ejemplo</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">DELETE</span> <span class="nn">/eliminar-vehiculo/2</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.ejemplo.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJhbGciOi...</span>
+</pre></div>
+</div>
+<p><strong>Responses</strong>:</p>
+<ul>
+<li><p><strong>200 OK</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;mensaje&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vehículo eliminado correctamente&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;errores_eliminados&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">errores_eliminados</span></code>: cantidad de registros de errores borrados.</p></li>
+</ul>
+</li>
+<li><p><strong>404 Not Found</strong></p>
+<ul class="simple">
+<li><p>Vehículo no existe o no pertenece al usuario.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vehículo no encontrado&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>401 Unauthorized</strong></p>
+<ul class="simple">
+<li><p>Token inválido o expirado.</p></li>
+</ul>
+</li>
+<li><p><strong>500 Internal Server Error</strong></p>
+<ul class="simple">
+<li><p>Error interno al eliminar.</p></li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+
+</section>
 </section>
 <section id="gestion-de-errores-obd-ii">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Gestión de Errores OBD-II</a><a class="headerlink" href="#gestion-de-errores-obd-ii" title="Link to this heading">¶</a></h2>
-<p>&gt; <strong>Nota</strong>: estos endpoints también requieren token válido en <cite>Authorization</cite>.</p>
-<p>### Guardar Errores de Vehículo</p>
-<p>### Obtener Errores de un Vehículo</p>
+<h2>Gestión de Errores OBD-II<a class="headerlink" href="#gestion-de-errores-obd-ii" title="Link to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Estos endpoints también requieren token válido en <code class="docutils literal notranslate"><span class="pre">Authorization</span></code>.</p>
+</div>
+<section id="guardar-errores-de-vehiculo">
+<h3>Guardar Errores de Vehículo<a class="headerlink" href="#guardar-errores-de-vehiculo" title="Link to this heading">¶</a></h3>
+<dl class="http post">
+<dt class="sig sig-object http" id="post--guardar-errores-">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/guardar-errores/</span></span><a class="headerlink" href="#post--guardar-errores-" title="Link to this definition">¶</a></dt>
+<dd><p>Registra múltiples códigos DTC para un vehículo del usuario.</p>
+<p><strong>Request Body</strong> (<code class="docutils literal notranslate"><span class="pre">ErrorVehiculoRegistro</span></code>):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vehiculo_id</span></code> (integer, obligatorio)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">codigo_dtc</span></code> (array[string], obligatorio)
+- Lista de códigos OBD-II (p. ej.: <code class="docutils literal notranslate"><span class="pre">[&quot;P0301&quot;,</span> <span class="pre">&quot;P0420&quot;,</span> <span class="pre">&quot;P0133&quot;]</span></code>)</p></li>
+</ul>
+<p><strong>Validaciones</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vehiculo_id</span></code> debe ser entero positivo y corresponder a un vehículo del usuario.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">codigo_dtc</span></code> no puede estar vacío ni contener duplicados o valores en blanco.</p></li>
+</ul>
+<p><strong>Ejemplo</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/guardar-errores/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.ejemplo.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJhbGciOi...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;vehiculo_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;codigo_dtc&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;P0301&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;P0420&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;P0171&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Responses</strong>:</p>
+<ul>
+<li><p><strong>200 OK</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;mensaje&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Errores del vehículo guardados correctamente&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>400 Bad Request</strong></p>
+<ul class="simple">
+<li><p>Formato inválido, lista vacía, duplicados, vehiculo_id negativo.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Lista de códigos vacía o contiene duplicados&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>404 Not Found</strong></p>
+<ul class="simple">
+<li><p>Vehículo no encontrado o no pertenece al usuario.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vehículo no encontrado&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>401 Unauthorized</strong></p>
+<ul class="simple">
+<li><p>Token inválido o expirado.</p></li>
+</ul>
+</li>
+<li><p><strong>500 Internal Server Error</strong></p>
+<ul class="simple">
+<li><p>Error interno al guardar.</p></li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="obtener-errores-de-un-vehiculo">
+<h3>Obtener Errores de un Vehículo<a class="headerlink" href="#obtener-errores-de-un-vehiculo" title="Link to this heading">¶</a></h3>
+<dl class="http get">
+<dt class="sig sig-object http" id="get--mis-errores-vehiculo_id">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/mis-errores/{vehiculo_id}</span></span><a class="headerlink" href="#get--mis-errores-vehiculo_id" title="Link to this definition">¶</a></dt>
+<dd><p>Obtiene todos los códigos DTC registrados para un vehículo.</p>
+<p><strong>URL Parameters</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vehiculo_id</span></code> (integer, obligatorio)</p></li>
+</ul>
+<p><strong>Ejemplo</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/mis-errores/1</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.ejemplo.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJhbGciOi...</span>
+</pre></div>
+</div>
+<p><strong>Responses</strong>:</p>
+<ul>
+<li><p><strong>200 OK</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s2">&quot;P0301&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;P0420&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;P0171&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>404 Not Found</strong></p>
+<ul class="simple">
+<li><p>Vehículo no existente o no tiene errores registrados.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;No se encontraron errores para este vehículo&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>401 Unauthorized</strong></p>
+<ul class="simple">
+<li><p>Token inválido o expirado.</p></li>
+</ul>
+</li>
+<li><p><strong>500 Internal Server Error</strong></p>
+<ul class="simple">
+<li><p>Error interno al consultar la base de datos.</p></li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+
+</section>
 </section>
 <section id="generacion-y-consulta-de-informes">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Generación y Consulta de Informes</a><a class="headerlink" href="#generacion-y-consulta-de-informes" title="Link to this heading">¶</a></h2>
-<p>&gt; <strong>Nota</strong>: la creación del informe envía un correo con un enlace público (token UUID). Ver también en “Modelos” la tabla <cite>InformeCompartido</cite>.</p>
-<p>### Crear Informe para un Vehículo</p>
-<p>### Ver Informe Público</p>
+<h2>Generación y Consulta de Informes<a class="headerlink" href="#generacion-y-consulta-de-informes" title="Link to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>La creación del informe envía un correo con un enlace público (token UUID).
+Ver también en “Modelos” la tabla <code class="docutils literal notranslate"><span class="pre">InformeCompartido</span></code>.</p>
+</div>
+<section id="crear-informe-para-un-vehiculo">
+<h3>Crear Informe para un Vehículo<a class="headerlink" href="#crear-informe-para-un-vehiculo" title="Link to this heading">¶</a></h3>
+<dl class="http post">
+<dt class="sig sig-object http" id="post--crear-informe-vehiculo_id">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/crear-informe/{vehiculo_id}</span></span><a class="headerlink" href="#post--crear-informe-vehiculo_id" title="Link to this definition">¶</a></dt>
+<dd><p>Genera un informe HTML con todos los errores de un vehículo y lo envía por correo al cliente.
+Se crea un token único para acceso público.</p>
+<p><strong>URL Parameters</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vehiculo_id</span></code> (integer, obligatorio)</p></li>
+</ul>
+<p><strong>Request Body</strong> (<code class="docutils literal notranslate"><span class="pre">InformeRequest</span></code>):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">email</span></code> (string, obligatorio, debe contener «&#64;»).</p></li>
+</ul>
+<p><strong>Flujo Interno</strong>:</p>
+<ol class="arabic simple">
+<li><p>Verificar que <code class="docutils literal notranslate"><span class="pre">vehiculo_id</span></code> existe y pertenece al usuario.</p></li>
+<li><p>Recuperar lista de códigos DTC asociados.</p></li>
+<li><p>Generar un token UUID único (<code class="docutils literal notranslate"><span class="pre">uuid4()</span></code>) y guardar en tabla <code class="docutils literal notranslate"><span class="pre">informes_compartidos</span></code>.</p></li>
+<li><p>Crear plantilla HTML (botón con enlace a <code class="docutils literal notranslate"><span class="pre">/informe/{token}</span></code>).</p></li>
+<li><p>Enviar correo con FastAPI-Mail.</p></li>
+</ol>
+<p><strong>Ejemplo</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/crear-informe/1</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.ejemplo.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJhbGciOi...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cliente@dominio.com&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Responses</strong>:</p>
+<ul>
+<li><p><strong>200 OK</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;mensaje&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Informe creado y enviado al email&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;550e8400-e29b-41d4-a716-446655440000&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;enlace&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://tudominio.com/taller-front/informe/550e8400-e29b-41d4-a716-446655440000&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>400 Bad Request</strong></p>
+<ul class="simple">
+<li><p>Email inválido (no contiene «&#64;») o faltan datos.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Formato de email inválido&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>404 Not Found</strong></p>
+<ul class="simple">
+<li><p>Vehículo no existe o no pertenece al usuario.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vehículo no encontrado&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>401 Unauthorized</strong></p>
+<ul class="simple">
+<li><p>Token inválido o expirado.</p></li>
+</ul>
+</li>
+<li><p><strong>500 Internal Server Error</strong></p>
+<ul class="simple">
+<li><p>Error al guardar token o enviar correo.</p></li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+
+</section>
+</section>
+<section id="ver-informe-publico">
+<h2>Ver Informe Público<a class="headerlink" href="#ver-informe-publico" title="Link to this heading">¶</a></h2>
+<dl class="http get">
+<dt class="sig sig-object http" id="get--informe-token">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/informe/{token}</span></span><a class="headerlink" href="#get--informe-token" title="Link to this definition">¶</a></dt>
+<dd><p>Permite a cualquier usuario (sin autenticación) ver el informe de diagnóstico de un vehículo, siempre que posea el token correcto.</p>
+<p><strong>URL Parameters</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">token</span></code> (string, obligatorio, longitud mínima 10)</p></li>
+</ul>
+<p><strong>Flujo Interno</strong>:</p>
+<ol class="arabic simple">
+<li><p>Validar longitud mínima de <code class="docutils literal notranslate"><span class="pre">token</span></code> (10 caracteres).</p></li>
+<li><p>Buscar registro en tabla <code class="docutils literal notranslate"><span class="pre">informes_compartidos</span></code>.</p></li>
+<li><p>Recuperar datos de vehículo e historial de errores.</p></li>
+<li><p>Devolver JSON con datos del vehículo y lista de errores.</p></li>
+</ol>
+<p><strong>Ejemplo</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/informe/550e8400-e29b-41d4-a716-446655440000</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.ejemplo.com</span>
+</pre></div>
+</div>
+<p><strong>Responses</strong>:</p>
+<ul>
+<li><p><strong>200 OK</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;vehiculo&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;marca&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Toyota&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;modelo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Corolla&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2020</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;vin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;JTDBL40E799017833&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;rpm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1500</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;velocidad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;revision&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;tipo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Anual&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;fecha&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-10&quot;</span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;errores&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;P0301&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;P0420&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>400 Bad Request</strong></p>
+<ul class="simple">
+<li><p>Token inválido (longitud &lt; 10).</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Token inválido&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>404 Not Found</strong></p>
+<ul class="simple">
+<li><p>Token no encontrado o informe expirado.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Informe no encontrado&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>500 Internal Server Error</strong></p>
+<ul class="simple">
+<li><p>Error interno al procesar la solicitud.</p></li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+
 </section>
 <section id="servicio-de-imagenes-de-vehiculo">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">Servicio de Imágenes de Vehículo</a><a class="headerlink" href="#servicio-de-imagenes-de-vehiculo" title="Link to this heading">¶</a></h2>
-<p>### Obtener URL de Imagen de Vehículo</p>
+<h2>Servicio de Imágenes de Vehículo<a class="headerlink" href="#servicio-de-imagenes-de-vehiculo" title="Link to this heading">¶</a></h2>
+<section id="obtener-url-de-imagen-de-vehiculo">
+<h3>Obtener URL de Imagen de Vehículo<a class="headerlink" href="#obtener-url-de-imagen-de-vehiculo" title="Link to this heading">¶</a></h3>
+<dl class="http get">
+<dt class="sig sig-object http" id="get--car-imagery-">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/car-imagery/</span></span><a class="headerlink" href="#get--car-imagery-" title="Link to this definition">¶</a></dt>
+<dd><p>Recupera una URL de imagen de vehículo usando la API externa de <strong>carimagery.com</strong>.</p>
+<p><strong>Query Parameters</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">searchTerm</span></code> (string, obligatorio)
+Ejemplo: <code class="docutils literal notranslate"><span class="pre">searchTerm=Toyota%20Corolla%202020</span></code></p></li>
+</ul>
+<p><strong>Ejemplo</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/car-imagery/?searchTerm=Toyota%20Corolla%202020</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.ejemplo.com</span>
+</pre></div>
+</div>
+<p><strong>Responses</strong>:</p>
+<ul>
+<li><p><strong>200 OK</strong></p>
+<p>Devuelve texto o XML con la URL de la imagen, por ejemplo:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;CarImagery&gt;</span>
+<span class="w">  </span><span class="nt">&lt;ImageUrl&gt;</span>https://imagenes.com/ford_focus_2020.jpg<span class="nt">&lt;/ImageUrl&gt;</span>
+<span class="nt">&lt;/CarImagery&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>400 Bad Request</strong></p>
+<ul class="simple">
+<li><p>Si falta <code class="docutils literal notranslate"><span class="pre">searchTerm</span></code> o está vacío.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;searchTerm es obligatorio&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>500 Internal Server Error</strong></p>
+<ul class="simple">
+<li><p>Error al conectar con la API externa.</p></li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+
+</section>
 </section>
 <section id="endpoint-de-prueba-salud">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Endpoint de Prueba / Salud</a><a class="headerlink" href="#endpoint-de-prueba-salud" title="Link to this heading">¶</a></h2>
-<p>### Salud / Ping</p>
+<h2>Endpoint de Prueba / Salud<a class="headerlink" href="#endpoint-de-prueba-salud" title="Link to this heading">¶</a></h2>
+<section id="salud-ping">
+<h3>Salud / Ping<a class="headerlink" href="#salud-ping" title="Link to this heading">¶</a></h3>
+<dl class="http get">
+<dt class="sig sig-object http" id="get--saludo">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/saludo</span></span><a class="headerlink" href="#get--saludo" title="Link to this definition">¶</a></dt>
+<dd><p>Endpoint simple para verificar que la API está en funcionamiento.</p>
+<p><strong>Ejemplo</strong>:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/saludo</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.ejemplo.com</span>
+</pre></div>
+</div>
+<p><strong>Responses</strong>:</p>
+<ul>
+<li><p><strong>200 OK</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;mensaje&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;¡La API está funcionando correctamente!&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+</section>
 </section>
 </section>
 
@@ -349,12 +1121,37 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Endpoints de la API</a><ul>
-<li><a class="reference internal" href="#autenticacion-y-usuarios">Autenticación y Usuarios</a></li>
-<li><a class="reference internal" href="#gestion-de-vehiculos">Gestión de Vehículos</a></li>
-<li><a class="reference internal" href="#gestion-de-errores-obd-ii">Gestión de Errores OBD-II</a></li>
-<li><a class="reference internal" href="#generacion-y-consulta-de-informes">Generación y Consulta de Informes</a></li>
-<li><a class="reference internal" href="#servicio-de-imagenes-de-vehiculo">Servicio de Imágenes de Vehículo</a></li>
-<li><a class="reference internal" href="#endpoint-de-prueba-salud">Endpoint de Prueba / Salud</a></li>
+<li><a class="reference internal" href="#autenticacion-y-usuarios">Autenticación y Usuarios</a><ul>
+<li><a class="reference internal" href="#registro-de-usuario">Registro de Usuario</a></li>
+<li><a class="reference internal" href="#login-obtencion-de-token">Login / Obtención de Token</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#gestion-de-vehiculos">Gestión de Vehículos</a><ul>
+<li><a class="reference internal" href="#guardar-vehiculo">Guardar Vehículo</a></li>
+<li><a class="reference internal" href="#listar-vehiculos-del-usuario">Listar Vehículos del Usuario</a></li>
+<li><a class="reference internal" href="#obtener-vehiculo-especifico">Obtener Vehículo Específico</a></li>
+<li><a class="reference internal" href="#editar-vehiculo">Editar Vehículo</a></li>
+<li><a class="reference internal" href="#eliminar-vehiculo">Eliminar Vehículo</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#gestion-de-errores-obd-ii">Gestión de Errores OBD-II</a><ul>
+<li><a class="reference internal" href="#guardar-errores-de-vehiculo">Guardar Errores de Vehículo</a></li>
+<li><a class="reference internal" href="#obtener-errores-de-un-vehiculo">Obtener Errores de un Vehículo</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#generacion-y-consulta-de-informes">Generación y Consulta de Informes</a><ul>
+<li><a class="reference internal" href="#crear-informe-para-un-vehiculo">Crear Informe para un Vehículo</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ver-informe-publico">Ver Informe Público</a></li>
+<li><a class="reference internal" href="#servicio-de-imagenes-de-vehiculo">Servicio de Imágenes de Vehículo</a><ul>
+<li><a class="reference internal" href="#obtener-url-de-imagen-de-vehiculo">Obtener URL de Imagen de Vehículo</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#endpoint-de-prueba-salud">Endpoint de Prueba / Salud</a><ul>
+<li><a class="reference internal" href="#salud-ping">Salud / Ping</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

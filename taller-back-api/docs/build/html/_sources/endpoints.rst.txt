@@ -1,16 +1,14 @@
+===================
 Endpoints de la API
 ===================
 
 En este documento se describen todos los endpoints disponibles en la API, organizados por funcionalidad. Para cada ruta se indica método HTTP, URL, esquema de datos de entrada/salida, validaciones y ejemplos de uso.
 
-.. contents::
-   :local:
-   :depth: 2
-
 Autenticación y Usuarios
 ------------------------
 
-### Registro de Usuario
+Registro de Usuario
+~~~~~~~~~~~~~~~~~~~
 
 .. http:post:: /register
 
@@ -23,7 +21,7 @@ Autenticación y Usuarios
 
    **Ejemplo**:
 
-   .. sourcecode:: http
+   .. code-block:: http
 
       POST /register HTTP/1.1
       Host: api.ejemplo.com
@@ -36,25 +34,31 @@ Autenticación y Usuarios
 
    **Responses**:
 
-   - **200 OK**  
-     ```json
-     {
-       "mensaje": "Usuario registrado correctamente"
-     }
-     ```
-   - **400 Bad Request**  
-     - Cuando ``username`` o ``password`` no cumplen longitud mínima.  
-     - Si el ``username`` ya existe.  
-     ```json
-     {
-       "detail": "El usuario ya existe"
-     }
-     ```
+   - **200 OK**
 
-   - **500 Internal Server Error**  
+     .. code-block:: json
+
+        {
+          "mensaje": "Usuario registrado correctamente"
+        }
+
+   - **400 Bad Request**
+
+     - Cuando ``username`` o ``password`` no cumplen longitud mínima.  
+     - Si el ``username`` ya existe.
+
+     .. code-block:: json
+
+        {
+          "detail": "El usuario ya existe"
+        }
+
+   - **500 Internal Server Error**
+
      - Error inesperado al guardar en la base de datos.
 
-### Login / Obtención de Token
+Login / Obtención de Token
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. http:post:: /login
 
@@ -67,7 +71,7 @@ Autenticación y Usuarios
 
    **Ejemplo**:
 
-   .. sourcecode:: http
+   .. code-block:: http
 
       POST /login HTTP/1.1
       Host: api.ejemplo.com
@@ -80,36 +84,48 @@ Autenticación y Usuarios
 
    **Responses**:
 
-   - **200 OK**  
-     ```json
-     {
-       "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-       "token_type": "bearer"
-     }
-     ```
-   - **400 Bad Request**  
-     - Si ``username`` o ``password`` no cumplen requisitos (longitud).  
-     ```json
-     {
-       "detail": "Las credenciales no cumplen los requisitos mínimos"
-     }
-     ```
-   - **401 Unauthorized**  
-     - Usuario no registrado o contraseña incorrecta.  
-     ```json
-     {
-       "detail": "Credenciales inválidas"
-     }
-     ```
-   - **500 Internal Server Error**  
+   - **200 OK**
+
+     .. code-block:: json
+
+        {
+          "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+          "token_type": "bearer"
+        }
+
+   - **400 Bad Request**
+
+     - Si ``username`` o ``password`` no cumplen requisitos (longitud).
+
+     .. code-block:: json
+
+        {
+          "detail": "Las credenciales no cumplen los requisitos mínimos"
+        }
+
+   - **401 Unauthorized**
+
+     - Usuario no registrado o contraseña incorrecta.
+
+     .. code-block:: json
+
+        {
+          "detail": "Credenciales inválidas"
+        }
+
+   - **500 Internal Server Error**
+
      - Error al generar el token.
 
 Gestión de Vehículos
 --------------------
 
-> **Nota**: todos los endpoints de esta sección requieren que el header `Authorization: Bearer <token>` contenga un JWT válido.
+.. note::
 
-### Guardar Vehículo
+   Todos los endpoints de esta sección requieren que el header ``Authorization: Bearer <token>`` contenga un JWT válido.
+
+Guardar Vehículo
+~~~~~~~~~~~~~~~~
 
 .. http:post:: /guardar-vehiculo/
 
@@ -130,7 +146,7 @@ Gestión de Vehículos
 
    **Ejemplo**:
 
-   .. sourcecode:: http
+   .. code-block:: http
 
       POST /guardar-vehiculo/ HTTP/1.1
       Host: api.ejemplo.com
@@ -153,32 +169,42 @@ Gestión de Vehículos
 
    **Responses**:
 
-   - **200 OK**  
-     ```json
-     {
-       "mensaje": "Vehículo guardado correctamente",
-       "id": 10
-     }
-     ```
-   - **400 Bad Request**  
+   - **200 OK**
+
+     .. code-block:: json
+
+        {
+          "mensaje": "Vehículo guardado correctamente",
+          "id": 10
+        }
+
+   - **400 Bad Request**
+
      - VIN inválido (no 17 caracteres) o campos faltantes.  
-     - VIN duplicado.  
-     ```json
-     {
-       "detail": "VIN inválido o ya registrado"
-     }
-     ```
-   - **401 Unauthorized**  
-     - Token ausente, inválido o expirado.  
-     ```json
-     {
-       "detail": "No autenticado"
-     }
-     ```
-   - **500 Internal Server Error**  
+     - VIN duplicado.
+
+     .. code-block:: json
+
+        {
+          "detail": "VIN inválido o ya registrado"
+        }
+
+   - **401 Unauthorized**
+
+     - Token ausente, inválido o expirado.
+
+     .. code-block:: json
+
+        {
+          "detail": "No autenticado"
+        }
+
+   - **500 Internal Server Error**
+
      - Error interno al persistir datos.
 
-### Listar Vehículos del Usuario
+Listar Vehículos del Usuario
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. http:get:: /mis-vehiculos/
 
@@ -190,7 +216,7 @@ Gestión de Vehículos
 
    **Ejemplo**:
 
-   .. sourcecode:: http
+   .. code-block:: http
 
       GET /mis-vehiculos/ HTTP/1.1
       Host: api.ejemplo.com
@@ -198,58 +224,62 @@ Gestión de Vehículos
 
    **Responses**:
 
-   - **200 OK**  
+   - **200 OK**
+
      - Si existen vehículos:
 
-       ```json
-       {
-         "vehiculos": [
-           {
-             "id": 1,
-             "marca": "Toyota",
-             "modelo": "Corolla",
-             "year": 2018,
-             "rpm": 1500,
-             "velocidad": 80,
-             "vin": "JTDBL40E799017833",
-             "revision": {"tipo": "Anual", "fecha": "2025-01-10"},
-             "usuario_id": 5
-           },
-           {
-             "id": 2,
-             "marca": "Honda",
-             "modelo": "Civic",
-             "year": 2021,
-             "rpm": 1300,
-             "velocidad": 70,
-             "vin": "2HGFC2F59MH123456",
-             "revision": {"tipo": "Cambio llantas", "fecha": "2025-03-20"},
-             "usuario_id": 5
-           }
-         ]
-       }
-       ```
+       .. code-block:: json
+
+          {
+            "vehiculos": [
+              {
+                "id": 1,
+                "marca": "Toyota",
+                "modelo": "Corolla",
+                "year": 2018,
+                "rpm": 1500,
+                "velocidad": 80,
+                "vin": "JTDBL40E799017833",
+                "revision": {"tipo": "Anual", "fecha": "2025-01-10"},
+                "usuario_id": 5
+              },
+              {
+                "id": 2,
+                "marca": "Honda",
+                "modelo": "Civic",
+                "year": 2021,
+                "rpm": 1300,
+                "velocidad": 70,
+                "vin": "2HGFC2F59MH123456",
+                "revision": {"tipo": "Cambio llantas", "fecha": "2025-03-20"},
+                "usuario_id": 5
+              }
+            ]
+          }
 
      - Si no hay vehículos:
 
-       ```json
-       {
-         "mensaje": "No hay vehículos registrados para este usuario.",
-         "vehiculos": []
-       }
-       ```
+       .. code-block:: json
 
-   - **401 Unauthorized**  
+          {
+            "mensaje": "No hay vehículos registrados para este usuario.",
+            "vehiculos": []
+          }
+
+   - **401 Unauthorized**
+
      - Token inválido o expirado.
 
-   - **500 Internal Server Error**  
+   - **500 Internal Server Error**
+
      - Error al recuperar datos.
 
-### Obtener Vehículo Específico
+Obtener Vehículo Específico
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. http:get:: /mis-vehiculos/{vehiculo_id}
 
-   Recupera la información de un único vehículo (`vehiculo_id`) si pertenece al usuario.
+   Recupera la información de un único vehículo (``vehiculo_id``) si pertenece al usuario.
 
    **URL Parameters**:
 
@@ -257,7 +287,7 @@ Gestión de Vehículos
 
    **Ejemplo**:
 
-   .. sourcecode:: http
+   .. code-block:: http
 
       GET /mis-vehiculos/2 HTTP/1.1
       Host: api.ejemplo.com
@@ -265,33 +295,38 @@ Gestión de Vehículos
 
    **Responses**:
 
-   - **200 OK**  
-     ```json
-     {
-       "id": 2,
-       "marca": "Honda",
-       "modelo": "Civic",
-       "year": 2021,
-       "rpm": 1300,
-       "velocidad": 70,
-       "vin": "2HGFC2F59MH123456",
-       "revision": {"tipo": "Cambio llantas", "fecha": "2025-03-20"},
-       "usuario_id": 5
-     }
-     ```
+   - **200 OK**
 
-   - **404 Not Found**  
-     - El vehículo no existe o no pertenece al usuario.  
-     ```json
-     {
-       "detail": "Vehículo no encontrado"
-     }
-     ```
+     .. code-block:: json
 
-   - **401 Unauthorized**  
+        {
+          "id": 2,
+          "marca": "Honda",
+          "modelo": "Civic",
+          "year": 2021,
+          "rpm": 1300,
+          "velocidad": 70,
+          "vin": "2HGFC2F59MH123456",
+          "revision": {"tipo": "Cambio llantas", "fecha": "2025-03-20"},
+          "usuario_id": 5
+        }
+
+   - **404 Not Found**
+
+     - El vehículo no existe o no pertenece al usuario.
+
+     .. code-block:: json
+
+        {
+          "detail": "Vehículo no encontrado"
+        }
+
+   - **401 Unauthorized**
+
      - Token inválido o expirado.
 
-### Editar Vehículo
+Editar Vehículo
+~~~~~~~~~~~~~~~
 
 .. http:put:: /editar-vehiculo/{vehiculo_id}
 
@@ -312,7 +347,7 @@ Gestión de Vehículos
 
    **Ejemplo**:
 
-   .. sourcecode:: http
+   .. code-block:: http
 
       PUT /editar-vehiculo/2 HTTP/1.1
       Host: api.ejemplo.com
@@ -330,32 +365,44 @@ Gestión de Vehículos
 
    **Responses**:
 
-   - **200 OK**  
-     ```json
-     {
-       "mensaje": "Vehículo actualizado correctamente"
-     }
-     ```
-   - **400 Bad Request**  
-     - VIN inválido o ya registrado en otro vehículo.  
-     ```json
-     {
-       "detail": "VIN duplicado"
-     }
-     ```
-   - **404 Not Found**  
-     - Vehículo no existe o no pertenece al usuario.  
-     ```json
-     {
-       "detail": "Vehículo no encontrado"
-     }
-     ```
-   - **401 Unauthorized**  
+   - **200 OK**
+
+     .. code-block:: json
+
+        {
+          "mensaje": "Vehículo actualizado correctamente"
+        }
+
+   - **400 Bad Request**
+
+     - VIN inválido o ya registrado en otro vehículo.
+
+     .. code-block:: json
+
+        {
+          "detail": "VIN duplicado"
+        }
+
+   - **404 Not Found**
+
+     - Vehículo no existe o no pertenece al usuario.
+
+     .. code-block:: json
+
+        {
+          "detail": "Vehículo no encontrado"
+        }
+
+   - **401 Unauthorized**
+
      - Token inválido o expirado.
-   - **500 Internal Server Error**  
+
+   - **500 Internal Server Error**
+
      - Error interno al actualizar.
 
-### Eliminar Vehículo
+Eliminar Vehículo
+~~~~~~~~~~~~~~~~~
 
 .. http:delete:: /eliminar-vehiculo/{vehiculo_id}
 
@@ -367,7 +414,7 @@ Gestión de Vehículos
 
    **Ejemplo**:
 
-   .. sourcecode:: http
+   .. code-block:: http
 
       DELETE /eliminar-vehiculo/2 HTTP/1.1
       Host: api.ejemplo.com
@@ -375,35 +422,44 @@ Gestión de Vehículos
 
    **Responses**:
 
-   - **200 OK**  
-     ```json
-     {
-       "mensaje": "Vehículo eliminado correctamente",
-       "errores_eliminados": 4
-     }
-     ```
+   - **200 OK**
+
+     .. code-block:: json
+
+        {
+          "mensaje": "Vehículo eliminado correctamente",
+          "errores_eliminados": 4
+        }
+
      - ``errores_eliminados``: cantidad de registros de errores borrados.
 
-   - **404 Not Found**  
-     - Vehículo no existe o no pertenece al usuario.  
-     ```json
-     {
-       "detail": "Vehículo no encontrado"
-     }
-     ```
+   - **404 Not Found**
 
-   - **401 Unauthorized**  
+     - Vehículo no existe o no pertenece al usuario.
+
+     .. code-block:: json
+
+        {
+          "detail": "Vehículo no encontrado"
+        }
+
+   - **401 Unauthorized**
+
      - Token inválido o expirado.
 
-   - **500 Internal Server Error**  
+   - **500 Internal Server Error**
+
      - Error interno al eliminar.
 
 Gestión de Errores OBD-II
 -------------------------
 
-> **Nota**: estos endpoints también requieren token válido en `Authorization`.
+.. note::
 
-### Guardar Errores de Vehículo
+   Estos endpoints también requieren token válido en ``Authorization``.
+
+Guardar Errores de Vehículo
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. http:post:: /guardar-errores/
 
@@ -422,7 +478,7 @@ Gestión de Errores OBD-II
 
    **Ejemplo**:
 
-   .. sourcecode:: http
+   .. code-block:: http
 
       POST /guardar-errores/ HTTP/1.1
       Host: api.ejemplo.com
@@ -436,32 +492,44 @@ Gestión de Errores OBD-II
 
    **Responses**:
 
-   - **200 OK**  
-     ```json
-     {
-       "mensaje": "Errores del vehículo guardados correctamente"
-     }
-     ```
-   - **400 Bad Request**  
-     - Formato inválido, lista vacía, duplicados, vehiculo_id negativo.  
-     ```json
-     {
-       "detail": "Lista de códigos vacía o contiene duplicados"
-     }
-     ```
-   - **404 Not Found**  
-     - Vehículo no encontrado o no pertenece al usuario.  
-     ```json
-     {
-       "detail": "Vehículo no encontrado"
-     }
-     ```
-   - **401 Unauthorized**  
+   - **200 OK**
+
+     .. code-block:: json
+
+        {
+          "mensaje": "Errores del vehículo guardados correctamente"
+        }
+
+   - **400 Bad Request**
+
+     - Formato inválido, lista vacía, duplicados, vehiculo_id negativo.
+
+     .. code-block:: json
+
+        {
+          "detail": "Lista de códigos vacía o contiene duplicados"
+        }
+
+   - **404 Not Found**
+
+     - Vehículo no encontrado o no pertenece al usuario.
+
+     .. code-block:: json
+
+        {
+          "detail": "Vehículo no encontrado"
+        }
+
+   - **401 Unauthorized**
+
      - Token inválido o expirado.
-   - **500 Internal Server Error**  
+
+   - **500 Internal Server Error**
+
      - Error interno al guardar.
 
-### Obtener Errores de un Vehículo
+Obtener Errores de un Vehículo
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. http:get:: /mis-errores/{vehiculo_id}
 
@@ -473,7 +541,7 @@ Gestión de Errores OBD-II
 
    **Ejemplo**:
 
-   .. sourcecode:: http
+   .. code-block:: http
 
       GET /mis-errores/1 HTTP/1.1
       Host: api.ejemplo.com
@@ -481,32 +549,45 @@ Gestión de Errores OBD-II
 
    **Responses**:
 
-   - **200 OK**  
-     ```json
-     ["P0301", "P0420", "P0171"]
-     ```
-   - **404 Not Found**  
-     - Vehículo no existente o no tiene errores registrados.  
-     ```json
-     {
-       "detail": "No se encontraron errores para este vehículo"
-     }
-     ```
-   - **401 Unauthorized**  
+   - **200 OK**
+
+     .. code-block:: json
+
+        ["P0301", "P0420", "P0171"]
+
+   - **404 Not Found**
+
+     - Vehículo no existente o no tiene errores registrados.
+
+     .. code-block:: json
+
+        {
+          "detail": "No se encontraron errores para este vehículo"
+        }
+
+   - **401 Unauthorized**
+
      - Token inválido o expirado.
-   - **500 Internal Server Error**  
+
+   - **500 Internal Server Error**
+
      - Error interno al consultar la base de datos.
 
 Generación y Consulta de Informes
 ---------------------------------
 
-> **Nota**: la creación del informe envía un correo con un enlace público (token UUID). Ver también en “Modelos” la tabla `InformeCompartido`.
+.. note::
 
-### Crear Informe para un Vehículo
+   La creación del informe envía un correo con un enlace público (token UUID).  
+   Ver también en “Modelos” la tabla ``InformeCompartido``.
+
+Crear Informe para un Vehículo
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. http:post:: /crear-informe/{vehiculo_id}
 
-   Genera un informe HTML con todos los errores de un vehículo y lo envía por correo al cliente. Se crea un token único para acceso público.
+   Genera un informe HTML con todos los errores de un vehículo y lo envía por correo al cliente.  
+   Se crea un token único para acceso público.
 
    **URL Parameters**:
 
@@ -514,19 +595,19 @@ Generación y Consulta de Informes
 
    **Request Body** (``InformeRequest``):
 
-   - ``email`` (string, obligatorio, debe contener “@”)
+   - ``email`` (string, obligatorio, debe contener "@").
 
    **Flujo Interno**:
 
    1. Verificar que ``vehiculo_id`` existe y pertenece al usuario.  
    2. Recuperar lista de códigos DTC asociados.  
-   3. Generar un token UUID único (`uuid4()`) y guardar en tabla `informes_compartidos`.  
-   4. Crear plantilla HTML (botón con enlace a `/informe/{token}`).  
+   3. Generar un token UUID único (``uuid4()``) y guardar en tabla ``informes_compartidos``.  
+   4. Crear plantilla HTML (botón con enlace a ``/informe/{token}``).  
    5. Enviar correo con FastAPI-Mail.  
 
    **Ejemplo**:
 
-   .. sourcecode:: http
+   .. code-block:: http
 
       POST /crear-informe/1 HTTP/1.1
       Host: api.ejemplo.com
@@ -539,34 +620,46 @@ Generación y Consulta de Informes
 
    **Responses**:
 
-   - **200 OK**  
-     ```json
-     {
-       "mensaje": "Informe creado y enviado al email",
-       "token": "550e8400-e29b-41d4-a716-446655440000",
-       "enlace": "https://tudominio.com/taller-front/informe/550e8400-e29b-41d4-a716-446655440000"
-     }
-     ```
-   - **400 Bad Request**  
-     - Email inválido (no contiene “@”) o faltan datos.  
-     ```json
-     {
-       "detail": "Formato de email inválido"
-     }
-     ```
-   - **404 Not Found**  
-     - Vehículo no existe o no pertenece al usuario.  
-     ```json
-     {
-       "detail": "Vehículo no encontrado"
-     }
-     ```
-   - **401 Unauthorized**  
+   - **200 OK**
+
+     .. code-block:: json
+
+        {
+          "mensaje": "Informe creado y enviado al email",
+          "token": "550e8400-e29b-41d4-a716-446655440000",
+          "enlace": "https://tudominio.com/taller-front/informe/550e8400-e29b-41d4-a716-446655440000"
+        }
+
+   - **400 Bad Request**
+
+     - Email inválido (no contiene "@") o faltan datos.
+
+     .. code-block:: json
+
+        {
+          "detail": "Formato de email inválido"
+        }
+
+   - **404 Not Found**
+
+     - Vehículo no existe o no pertenece al usuario.
+
+     .. code-block:: json
+
+        {
+          "detail": "Vehículo no encontrado"
+        }
+
+   - **401 Unauthorized**
+
      - Token inválido o expirado.
-   - **500 Internal Server Error**  
+
+   - **500 Internal Server Error**
+
      - Error al guardar token o enviar correo.
 
-### Ver Informe Público
+Ver Informe Público
+-------------------
 
 .. http:get:: /informe/{token}
 
@@ -579,55 +672,65 @@ Generación y Consulta de Informes
    **Flujo Interno**:
 
    1. Validar longitud mínima de ``token`` (10 caracteres).  
-   2. Buscar registro en tabla `informes_compartidos`.  
+   2. Buscar registro en tabla ``informes_compartidos``.  
    3. Recuperar datos de vehículo e historial de errores.  
    4. Devolver JSON con datos del vehículo y lista de errores.
 
    **Ejemplo**:
 
-   .. sourcecode:: http
+   .. code-block:: http
 
       GET /informe/550e8400-e29b-41d4-a716-446655440000 HTTP/1.1
       Host: api.ejemplo.com
 
    **Responses**:
 
-   - **200 OK**  
-     ```json
-     {
-       "vehiculo": {
-         "marca": "Toyota",
-         "modelo": "Corolla",
-         "year": 2020,
-         "vin": "JTDBL40E799017833",
-         "rpm": 1500,
-         "velocidad": 80,
-         "revision": {"tipo": "Anual", "fecha": "2025-01-10"}
-       },
-       "errores": ["P0301", "P0420"]
-     }
-     ```
-   - **400 Bad Request**  
-     - Token inválido (longitud < 10).  
-     ```json
-     {
-       "detail": "Token inválido"
-     }
-     ```
-   - **404 Not Found**  
-     - Token no encontrado o informe expirado.  
-     ```json
-     {
-       "detail": "Informe no encontrado"
-     }
-     ```
-   - **500 Internal Server Error**  
+   - **200 OK**
+
+     .. code-block:: json
+
+        {
+          "vehiculo": {
+            "marca": "Toyota",
+            "modelo": "Corolla",
+            "year": 2020,
+            "vin": "JTDBL40E799017833",
+            "rpm": 1500,
+            "velocidad": 80,
+            "revision": {"tipo": "Anual", "fecha": "2025-01-10"}
+          },
+          "errores": ["P0301", "P0420"]
+        }
+
+   - **400 Bad Request**
+
+     - Token inválido (longitud < 10).
+
+     .. code-block:: json
+
+        {
+          "detail": "Token inválido"
+        }
+
+   - **404 Not Found**
+
+     - Token no encontrado o informe expirado.
+
+     .. code-block:: json
+
+        {
+          "detail": "Informe no encontrado"
+        }
+
+   - **500 Internal Server Error**
+
      - Error interno al procesar la solicitud.
 
 Servicio de Imágenes de Vehículo
 --------------------------------
 
-### Obtener URL de Imagen de Vehículo
+Obtener URL de Imagen de Vehículo
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. http:get:: /car-imagery/
 
@@ -636,38 +739,46 @@ Servicio de Imágenes de Vehículo
    **Query Parameters**:
 
    - ``searchTerm`` (string, obligatorio)  
-     - Ejemplo: ``searchTerm=Toyota%20Corolla%202020``
+     Ejemplo: ``searchTerm=Toyota%20Corolla%202020``
 
    **Ejemplo**:
 
-   .. sourcecode:: http
+   .. code-block:: http
 
       GET /car-imagery/?searchTerm=Toyota%20Corolla%202020 HTTP/1.1
       Host: api.ejemplo.com
 
    **Responses**:
 
-   - **200 OK**  
-     - Devuelve texto o XML con la URL de la imagen, p. ej.:  
-       ```xml
-       <CarImagery>
-         <ImageUrl>https://imagenes.com/ford_focus_2020.jpg</ImageUrl>
-       </CarImagery>
-       ```
-   - **400 Bad Request**  
-     - Si falta ``searchTerm`` o está vacío.  
-     ```json
-     {
-       "detail": "searchTerm es obligatorio"
-     }
-     ```
-   - **500 Internal Server Error**  
+   - **200 OK**
+
+     Devuelve texto o XML con la URL de la imagen, por ejemplo:
+
+     .. code-block:: xml
+
+        <CarImagery>
+          <ImageUrl>https://imagenes.com/ford_focus_2020.jpg</ImageUrl>
+        </CarImagery>
+
+   - **400 Bad Request**
+
+     - Si falta ``searchTerm`` o está vacío.
+
+     .. code-block:: json
+
+        {
+          "detail": "searchTerm es obligatorio"
+        }
+
+   - **500 Internal Server Error**
+
      - Error al conectar con la API externa.
 
 Endpoint de Prueba / Salud
 --------------------------
 
-### Salud / Ping
+Salud / Ping
+~~~~~~~~~~~~
 
 .. http:get:: /saludo
 
@@ -675,16 +786,17 @@ Endpoint de Prueba / Salud
 
    **Ejemplo**:
 
-   .. sourcecode:: http
+   .. code-block:: http
 
       GET /saludo HTTP/1.1
       Host: api.ejemplo.com
 
    **Responses**:
 
-   - **200 OK**  
-     ```json
-     {
-       "mensaje": "¡La API está funcionando correctamente!"
-     }
-     ```
+   - **200 OK**
+
+     .. code-block:: json
+
+        {
+          "mensaje": "¡La API está funcionando correctamente!"
+        }

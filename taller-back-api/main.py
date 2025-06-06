@@ -354,17 +354,19 @@ class InformeRequest(BaseModel):
 @app.post("/register")
 def register(datos: UsuarioRegistro, db: Session = Depends(get_db)):
     """
+    **POST** ``/register``
+    
     Registra un nuevo usuario en la base de datos.
-
-    Args:
-        datos (UsuarioRegistro): Objeto que contiene el nombre de usuario y la contraseña.
-        db (Session): Sesión activa de la base de datos, proporcionada por FastAPI.
-
-    Returns:
-        dict: Un mensaje indicando si el usuario fue registrado exitosamente.
-
-    Raises:
-        HTTPException 400: Si los campos son inválidos o el nombre de usuario ya existe.
+    
+    **Parámetros**:
+    - ``datos`` (UsuarioRegistro): Objeto que contiene el nombre de usuario y la contraseña.
+    - ``db`` (Session): Sesión activa de la base de datos, proporcionada por FastAPI.
+    
+    **Retorna**:
+    - ``dict``: Un mensaje indicando si el usuario fue registrado exitosamente.
+    
+    **Errores**:
+    - ``400``: Si los campos son inválidos o el nombre de usuario ya existe.
     """
     if not datos.username or len(datos.username.strip()) < 3:
         raise HTTPException(status_code=400, detail="El nombre de usuario es obligatorio y debe tener al menos 3 caracteres.")

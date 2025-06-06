@@ -1,11 +1,8 @@
+================
 Modelos de Datos
 ================
 
 En esta sección se describen en detalle los **modelos ORM** (SQLAlchemy) y los **modelos de validación** (Pydantic) definidos en `main.py`. Se incluyen tablas con atributos, tipos, relaciones y ejemplos de uso.
-
-.. contents::
-   :local:
-   :depth: 2
 
 Modelos ORM (SQLAlchemy)
 -------------------------
@@ -14,7 +11,6 @@ Los modelos ORM representan las tablas de la base de datos, heredan de `Base` y 
 
 .. list-table::
    :header-rows: 1
-   :widths: 15 20 20 45
 
    * - **Clase**
      - **Atributo**
@@ -91,7 +87,7 @@ Los modelos ORM representan las tablas de la base de datos, heredan de `Base` y 
    * - ``ErrorVehiculo``
      - ``codigo_dtc``
      - String(255)
-     - Código OBD-II (p. ej., "P0301").
+     - Código OBD-II (p. ej., ``P0301``).
    * - ``ErrorVehiculo``
      - ``vehiculo``
      - Relationship
@@ -119,38 +115,53 @@ Los modelos ORM representan las tablas de la base de datos, heredan de `Base` y 
 
 **Relaciones entre Tablas**:
 
-- ``Usuario`` ↔ ``Vehiculo``
-   - Uno a muchos:
-      - En `Usuario`:
-         ```python 
+- ``Usuario`` :math:`\leftrightarrow` ``Vehiculo``
+  
+  - Uno a muchos:
+    
+    - En ``Usuario``:
+      
+      .. code-block:: python
+
          vehiculos = relationship("Vehiculo", back_populates="usuario", cascade="all, delete-orphan")
-         ``` 
-      - En `Vehiculo`:
-         ```python
+    
+    - En ``Vehiculo``:
+      
+      .. code-block:: python
+
          usuario = relationship("Usuario", back_populates="vehiculos")
-         ```
 
-- ``Vehiculo`` ↔ ``ErrorVehiculo``  
-   - Uno a muchos:  
-      - En `Vehiculo`:  
-      ```python 
-      errores = relationship("ErrorVehiculo", back_populates="vehiculo", cascade="all, delete-orphan")
-      ```  
-      - En `ErrorVehiculo`:  
-      ```python
-      vehiculo = relationship("Vehiculo", back_populates="errores")
-      ```
+- ``Vehiculo`` :math:`\leftrightarrow` ``ErrorVehiculo``  
+  
+  - Uno a muchos:  
+  
+    - En ``Vehiculo``:  
+    
+      .. code-block:: python
 
-- ``Vehiculo`` ↔ ``InformeCompartido``  
-   - Uno a muchos:  
-      - En `Vehiculo`:  
-      ```python 
-      informes_compartidos = relationship("InformeCompartido", back_populates="vehiculo", cascade="all, delete-orphan")
-      ```  
-    - En `InformeCompartido`: 
-      ```python
-      vehiculo = relationship("Vehiculo", back_populates="informes_compartidos")
-      ```
+         errores = relationship("ErrorVehiculo", back_populates="vehiculo", cascade="all, delete-orphan")
+    
+    - En ``ErrorVehiculo``:  
+    
+      .. code-block:: python
+
+         vehiculo = relationship("Vehiculo", back_populates="errores")
+
+- ``Vehiculo`` :math:`\leftrightarrow` ``InformeCompartido``  
+  
+  - Uno a muchos:  
+  
+    - En ``Vehiculo``:  
+    
+      .. code-block:: python
+
+         informes_compartidos = relationship("InformeCompartido", back_populates="vehiculo", cascade="all, delete-orphan")
+    
+    - En ``InformeCompartido``: 
+    
+      .. code-block:: python
+
+         vehiculo = relationship("Vehiculo", back_populates="informes_compartidos")
 
 Ejemplo de Esquema en SQL
 ~~~~~~~~~~~~~~~~~~~~~~~~~
