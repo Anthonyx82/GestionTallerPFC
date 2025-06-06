@@ -21,9 +21,6 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 
-# Montaje de la documentacion de la api
-app.mount("/docs_html", StaticFiles(directory="docs/build/html"), name="docs_html")
-
 # Configuración de la base de datos
 """
 Configuración de la base de datos:
@@ -188,6 +185,8 @@ if __name__ == "__main__":
 
 # Iniciar FastAPI
 app = FastAPI(root_path="/taller/api")
+
+app.mount("/docs_html", StaticFiles(directory="docs/build/html"), name="docs_html")
 
 # Configurar CORS
 app.add_middleware(
