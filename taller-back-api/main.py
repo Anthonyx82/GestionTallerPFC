@@ -21,6 +21,9 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 
+# Montaje de la documentacion de la api
+app.mount("/docs_html", StaticFiles(directory="docs/build/html"), name="docs_html")
+
 # Configuración de la base de datos
 """
 Configuración de la base de datos:
