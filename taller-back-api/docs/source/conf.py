@@ -1,8 +1,3 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# For the full list of built-in configuration values, see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
-
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../..'))
@@ -29,6 +24,23 @@ latex_elements = {
 
 % Cargar tabulary normalmente
 \usepackage{tabulary}
+
+% Colores naranja para enlaces y títulos
+\usepackage{xcolor}
+\definecolor{sphinxorange}{RGB}{255,140,0}
+\definecolor{sphinxorangeLink}{RGB}{255,165,79}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=sphinxorange,
+    urlcolor=sphinxorangeLink,
+    citecolor=sphinxorange,
+    filecolor=sphinxorange,
+}
+
+\usepackage{sectsty}
+\allsectionsfont{\color{sphinxorange}}
 
 % Estilo para encabezados de tablas (normal + negrita)
 \renewcommand{\sphinxstyletheadfamily}{\normalfont\bfseries}

@@ -33,7 +33,7 @@
   \bigletter G
   \item \spxentry{get\_car\_image()}\spxextra{en el módulo main}, \hyperpage{30}
   \item \spxentry{get\_db()}\spxextra{en el módulo main}, \hyperpage{37}
-  \item \spxentry{guardar\_errores()}\spxextra{en el módulo main}, \hyperpage{31}
+  \item \spxentry{guardar\_errores()}\spxextra{en el módulo main}, \hyperpage{30}
   \item \spxentry{guardar\_vehiculo()}\spxextra{en el módulo main}, \hyperpage{31}
 
   \indexspace
@@ -64,7 +64,7 @@
   \item \spxentry{model\_config}\spxextra{atributo de main.UsuarioRegistro}, \hyperpage{27}
   \item \spxentry{model\_config}\spxextra{atributo de main.VehiculoEdicion}, \hyperpage{28}
   \item \spxentry{model\_config}\spxextra{atributo de main.VehiculoRegistro}, \hyperpage{28}
-  \item \spxentry{modelo}\spxextra{atributo de main.Vehiculo}, \hyperpage{28}
+  \item \spxentry{modelo}\spxextra{atributo de main.Vehiculo}, \hyperpage{27}
   \item \spxentry{modelo}\spxextra{atributo de main.VehiculoEdicion}, \hyperpage{28}
   \item \spxentry{modelo}\spxextra{atributo de main.VehiculoRegistro}, \hyperpage{28}
   \item \spxentry{module}
@@ -82,14 +82,14 @@
   \bigletter P
   \item \spxentry{password}\spxextra{atributo de main.UsuarioLogin}, \hyperpage{27}
   \item \spxentry{password}\spxextra{atributo de main.UsuarioRegistro}, \hyperpage{27}
-  \item \spxentry{password\_hash}\spxextra{atributo de main.Usuario}, \hyperpage{27}
+  \item \spxentry{password\_hash}\spxextra{atributo de main.Usuario}, \hyperpage{26}
 
   \indexspace
   \bigletter R
   \item \spxentry{register()}\spxextra{en el módulo main}, \hyperpage{33}
   \item \spxentry{registry}\spxextra{atributo de main.Base}, \hyperpage{25}
   \item \spxentry{revision}\spxextra{atributo de main.Vehiculo}, \hyperpage{28}
-  \item \spxentry{revision}\spxextra{atributo de main.VehiculoRegistro}, \hyperpage{29}
+  \item \spxentry{revision}\spxextra{atributo de main.VehiculoRegistro}, \hyperpage{28}
   \item \spxentry{rpm}\spxextra{atributo de main.Vehiculo}, \hyperpage{28}
   \item \spxentry{rpm}\spxextra{atributo de main.VehiculoEdicion}, \hyperpage{28}
   \item \spxentry{rpm}\spxextra{atributo de main.VehiculoRegistro}, \hyperpage{29}

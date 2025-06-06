@@ -242,6 +242,8 @@ INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\underscore\unders
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\underscore\underscore.sty
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\firstaid\underscore-ltx.sty
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\firstaid\underscore-ltx.sty
+INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\sectsty\sectsty.sty
+INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\sectsty\sectsty.sty
 OUTPUT tallerapi.idx
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\tex-gyre\t1qtm.fd
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\tex-gyre\t1qtm.fd
@@ -324,7 +326,7 @@ INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\e
 INPUT C:\Users\Antonio\AppData\Local\MiKTeX\fonts\map\pdftex\pdftex.map
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\tex-gyre\q-ec.enc
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qtmr.tfm
-INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qhvr.tfm
+INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qtmb.tfm
 INPUT .\tallerapi.toc
 INPUT .\tallerapi.toc
 INPUT tallerapi.toc
@@ -338,17 +340,18 @@ INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\s
 OUTPUT tallerapi.toc
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qhvb-sc.tfm
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\tex-gyre\q-ec-sc.enc
-INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qhvr.tfm
-INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qhvb.tfm
+INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qtmr.tfm
+INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qtmb.tfm
+INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qtmr.tfm
+INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qtmb.tfm
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\txfonts\t1txtt.fd
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\txfonts\t1txtt.fd
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\txfonts\t1txtt.fd
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\txfonts\t1xtt.tfm
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\txfonts\t1xtt.tfm
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qtmr.tfm
-INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qhvr.tfm
+INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qtmb.tfm
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\txfonts\t1xbtt.tfm
-INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qtmr.tfm
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\tex-gyre\ts1qtm.fd
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\tex-gyre\ts1qtm.fd
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\tex-gyre\ts1qtm.fd
@@ -359,6 +362,7 @@ INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\fontawesome5\ufon
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\fontawesome5\ufontawesomefree1.fd
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\fontawesome5\fa5free1solid.tfm
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\fontawesome5\fa5free1.enc
+INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qtmr.tfm
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qtmri.tfm
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\txfonts\t1xttsl.tfm
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\tex\latex\txfonts\ts1txtt.fd
@@ -372,6 +376,7 @@ INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\txfonts\rt
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\base\8r.enc
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qtmri-sc.tfm
 INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ts1-qtmb.tfm
+INPUT C:\Users\Antonio\AppData\Local\Programs\MiKTeX\fonts\tfm\public\tex-gyre\ec-qhvr.tfm
 INPUT .\tallerapi.ind
 INPUT .\tallerapi.ind
 INPUT tallerapi.ind
