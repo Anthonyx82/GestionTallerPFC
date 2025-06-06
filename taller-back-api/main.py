@@ -187,7 +187,7 @@ if __name__ == "__main__":
 # Iniciar FastAPI
 app = FastAPI(root_path="/taller/api")
 
-app.mount("/docs_html", StaticFiles(directory="docs/build/html"), name="docs_html")
+app.mount("/taller/api/docs_html", StaticFiles(directory="docs/build/html"), name="docs_html")
 
 # Configurar CORS
 app.add_middleware(
