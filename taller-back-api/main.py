@@ -352,19 +352,24 @@ class InformeRequest(BaseModel):
     """
     email: str
 
+# Endopoint de documentacin
+@app.get("/docs_html")
+async def redirect_docs_html():
+    return RedirectResponse(url="/taller/api/docs_html/")
+
+@app.get("/docs_html/")
+async def serve_docs_index():
+    index_path = BASE_DIR / "index.html"
+    if not index_path.exists():
+        raise HTTPException(status_code=404, detail="Archivo no encontrado")
+    return FileResponse(index_path)
+
 @app.get("/docs_html/{path:path}")
 async def serve_docs_html(path: str):
     file_path = BASE_DIR / path
     if not file_path.exists() or not file_path.is_file():
         raise HTTPException(status_code=404, detail="Archivo no encontrado")
     return FileResponse(file_path)
-
-@app.get("/docs_html")
-async def serve_docs_index():
-    index_path = BASE_DIR / "index.html"
-    if not index_path.exists():
-        raise HTTPException(status_code=404, detail="Archivo no encontrado")
-    return FileResponse(index_path)
     
 # Endpoint para registro de usuario
 @app.post("/register")
