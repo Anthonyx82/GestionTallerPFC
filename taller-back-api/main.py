@@ -186,10 +186,7 @@ if __name__ == "__main__":
 
 # Iniciar FastAPI
 app = FastAPI(root_path="/taller/api")
-
-docs_router = APIRouter()
-docs_router.mount("/docs_html", StaticFiles(directory="docs/build/html"), name="docs_html")
-app.include_router(docs_router, prefix="/taller/api")
+BASE_DIR = Path("docs/build/html")
 
 # Configurar CORS
 app.add_middleware(
@@ -353,8 +350,21 @@ class InformeRequest(BaseModel):
         email (str): Dirección de email del cliente destinatario.
     """
     email: str
-    
 
+@app.get("/docs_html/{path:path}")
+async def serve_docs_html(path: str):
+    file_path = BASE_DIR / path
+    if not file_path.exists() or not file_path.is_file():
+        raise HTTPException(status_code=404, detail="Archivo no encontrado")
+    return FileResponse(file_path)
+
+@app.get("/docs_html")
+async def serve_docs_index():
+    index_path = BASE_DIR / "index.html"
+    if not index_path.exists():
+        raise HTTPException(status_code=404, detail="Archivo no encontrado")
+    return FileResponse(index_path)
+    
 # Endpoint para registro de usuario
 @app.post("/register")
 def register(datos: UsuarioRegistro, db: Session = Depends(get_db)):
