@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 # Librerías externas
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer
@@ -187,7 +187,9 @@ if __name__ == "__main__":
 # Iniciar FastAPI
 app = FastAPI(root_path="/taller/api")
 
-app.mount("/taller/api/docs_html", StaticFiles(directory="docs/build/html"), name="docs_html")
+docs_router = APIRouter()
+docs_router.mount("/docs_html", StaticFiles(directory="docs/build/html"), name="docs_html")
+app.include_router(docs_router, prefix="/taller/api")
 
 # Configurar CORS
 app.add_middleware(
