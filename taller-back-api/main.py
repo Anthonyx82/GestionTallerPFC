@@ -1,25 +1,25 @@
-# Librerías estándar
 import os
 import uuid
 from datetime import datetime, timedelta
+from pathlib import Path
 
-# Librerías externas
+import requests
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Depends, APIRouter, Response, Request
+from fastapi import (
+    FastAPI, HTTPException, Depends, APIRouter, Response, Request
+)
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import JSONResponse, FileResponse, RedirectResponse
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.staticfiles import StaticFiles
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
-import requests
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session, relationship
-from pathlib import Path
 
 load_dotenv()
 
