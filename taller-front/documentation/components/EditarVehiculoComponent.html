@@ -1,0 +1,1074 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>taller-front documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">taller-front documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  EditarVehiculoComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/editar-vehiculo/editar-vehiculo.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p><img src="../assets/docs/screenshots/editar-vehiculo.png" alt="editar-vehiculo" class="img-responsive">
+<br>
+Componente para editar los datos de un vehículo existente.</p>
+<p>Permite modificar la marca, modelo, año, VIN, RPM, velocidad y revisión.
+Valida la existencia de un token para acceso seguro.
+Carga los datos actuales del vehículo desde la API y los guarda tras edición.</p>
+
+    </p>
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-editar-vehiculo</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>FormsModule</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./editar-vehiculo.component.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./editar-vehiculo.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#tokenValido" >tokenValido</a>
+                            </li>
+                            <li>
+                                <a href="#vehiculo" >vehiculo</a>
+                            </li>
+                            <li>
+                                <a href="#vehiculoId" >vehiculoId</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cargarVehiculo" >cargarVehiculo</a>
+                            </li>
+                            <li>
+                                <a href="#guardarEdicion" >guardarEdicion</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#volver" >volver</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(route: ActivatedRoute, router: Router, http: HttpClient)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/editar-vehiculo/editar-vehiculo.component.ts:53</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Inyección de dependencias del enrutador, rutas activas y cliente HTTP.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>route</td>
+                                                  
+                                                        <td>
+                                                                    <code>ActivatedRoute</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>Proporciona acceso a los parámetros de la ruta activa.</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>Permite la navegación entre rutas.</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>http</td>
+                                                  
+                                                        <td>
+                                                                    <code>HttpClient</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>Cliente HTTP para realizar peticiones a la API.</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarVehiculo"></a>
+                    <span class="name">
+                        <span ><b>cargarVehiculo</b></span>
+                        <a href="#cargarVehiculo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarVehiculo()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="93"
+                                    class="link-to-prism">src/app/editar-vehiculo/editar-vehiculo.component.ts:93</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Carga los datos del vehículo desde la API usando el ID actual.
+Realiza una petición HTTP GET al backend.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardarEdicion"></a>
+                    <span class="name">
+                        <span ><b>guardarEdicion</b></span>
+                        <a href="#guardarEdicion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>guardarEdicion()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="108"
+                                    class="link-to-prism">src/app/editar-vehiculo/editar-vehiculo.component.ts:108</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Guarda los cambios realizados al vehículo actual.
+Realiza una petición HTTP PUT con los nuevos datos al backend.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="71"
+                                    class="link-to-prism">src/app/editar-vehiculo/editar-vehiculo.component.ts:71</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Hook del ciclo de vida que se ejecuta al inicializar el componente.
+Verifica si hay un token válido y, si existe un ID, carga los datos del vehículo.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="volver"></a>
+                    <span class="name">
+                        <span ><b>volver</b></span>
+                        <a href="#volver"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>volver()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="133"
+                                    class="link-to-prism">src/app/editar-vehiculo/editar-vehiculo.component.ts:133</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Redirige al usuario a la vista de listado de vehículos sin realizar cambios.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tokenValido"></a>
+                    <span class="name">
+                        <span ><b>tokenValido</b></span>
+                        <a href="#tokenValido"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/editar-vehiculo/editar-vehiculo.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indica si el token de autenticación existe y es considerado válido.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="vehiculo"></a>
+                    <span class="name">
+                        <span ><b>vehiculo</b></span>
+                        <a href="#vehiculo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>literal type</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    marca: &#x27;&#x27;,
+    modelo: &#x27;&#x27;,
+    year: null,
+    vin: &#x27;&#x27;,
+    rpm: null,
+    velocidad: null
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/editar-vehiculo/editar-vehiculo.component.ts:33</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Objeto que almacena los datos del vehículo que se van a editar.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="vehiculoId"></a>
+                    <span class="name">
+                        <span ><b>vehiculoId</b></span>
+                        <a href="#vehiculoId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/editar-vehiculo/editar-vehiculo.component.ts:28</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>ID del vehículo a editar, obtenido desde los parámetros de la ruta.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
+import { HttpClient } from &#x27;@angular/common/http&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+
+/** 
+ * ![editar-vehiculo](../assets/docs/screenshots/editar-vehiculo.png)
+ * &lt;br&gt;
+ * Componente para editar los datos de un vehículo existente.
+ *
+ * Permite modificar la marca, modelo, año, VIN, RPM, velocidad y revisión.
+ * Valida la existencia de un token para acceso seguro.
+ * Carga los datos actuales del vehículo desde la API y los guarda tras edición.
+ */
+@Component({
+  selector: &#x27;app-editar-vehiculo&#x27;,
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: &#x27;./editar-vehiculo.component.html&#x27;,
+  styleUrls: [&#x27;./editar-vehiculo.component.css&#x27;]
+})
+export class EditarVehiculoComponent implements OnInit {
+
+  /** 
+   * ID del vehículo a editar, obtenido desde los parámetros de la ruta.
+   */
+  vehiculoId!: number;
+
+  /** 
+   * Objeto que almacena los datos del vehículo que se van a editar.
+   */
+  vehiculo: {
+    marca: string;
+    modelo: string;
+    year: number | null;
+    vin: string;
+    rpm: number | null;
+    velocidad: number | null;
+    revision?: string;
+  } &#x3D; {
+    marca: &#x27;&#x27;,
+    modelo: &#x27;&#x27;,
+    year: null,
+    vin: &#x27;&#x27;,
+    rpm: null,
+    velocidad: null
+  };
+
+  /** 
+   * Indica si el token de autenticación existe y es considerado válido.
+   */
+  tokenValido &#x3D; false;
+
+  /**
+   * Inyección de dependencias del enrutador, rutas activas y cliente HTTP.
+   * @param route - Proporciona acceso a los parámetros de la ruta activa.
+   * @param router - Permite la navegación entre rutas.
+   * @param http - Cliente HTTP para realizar peticiones a la API.
+   */
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private http: HttpClient
+  ) { }
+
+  /**
+   * Hook del ciclo de vida que se ejecuta al inicializar el componente.
+   * Verifica si hay un token válido y, si existe un ID, carga los datos del vehículo.
+   */
+  ngOnInit(): void {
+    const token &#x3D; localStorage.getItem(&#x27;token&#x27;);
+    if (!token) {
+      this.router.navigate([&#x27;/login&#x27;]);
+      return;
+    }
+
+    this.tokenValido &#x3D; true;
+
+    const id &#x3D; this.route.snapshot.paramMap.get(&#x27;id&#x27;);
+    if (id) {
+      this.vehiculoId &#x3D; +id;
+      this.cargarVehiculo();
+    } else {
+      console.error(&#x27;ID del vehículo no encontrado&#x27;);
+    }
+  }
+
+  /**
+   * Carga los datos del vehículo desde la API usando el ID actual.
+   * Realiza una petición HTTP GET al backend.
+   */
+  cargarVehiculo(): void {
+    this.http.get(&#x60;https://anthonyx82.ddns.net/taller/api/mis-vehiculos/${this.vehiculoId}&#x60;).subscribe({
+      next: (data: any) &#x3D;&gt; {
+        this.vehiculo &#x3D; data;
+      },
+      error: (error) &#x3D;&gt; {
+        console.error(&#x27;Error al cargar el vehículo:&#x27;, error);
+      }
+    });
+  }
+
+  /**
+   * Guarda los cambios realizados al vehículo actual.
+   * Realiza una petición HTTP PUT con los nuevos datos al backend.
+   */
+  guardarEdicion(): void {
+    const vehiculoActualizado &#x3D; {
+      marca: this.vehiculo.marca,
+      modelo: this.vehiculo.modelo,
+      year: this.vehiculo.year,
+      vin: this.vehiculo.vin,
+      rpm: this.vehiculo.rpm,
+      velocidad: this.vehiculo.velocidad,
+      revision: this.vehiculo.revision
+    };
+
+    this.http.put(&#x60;https://anthonyx82.ddns.net/taller/api/editar-vehiculo/${this.vehiculoId}&#x60;, vehiculoActualizado).subscribe({
+      next: () &#x3D;&gt; {
+        console.log(&#x27;Vehículo actualizado correctamente&#x27;);
+        this.router.navigate([&#x27;/mis-vehiculos&#x27;]);
+      },
+      error: (error) &#x3D;&gt; {
+        console.error(&#x27;Error al actualizar vehículo:&#x27;, error);
+      }
+    });
+  }
+
+  /**
+   * Redirige al usuario a la vista de listado de vehículos sin realizar cambios.
+   */
+  volver(): void {
+    this.router.navigate([&#x27;/mis-vehiculos&#x27;]);
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;edit-vehicle-container&quot;&gt;
+    &lt;div class&#x3D;&quot;edit-vehicle-card&quot;&gt;
+        &lt;h2&gt;Editar Vehículo&lt;/h2&gt;
+
+        &lt;form (ngSubmit)&#x3D;&quot;guardarEdicion()&quot;&gt;
+            &lt;div class&#x3D;&quot;input-group&quot;&gt;
+                &lt;label for&#x3D;&quot;marca&quot;&gt;Marca:&lt;/label&gt;
+                &lt;div class&#x3D;&quot;input-wrapper&quot;&gt;
+                    &lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;marca&quot; [(ngModel)]&#x3D;&quot;vehiculo.marca&quot; name&#x3D;&quot;marca&quot; required /&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;input-group&quot;&gt;
+                &lt;label for&#x3D;&quot;modelo&quot;&gt;Modelo:&lt;/label&gt;
+                &lt;div class&#x3D;&quot;input-wrapper&quot;&gt;
+                    &lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;modelo&quot; [(ngModel)]&#x3D;&quot;vehiculo.modelo&quot; name&#x3D;&quot;modelo&quot; required /&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;input-group&quot;&gt;
+                &lt;label for&#x3D;&quot;year&quot;&gt;Año:&lt;/label&gt;
+                &lt;div class&#x3D;&quot;input-wrapper&quot;&gt;
+                    &lt;input type&#x3D;&quot;number&quot; id&#x3D;&quot;year&quot; [(ngModel)]&#x3D;&quot;vehiculo.year&quot; name&#x3D;&quot;year&quot; required /&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;input-group&quot;&gt;
+                &lt;label for&#x3D;&quot;rpm&quot;&gt;RPM:&lt;/label&gt;
+                &lt;div class&#x3D;&quot;input-wrapper&quot;&gt;
+                    &lt;input type&#x3D;&quot;number&quot; id&#x3D;&quot;rpm&quot; [(ngModel)]&#x3D;&quot;vehiculo.rpm&quot; name&#x3D;&quot;rpm&quot; required /&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;input-group&quot;&gt;
+                &lt;label for&#x3D;&quot;velocidad&quot;&gt;Velocidad:&lt;/label&gt;
+                &lt;div class&#x3D;&quot;input-wrapper&quot;&gt;
+                    &lt;input type&#x3D;&quot;number&quot; id&#x3D;&quot;velocidad&quot; [(ngModel)]&#x3D;&quot;vehiculo.velocidad&quot; name&#x3D;&quot;velocidad&quot; required /&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;input-group&quot;&gt;
+                &lt;label for&#x3D;&quot;vin&quot;&gt;VIN:&lt;/label&gt;
+                &lt;div class&#x3D;&quot;input-wrapper&quot;&gt;
+                    &lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;vin&quot; [(ngModel)]&#x3D;&quot;vehiculo.vin&quot; name&#x3D;&quot;vin&quot; required /&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;button type&#x3D;&quot;submit&quot;&gt;Guardar Cambios&lt;/button&gt;
+        &lt;/form&gt;
+
+        &lt;button class&#x3D;&quot;secondary-btn&quot; (click)&#x3D;&quot;volver()&quot;&gt;Volver&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./editar-vehiculo.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">/* Contenedor principal */
+.edit-vehicle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #ff6f00, #ffbf80);
+}
+
+/* Tarjeta del formulario */
+.edit-vehicle-card {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+.edit-vehicle-card h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Grupo de inputs */
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+/* Input con estilo */
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.input-wrapper input:focus {
+    border-color: #ff6f00;
+    box-shadow: 0 0 5px rgba(255, 111, 0, 0.4);
+}
+
+/* Botones */
+button {
+    background: linear-gradient(45deg, #ff6f00, #ffbf80);
+    color: white;
+    font-size: 1.2rem;
+    padding: 15px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0px 5px 15px rgba(255, 111, 0, 0.4);
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background: #ff6f00;
+    transform: scale(1.05);
+}
+
+/* Botón secundario */
+.secondary-btn {
+    background: #ccc;
+    color: #333;
+    margin-top: 10px;
+}
+
+.secondary-btn:hover {
+    background: #aaa;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsividad */
+@media (max-width: 480px) {
+    .edit-vehicle-card {
+        padding: 30px;
+    }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="edit-vehicle-container">    <div class="edit-vehicle-card">        <h2>Editar Vehículo</h2>        <form (ngSubmit)="guardarEdicion()">            <div class="input-group">                <label for="marca">Marca:</label>                <div class="input-wrapper">                    <input type="text" id="marca" [(ngModel)]="vehiculo.marca" name="marca" required />                </div>            </div>            <div class="input-group">                <label for="modelo">Modelo:</label>                <div class="input-wrapper">                    <input type="text" id="modelo" [(ngModel)]="vehiculo.modelo" name="modelo" required />                </div>            </div>            <div class="input-group">                <label for="year">Año:</label>                <div class="input-wrapper">                    <input type="number" id="year" [(ngModel)]="vehiculo.year" name="year" required />                </div>            </div>            <div class="input-group">                <label for="rpm">RPM:</label>                <div class="input-wrapper">                    <input type="number" id="rpm" [(ngModel)]="vehiculo.rpm" name="rpm" required />                </div>            </div>            <div class="input-group">                <label for="velocidad">Velocidad:</label>                <div class="input-wrapper">                    <input type="number" id="velocidad" [(ngModel)]="vehiculo.velocidad" name="velocidad" required />                </div>            </div>            <div class="input-group">                <label for="vin">VIN:</label>                <div class="input-wrapper">                    <input type="text" id="vin" [(ngModel)]="vehiculo.vin" name="vin" required />                </div>            </div>            <button type="submit">Guardar Cambios</button>        </form>        <button class="secondary-btn" (click)="volver()">Volver</button>    </div></div></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'EditarVehiculoComponent', 'selector': 'app-editar-vehiculo'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'InformePublicoComponent', 'selector': 'app-informe-publico'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MisVehiculosComponent', 'selector': 'app-mis-vehiculos'},{'name': 'RegisterComponent', 'selector': 'app-register'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'EditarVehiculoComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'EditarVehiculoComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

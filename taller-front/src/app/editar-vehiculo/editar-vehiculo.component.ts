@@ -4,6 +4,15 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+/** 
+ * ![editar-vehiculo](../assets/docs/screenshots/editar-vehiculo.png)
+ * <br>
+ * Componente para editar los datos de un vehículo existente.
+ *
+ * Permite modificar la marca, modelo, año, VIN, RPM, velocidad y revisión.
+ * Valida la existencia de un token para acceso seguro.
+ * Carga los datos actuales del vehículo desde la API y los guarda tras edición.
+ */
 @Component({
   selector: 'app-editar-vehiculo',
   standalone: true,
@@ -12,8 +21,24 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./editar-vehiculo.component.css']
 })
 export class EditarVehiculoComponent implements OnInit {
+
+  /** 
+   * ID del vehículo a editar, obtenido desde los parámetros de la ruta.
+   */
   vehiculoId!: number;
-  vehiculo: any = {
+
+  /** 
+   * Objeto que almacena los datos del vehículo que se van a editar.
+   */
+  vehiculo: {
+    marca: string;
+    modelo: string;
+    year: number | null;
+    vin: string;
+    rpm: number | null;
+    velocidad: number | null;
+    revision?: string;
+  } = {
     marca: '',
     modelo: '',
     year: null,
@@ -22,14 +47,27 @@ export class EditarVehiculoComponent implements OnInit {
     velocidad: null
   };
 
+  /** 
+   * Indica si el token de autenticación existe y es considerado válido.
+   */
   tokenValido = false;
 
+  /**
+   * Inyección de dependencias del enrutador, rutas activas y cliente HTTP.
+   * @param route - Proporciona acceso a los parámetros de la ruta activa.
+   * @param router - Permite la navegación entre rutas.
+   * @param http - Cliente HTTP para realizar peticiones a la API.
+   */
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient
   ) { }
 
+  /**
+   * Hook del ciclo de vida que se ejecuta al inicializar el componente.
+   * Verifica si hay un token válido y, si existe un ID, carga los datos del vehículo.
+   */
   ngOnInit(): void {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -48,6 +86,10 @@ export class EditarVehiculoComponent implements OnInit {
     }
   }
 
+  /**
+   * Carga los datos del vehículo desde la API usando el ID actual.
+   * Realiza una petición HTTP GET al backend.
+   */
   cargarVehiculo(): void {
     this.http.get(`https://anthonyx82.ddns.net/taller/api/mis-vehiculos/${this.vehiculoId}`).subscribe({
       next: (data: any) => {
@@ -59,6 +101,10 @@ export class EditarVehiculoComponent implements OnInit {
     });
   }
 
+  /**
+   * Guarda los cambios realizados al vehículo actual.
+   * Realiza una petición HTTP PUT con los nuevos datos al backend.
+   */
   guardarEdicion(): void {
     const vehiculoActualizado = {
       marca: this.vehiculo.marca,
@@ -81,6 +127,9 @@ export class EditarVehiculoComponent implements OnInit {
     });
   }
 
+  /**
+   * Redirige al usuario a la vista de listado de vehículos sin realizar cambios.
+   */
   volver(): void {
     this.router.navigate(['/mis-vehiculos']);
   }

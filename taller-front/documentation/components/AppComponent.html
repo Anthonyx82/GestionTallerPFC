@@ -1,0 +1,1091 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>taller-front documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">taller-front documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  AppComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/app.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p><img src="../assets/docs/screenshots/home.png" alt="home" class="img-responsive">
+<br>
+Componente raíz principal de la aplicación Angular.</p>
+<p>Este componente actúa como la entrada principal de la SPA (Single Page Application) y controla la
+navegación y visualización condicional de elementos en función del estado de autenticación del usuario.</p>
+<p>Presenta una página de bienvenida con la descripción de la API automotriz cuando el usuario está en la página principal,
+mostrando botones para registrarse o iniciar sesión si no está autenticado, o bien opciones para acceder a
+la gestión de vehículos y cerrar sesión si está autenticado.</p>
+<p>También incluye secciones informativas sobre las características principales de la API, beneficios y
+testimonios de clientes, todo dentro de un diseño moderno y accesible.</p>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-root</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>RouterModule</code>
+                            <code>CommonModule</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./app.component.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./app.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#description" >description</a>
+                            </li>
+                            <li>
+                                <a href="#title" >title</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cerrarSesion" >cerrarSesion</a>
+                            </li>
+                            <li>
+                                <a href="#esPaginaPrincipal" >esPaginaPrincipal</a>
+                            </li>
+                            <li>
+                                <a href="#usuarioAutenticado" >usuarioAutenticado</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(http: HttpClient, router: Router)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/app.component.ts:39</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Constructor del componente.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>http</td>
+                                                  
+                                                        <td>
+                                                                    <code>HttpClient</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Cliente HTTP para realizar llamadas al backend (no utilizado directamente aquí, pero inyectado para posibles futuras funciones).</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Servicio para gestionar la navegación y obtener la URL actual.</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarSesion"></a>
+                    <span class="name">
+                        <span ><b>cerrarSesion</b></span>
+                        <a href="#cerrarSesion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarSesion()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="75"
+                                    class="link-to-prism">src/app/app.component.ts:75</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Cierra la sesión del usuario.</p>
+<p>Elimina el token de autenticación almacenado localmente y redirige a la página principal.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="esPaginaPrincipal"></a>
+                    <span class="name">
+                        <span ><b>esPaginaPrincipal</b></span>
+                        <a href="#esPaginaPrincipal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>esPaginaPrincipal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="55"
+                                    class="link-to-prism">src/app/app.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Determina si la URL actual es la página principal.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-none">     `false` en caso contrario.</code></pre></div></div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p><code>true</code> si la ruta actual es exactamente <code>&#39;/&#39;</code>, lo que indica que el usuario está en la landing page.
+<code>false</code> en caso contrario.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="usuarioAutenticado"></a>
+                    <span class="name">
+                        <span ><b>usuarioAutenticado</b></span>
+                        <a href="#usuarioAutenticado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>usuarioAutenticado()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">src/app/app.component.ts:66</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Comprueba si el usuario está autenticado.</p>
+<p>Evalúa la presencia de un token de sesión almacenado en <code>localStorage</code>.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p><code>true</code> si existe un token válido indicando sesión activa, <code>false</code> si no hay token.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="description"></a>
+                    <span class="name">
+                        <span ><b>description</b></span>
+                        <a href="#description"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;Bienvenido a la primera API para taller. Gestionamos la información de tus vehículos en tiempo real y te ofrecemos un servicio rápido y eficiente con tecnología avanzada.&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/app.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Descripción informativa que explica el propósito y ventajas de la API.
+Se muestra en la página principal justo debajo del título.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="title"></a>
+                    <span class="name">
+                        <span ><b>title</b></span>
+                        <a href="#title"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;Api Automotriz&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/app.component.ts:33</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Título principal que representa el nombre de la aplicación.
+Se muestra en la cabecera de la página principal.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+import { HttpClient } from &#x27;@angular/common/http&#x27;;
+import { Router, RouterModule } from &#x27;@angular/router&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+
+/**
+ * ![home](../assets/docs/screenshots/home.png)
+ * &lt;br&gt;
+ * Componente raíz principal de la aplicación Angular.
+ * 
+ * Este componente actúa como la entrada principal de la SPA (Single Page Application) y controla la
+ * navegación y visualización condicional de elementos en función del estado de autenticación del usuario.
+ * 
+ * Presenta una página de bienvenida con la descripción de la API automotriz cuando el usuario está en la página principal,
+ * mostrando botones para registrarse o iniciar sesión si no está autenticado, o bien opciones para acceder a
+ * la gestión de vehículos y cerrar sesión si está autenticado.
+ * 
+ * También incluye secciones informativas sobre las características principales de la API, beneficios y
+ * testimonios de clientes, todo dentro de un diseño moderno y accesible.
+ */
+@Component({
+  selector: &#x27;app-root&#x27;,
+  standalone: true,
+  imports: [RouterModule, CommonModule],
+  templateUrl: &#x27;./app.component.html&#x27;,
+  styleUrls: [&#x27;./app.component.css&#x27;]
+})
+export class AppComponent {
+  /**
+   * Título principal que representa el nombre de la aplicación.
+   * Se muestra en la cabecera de la página principal.
+   */
+  title &#x3D; &#x27;Api Automotriz&#x27;;
+
+  /**
+   * Descripción informativa que explica el propósito y ventajas de la API.
+   * Se muestra en la página principal justo debajo del título.
+   */
+  description &#x3D; &#x27;Bienvenido a la primera API para taller. Gestionamos la información de tus vehículos en tiempo real y te ofrecemos un servicio rápido y eficiente con tecnología avanzada.&#x27;;
+
+  /**
+   * Constructor del componente.
+   * 
+   * @param http Cliente HTTP para realizar llamadas al backend (no utilizado directamente aquí, pero inyectado para posibles futuras funciones).
+   * @param router Servicio para gestionar la navegación y obtener la URL actual.
+   */
+  constructor(private http: HttpClient, private router: Router) { }
+
+  /**
+   * Determina si la URL actual es la página principal.
+   * 
+   * @returns &#x60;true&#x60; si la ruta actual es exactamente &#x60;&#x27;/&#x27;&#x60;, lo que indica que el usuario está en la landing page.
+   *          &#x60;false&#x60; en caso contrario.
+   */
+  esPaginaPrincipal(): boolean {
+    return this.router.url &#x3D;&#x3D;&#x3D; &#x27;/&#x27;;
+  }
+
+  /**
+   * Comprueba si el usuario está autenticado.
+   * 
+   * Evalúa la presencia de un token de sesión almacenado en &#x60;localStorage&#x60;.
+   * 
+   * @returns &#x60;true&#x60; si existe un token válido indicando sesión activa, &#x60;false&#x60; si no hay token.
+   */
+  usuarioAutenticado(): boolean {
+    return !!localStorage.getItem(&#x27;token&#x27;);
+  }
+
+  /**
+   * Cierra la sesión del usuario.
+   * 
+   * Elimina el token de autenticación almacenado localmente y redirige a la página principal.
+   */
+  cerrarSesion(): void {
+    localStorage.removeItem(&#x27;token&#x27;);
+    this.router.navigate([&#x27;/&#x27;]);
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;ng-container *ngIf&#x3D;&quot;esPaginaPrincipal()&quot;&gt;
+  &lt;div class&#x3D;&quot;landing-container&quot;&gt;
+    &lt;header class&#x3D;&quot;header&quot;&gt;
+      &lt;div class&#x3D;&quot;overlay&quot;&gt;&lt;/div&gt;
+      &lt;div class&#x3D;&quot;content&quot;&gt;
+        &lt;div class&#x3D;&quot;logo&quot;&gt;
+          &lt;h1&gt;{{ title }}&lt;/h1&gt;
+        &lt;/div&gt;
+        &lt;p class&#x3D;&quot;description&quot;&gt;{{ description }}&lt;/p&gt;
+
+        &lt;!-- Mostrar botones dependiendo del estado de sesión --&gt;
+        &lt;ng-container *ngIf&#x3D;&quot;!usuarioAutenticado(); else loggedInButtons&quot;&gt;
+          &lt;button routerLink&#x3D;&quot;/register&quot; class&#x3D;&quot;cta-button&quot;&gt;Regístrate&lt;/button&gt;
+          &lt;button routerLink&#x3D;&quot;/login&quot; class&#x3D;&quot;cta-button&quot;&gt;Iniciar Sesión&lt;/button&gt;
+        &lt;/ng-container&gt;
+        &lt;ng-template #loggedInButtons&gt;
+          &lt;button routerLink&#x3D;&quot;/mis-vehiculos&quot; class&#x3D;&quot;cta-button&quot;&gt;Mis Vehículos&lt;/button&gt;
+          &lt;button (click)&#x3D;&quot;cerrarSesion()&quot; class&#x3D;&quot;cta-button&quot;&gt;Cerrar Sesión&lt;/button&gt;
+        &lt;/ng-template&gt;
+
+      &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;section class&#x3D;&quot;features&quot;&gt;
+      &lt;h2 class&#x3D;&quot;section-title&quot;&gt;Características Principales&lt;/h2&gt;
+      &lt;div class&#x3D;&quot;feature-list&quot;&gt;
+        &lt;div class&#x3D;&quot;feature&quot;&gt;
+          &lt;h3&gt;⚡ API Rápida y Eficiente&lt;/h3&gt;
+          &lt;p&gt;Desarrollada con FastAPI para procesar datos rápidamente.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;feature&quot;&gt;
+          &lt;h3&gt;🗄️ Base de Datos SQL&lt;/h3&gt;
+          &lt;p&gt;Gestionada con MySQL y SQLAlchemy para un manejo eficiente de los datos.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;feature&quot;&gt;
+          &lt;h3&gt;🚗 Soporte para OBD-II&lt;/h3&gt;
+          &lt;p&gt;Conexión con el escáner OBD-II ELM327 para datos en tiempo real.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;feature&quot;&gt;
+          &lt;h3&gt;🖥️ Integración con Angular&lt;/h3&gt;
+          &lt;p&gt;Interfaz moderna y eficiente para gestionar los vehículos en tiempo real.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section class&#x3D;&quot;why-choose&quot;&gt;
+      &lt;h2&gt;¿Por qué elegirnos?&lt;/h2&gt;
+      &lt;div class&#x3D;&quot;benefits&quot;&gt;
+        &lt;div class&#x3D;&quot;benefit&quot;&gt;
+          &lt;h3&gt;✔️ Optimización en tiempo real&lt;/h3&gt;
+          &lt;p&gt;Nuestro sistema procesa datos al instante para un mejor rendimiento.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;benefit&quot;&gt;
+          &lt;h3&gt;✔️ Seguridad avanzada&lt;/h3&gt;
+          &lt;p&gt;Protegemos tu información con cifrado y protocolos modernos.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;benefit&quot;&gt;
+          &lt;h3&gt;✔️ Interfaz intuitiva&lt;/h3&gt;
+          &lt;p&gt;Diseñada para ser fácil de usar y accesible en cualquier dispositivo.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section class&#x3D;&quot;testimonials&quot;&gt;
+      &lt;h2&gt;Lo que dicen nuestros clientes&lt;/h2&gt;
+      &lt;div class&#x3D;&quot;testimonial&quot;&gt;
+        &lt;p&gt;🚀 &quot;La mejor API para diagnóstico automotriz. Rápida y confiable.&quot; - &lt;strong&gt;Juan P.&lt;/strong&gt;&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;testimonial&quot;&gt;
+        &lt;p&gt;💡 &quot;Muy fácil de integrar con nuestras plataformas. Totalmente recomendada.&quot; - &lt;strong&gt;María G.&lt;/strong&gt;&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;footer class&#x3D;&quot;footer&quot;&gt;
+      &lt;p&gt;&amp;copy; 2025 Taller Automotriz - Todos los derechos reservados&lt;/p&gt;
+    &lt;/footer&gt;
+  &lt;/div&gt;
+&lt;/ng-container&gt;
+
+&lt;!-- Carga la página correspondiente --&gt;
+&lt;router-outlet&gt;&lt;/router-outlet&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./app.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">/* HEADER CON EFECTO HERO */
+header {
+  position: relative;
+  background: url(&#x27;https://images.unsplash.com/photo-1646807284302-170c9505b2e7?q&#x3D;80&amp;w&#x3D;2070&amp;auto&#x3D;format&amp;fit&#x3D;crop&amp;ixlib&#x3D;rb-4.0.3&amp;ixid&#x3D;M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&#x27;) no-repeat center;
+  background-size: cover;
+  color: white;
+  text-align: center;
+  padding: 80px 20px;
+  height: 60vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header::before {
+  content: &quot;&quot;;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+header .content {
+  position: relative;
+  z-index: 2;
+}
+
+.logo h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.description {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  font-weight: 300;
+}
+
+/* BOTÓN CTA */
+.cta-button {
+  background: linear-gradient(45deg, #ffffff, #ffbf80);
+  color: #ff6f00;
+  font-size: 1.2rem;
+  padding: 15px 40px;
+  border-radius: 50px;
+  box-shadow: 0px 5px 15px rgba(255, 111, 0, 0.4);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  margin: 10px;
+}
+
+.cta-button:last-child:hover {
+  background-color: #ff3333;
+}
+
+.cta-button:hover {
+  background: #ff6f00;
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0px 8px 20px rgba(255, 111, 0, 0.6);
+}
+
+/* SECCIÓN DE CARACTERÍSTICAS */
+.features {
+  background: linear-gradient(180deg, #fff, #f5f5f5);
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.features .section-title {
+  font-size: 2.5rem;
+  color: #333;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+
+.feature-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.feature {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+  flex: 1 1 calc(25% - 30px);
+  max-width: calc(25% - 30px);
+  transition: transform 0.3s ease-in-out;
+}
+
+.feature:hover {
+  transform: translateY(-10px);
+}
+
+.feature h3 {
+  font-size: 1.8rem;
+  color: #ff6f00;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.feature p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* SECCIÓN &quot;¿POR QUÉ ELEGIRNOS?&quot; */
+.why-choose {
+  background: #ff6f00;
+  color: white;
+  padding: 80px 20px;
+  text-align: center;
+  margin-top: 50px;
+  /* Añade margen para separarla de la sección anterior */
+  border-radius: 50px;
+  /* Redondea las esquinas */
+  width: 90%;
+  max-width: 1200px;
+  /* Para que no se vea demasiado ancha en pantallas grandes */
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0px 10px 20px rgba(255, 111, 0, 0.3);
+  /* Sombra para destacar más */
+}
+
+.why-choose h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+/* Lista de beneficios */
+.benefits {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  padding: 20px;
+}
+
+.benefit {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 25px;
+  border-radius: 15px;
+  width: 250px;
+  transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+}
+
+.benefit:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.benefit h3 {
+  font-size: 1.5rem;
+}
+
+.benefit p {
+  font-size: 1rem;
+}
+
+/* TESTIMONIOS */
+.testimonials {
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.testimonials h2 {
+  font-size: 2.5rem;
+  color: #333;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+.testimonial {
+  background: #ff6f00;
+  color: white;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0px 5px 10px rgba(255, 111, 0, 0.3);
+}
+
+/* RESPONSIVIDAD */
+@media (max-width: 1024px) {
+
+  .feature,
+  .benefit {
+    flex: 1 1 calc(50% - 30px);
+    max-width: calc(50% - 30px);
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    height: 50vh;
+  }
+
+  .logo h1 {
+    font-size: 2.6rem;
+  }
+
+  .cta-button {
+    padding: 12px 35px;
+  }
+
+  .feature-list,
+  .benefits {
+    flex-direction: column;
+  }
+
+  .feature,
+  .benefit {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .why-choose {
+    width: 95%;
+    padding: 60px 20px;
+    border-radius: 30px;
+    /* Menos redondeo en pantallas pequeñas */
+  }
+
+  .benefits {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .benefit {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cta-button {
+    padding: 10px 30px;
+  }
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><ng-container *ngIf="esPaginaPrincipal()">  <div class="landing-container">    <header class="header">      <div class="overlay"></div>      <div class="content">        <div class="logo">          <h1>{{ title }}</h1>        </div>        <p class="description">{{ description }}</p>        <!-- Mostrar botones dependiendo del estado de sesión -->        <ng-container *ngIf="!usuarioAutenticado(); else loggedInButtons">          <button routerLink="/register" class="cta-button">Regístrate</button>          <button routerLink="/login" class="cta-button">Iniciar Sesión</button>        </ng-container>        <ng-template #loggedInButtons>          <button routerLink="/mis-vehiculos" class="cta-button">Mis Vehículos</button>          <button (click)="cerrarSesion()" class="cta-button">Cerrar Sesión</button>        </ng-template>      </div>    </header>    <section class="features">      <h2 class="section-title">Características Principales</h2>      <div class="feature-list">        <div class="feature">          <h3>⚡ API Rápida y Eficiente</h3>          <p>Desarrollada con FastAPI para procesar datos rápidamente.</p>        </div>        <div class="feature">          <h3>🗄️ Base de Datos SQL</h3>          <p>Gestionada con MySQL y SQLAlchemy para un manejo eficiente de los datos.</p>        </div>        <div class="feature">          <h3>🚗 Soporte para OBD-II</h3>          <p>Conexión con el escáner OBD-II ELM327 para datos en tiempo real.</p>        </div>        <div class="feature">          <h3>🖥️ Integración con Angular</h3>          <p>Interfaz moderna y eficiente para gestionar los vehículos en tiempo real.</p>        </div>      </div>    </section>    <section class="why-choose">      <h2>¿Por qué elegirnos?</h2>      <div class="benefits">        <div class="benefit">          <h3>✔️ Optimización en tiempo real</h3>          <p>Nuestro sistema procesa datos al instante para un mejor rendimiento.</p>        </div>        <div class="benefit">          <h3>✔️ Seguridad avanzada</h3>          <p>Protegemos tu información con cifrado y protocolos modernos.</p>        </div>        <div class="benefit">          <h3>✔️ Interfaz intuitiva</h3>          <p>Diseñada para ser fácil de usar y accesible en cualquier dispositivo.</p>        </div>      </div>    </section>    <section class="testimonials">      <h2>Lo que dicen nuestros clientes</h2>      <div class="testimonial">        <p>🚀 "La mejor API para diagnóstico automotriz. Rápida y confiable." - <strong>Juan P.</strong></p>      </div>      <div class="testimonial">        <p>💡 "Muy fácil de integrar con nuestras plataformas. Totalmente recomendada." - <strong>María G.</strong></p>      </div>    </section>    <footer class="footer">      <p>&copy; 2025 Taller Automotriz - Todos los derechos reservados</p>    </footer>  </div></ng-container><!-- Carga la página correspondiente --><router-outlet></router-outlet></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'EditarVehiculoComponent', 'selector': 'app-editar-vehiculo'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'InformePublicoComponent', 'selector': 'app-informe-publico'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MisVehiculosComponent', 'selector': 'app-mis-vehiculos'},{'name': 'RegisterComponent', 'selector': 'app-register'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'AppComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'AppComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

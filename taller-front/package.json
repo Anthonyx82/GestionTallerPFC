@@ -1,12 +1,17 @@
 {
   "name": "taller-front",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "docs:screenshots": "node --loader ts-node/esm capture-and-inject.ts",
+    "docs:copy-images": "xcopy /E /I /Y src\\assets\\docs\\screenshots documentation\\assets\\docs\\screenshots",
+    "docs:build": "npm run docs:screenshots && npm run docs:copy-images && compodoc -p tsconfig.app.json",
+    "docs:serve": "compodoc -s"
   },
   "private": true,
   "dependencies": {
@@ -20,8 +25,10 @@
     "@angular/platform-browser": "^18.0.0",
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
+    "@types/node": "^22.15.30",
     "html2pdf.js": "^0.10.3",
     "jspdf": "^3.0.1",
+    "node-fetch": "^3.3.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
@@ -37,6 +44,8 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "puppeteer": "^24.10.0",
+    "ts-node": "^10.9.2",
     "typescript": "~5.4.2"
   }
 }

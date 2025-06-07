@@ -1,0 +1,2112 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>taller-front documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">taller-front documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  MisVehiculosComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/mis-vehiculos/mis-vehiculos.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p><img src="../assets/docs/screenshots/mis-vehiculos.png" alt="mis-vehiculos" class="img-responsive">
+<br>
+Componente para mostrar y gestionar los vehículos del usuario.</p>
+<p>Permite visualizar la lista de vehículos del usuario, mostrando imagen y detalles.
+Permite seleccionar un vehículo para ver más detalles y errores asociados.
+Incluye funcionalidad para editar, eliminar vehículos y solicitar informes vía email.</p>
+<p>Gestiona el estado de carga de imágenes y muestra mensajes de éxito o error según las operaciones.</p>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-mis-vehiculos</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>RouterModule</code>
+                            <code>CommonModule</code>
+                            <code>MatIconModule</code>
+                            <code>MatButtonModule</code>
+                            <code>FormsModule</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./mis-vehiculos.component.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./mis-vehiculos.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                <a href="#emailCliente" >emailCliente</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#http" >http</a>
+                            </li>
+                            <li>
+                                <a href="#imagenesCargadas" >imagenesCargadas</a>
+                            </li>
+                            <li>
+                                <a href="#mensaje" >mensaje</a>
+                            </li>
+                            <li>
+                                <a href="#tipoMensaje" >tipoMensaje</a>
+                            </li>
+                            <li>
+                                <a href="#vehiculos" >vehiculos</a>
+                            </li>
+                            <li>
+                                <a href="#vehiculoSeleccionado" >vehiculoSeleccionado</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cargarImagenesVehiculos" >cargarImagenesVehiculos</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarDetalles" >cerrarDetalles</a>
+                            </li>
+                            <li>
+                                <a href="#editarVehiculo" >editarVehiculo</a>
+                            </li>
+                            <li>
+                                <a href="#eliminarVehiculo" >eliminarVehiculo</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarMensaje" >mostrarMensaje</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#obtenerImagen" >obtenerImagen</a>
+                            </li>
+                            <li>
+                                <a href="#solicitarInformeConEmail" >solicitarInformeConEmail</a>
+                            </li>
+                            <li>
+                                <a href="#verDetalles" >verDetalles</a>
+                            </li>
+                            <li>
+                                <a href="#volverInicio" >volverInicio</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(router: Router)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:66</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Inyecta el servicio de navegación <code>Router</code> para redirigir entre vistas.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Servicio de enrutamiento de Angular</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarImagenesVehiculos"></a>
+                    <span class="name">
+                        <span ><b>cargarImagenesVehiculos</b></span>
+                        <a href="#cargarImagenesVehiculos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarImagenesVehiculos()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="113"
+                                    class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:113</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Carga las imágenes de todos los vehículos solicitándolas al backend.
+Actualiza la propiedad <code>imagenUrl</code> de cada vehículo.
+Marca <code>cargando</code> como false cuando todas las imágenes se han cargado.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarDetalles"></a>
+                    <span class="name">
+                        <span ><b>cerrarDetalles</b></span>
+                        <a href="#cerrarDetalles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarDetalles()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="201"
+                                    class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:201</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Cierra la vista de detalles del vehículo seleccionado.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editarVehiculo"></a>
+                    <span class="name">
+                        <span ><b>editarVehiculo</b></span>
+                        <a href="#editarVehiculo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>editarVehiculo(vehiculoId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="209"
+                                    class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:209</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navega a la ruta para editar el vehículo indicado.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>vehiculoId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identificador del vehículo</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminarVehiculo"></a>
+                    <span class="name">
+                        <span ><b>eliminarVehiculo</b></span>
+                        <a href="#eliminarVehiculo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminarVehiculo(vehiculoId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="217"
+                                    class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:217</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Elimina un vehículo del backend y actualiza la lista local.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>vehiculoId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identificador del vehículo a eliminar</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarMensaje"></a>
+                    <span class="name">
+                        <span ><b>mostrarMensaje</b></span>
+                        <a href="#mostrarMensaje"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>mostrarMensaje(mensaje: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, tipo: "error" | "exito")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="101"
+                                    class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:101</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Muestra un mensaje temporal de éxito o error.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>mensaje</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <p>Texto a mostrar</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>tipo</td>
+                                            <td>
+                                                        <code>&quot;error&quot; | &quot;exito&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>&#x27;exito&#x27;</code>
+                                            </td>
+
+                                            <td>
+                                                    <p>Tipo de mensaje (&#39;error&#39; o &#39;exito&#39;), por defecto &#39;exito&#39;</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="78"
+                                    class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:78</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Inicializa la carga de vehículos al montar el componente.
+Obtiene los vehículos del backend y comienza la carga de sus imágenes.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="obtenerImagen"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>obtenerImagen</b></span>
+                        <a href="#obtenerImagen"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>obtenerImagen(marca: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, modelo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="135"
+                                    class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:135</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtiene la URL de la imagen para un vehículo dado marca y modelo.
+Si falla, retorna una imagen por defecto.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>marca</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Marca del vehículo</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>modelo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Modelo del vehículo</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise con la URL de la imagen</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="solicitarInformeConEmail"></a>
+                    <span class="name">
+                        <span ><b>solicitarInformeConEmail</b></span>
+                        <a href="#solicitarInformeConEmail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>solicitarInformeConEmail(vehiculoId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="176"
+                                    class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:176</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Envía una solicitud para generar un informe del vehículo y enviarlo al email proporcionado.
+Valida el formato del email antes de enviar.
+Copia el enlace del informe al portapapeles tras éxito.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>vehiculoId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identificador del vehículo</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="verDetalles"></a>
+                    <span class="name">
+                        <span ><b>verDetalles</b></span>
+                        <a href="#verDetalles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>verDetalles(vehiculoId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="151"
+                                    class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:151</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Solicita y muestra los detalles de un vehículo, incluyendo sus errores asociados.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>vehiculoId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identificador del vehículo</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="volverInicio"></a>
+                    <span class="name">
+                        <span ><b>volverInicio</b></span>
+                        <a href="#volverInicio"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>volverInicio()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="230"
+                                    class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:230</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navega a la página principal.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indica si los datos están cargándose.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="emailCliente"></a>
+                    <span class="name">
+                        <span ><b>emailCliente</b></span>
+                        <a href="#emailCliente"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Email del cliente para solicitar informes.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="http"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>http</b></span>
+                        <a href="#http"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(HttpClient)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:31</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Cliente HTTP de Angular para realizar peticiones al backend.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="imagenesCargadas"></a>
+                    <span class="name">
+                        <span ><b>imagenesCargadas</b></span>
+                        <a href="#imagenesCargadas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:51</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Contador de imágenes cargadas para sincronizar la carga.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mensaje"></a>
+                    <span class="name">
+                        <span ><b>mensaje</b></span>
+                        <a href="#mensaje"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:61</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Mensaje que se muestra al usuario (éxito o error).</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tipoMensaje"></a>
+                    <span class="name">
+                        <span ><b>tipoMensaje</b></span>
+                        <a href="#tipoMensaje"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&quot;error&quot; | &quot;exito&quot;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;exito&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:66</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Tipo de mensaje mostrado (&#39;error&#39; o &#39;exito&#39;).</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="vehiculos"></a>
+                    <span class="name">
+                        <span ><b>vehiculos</b></span>
+                        <a href="#vehiculos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:36</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista de vehículos del usuario.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="vehiculoSeleccionado"></a>
+                    <span class="name">
+                        <span ><b>vehiculoSeleccionado</b></span>
+                        <a href="#vehiculoSeleccionado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/mis-vehiculos/mis-vehiculos.component.ts:41</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Vehículo seleccionado para mostrar detalles.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject } from &#x27;@angular/core&#x27;;
+import { HttpClient } from &#x27;@angular/common/http&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { Router, RouterModule } from &#x27;@angular/router&#x27;;
+import { MatIconModule } from &#x27;@angular/material/icon&#x27;;
+import { MatButtonModule } from &#x27;@angular/material/button&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+
+/**
+ * ![mis-vehiculos](../assets/docs/screenshots/mis-vehiculos.png)
+ * &lt;br&gt;
+ * Componente para mostrar y gestionar los vehículos del usuario.
+ * 
+ * Permite visualizar la lista de vehículos del usuario, mostrando imagen y detalles.
+ * Permite seleccionar un vehículo para ver más detalles y errores asociados.
+ * Incluye funcionalidad para editar, eliminar vehículos y solicitar informes vía email.
+ * 
+ * Gestiona el estado de carga de imágenes y muestra mensajes de éxito o error según las operaciones.
+ */
+@Component({
+  selector: &#x27;app-mis-vehiculos&#x27;,
+  standalone: true,
+  imports: [RouterModule, CommonModule, MatIconModule, MatButtonModule, FormsModule],
+  templateUrl: &#x27;./mis-vehiculos.component.html&#x27;,
+  styleUrls: [&#x27;./mis-vehiculos.component.css&#x27;]
+})
+export class MisVehiculosComponent {
+  /**
+  * Cliente HTTP de Angular para realizar peticiones al backend.
+  */
+  private http &#x3D; inject(HttpClient);
+
+  /**
+   * Lista de vehículos del usuario.
+   */
+  vehiculos: any[] &#x3D; [];
+
+  /**
+   * Vehículo seleccionado para mostrar detalles.
+   */
+  vehiculoSeleccionado: any &#x3D; null;
+
+  /**
+   * Indica si los datos están cargándose.
+   */
+  cargando: boolean &#x3D; true;
+
+  /**
+  * Contador de imágenes cargadas para sincronizar la carga.
+  */
+  imagenesCargadas: number &#x3D; 0;
+
+  /**
+   * Email del cliente para solicitar informes.
+   */
+  emailCliente: string &#x3D; &#x27;&#x27;;
+
+  /**
+   * Mensaje que se muestra al usuario (éxito o error).
+   */
+  mensaje: string &#x3D; &#x27;&#x27;;
+
+  /**
+   * Tipo de mensaje mostrado (&#x27;error&#x27; o &#x27;exito&#x27;).
+   */
+  tipoMensaje: &#x27;error&#x27; | &#x27;exito&#x27; &#x3D; &#x27;exito&#x27;;
+
+  /**
+  * Inyecta el servicio de navegación &#x60;Router&#x60; para redirigir entre vistas.
+  * @param router Servicio de enrutamiento de Angular
+  */
+  constructor(private router: Router) { }
+
+  /**
+   * Inicializa la carga de vehículos al montar el componente.
+   * Obtiene los vehículos del backend y comienza la carga de sus imágenes.
+   */
+  ngOnInit() {
+    this.http.get(&#x27;https://anthonyx82.ddns.net/taller/api/mis-vehiculos/&#x27;).subscribe({
+      next: (data: any) &#x3D;&gt; {
+        this.vehiculos &#x3D; data.vehiculos ?? [];
+        if (this.vehiculos.length &#x3D;&#x3D;&#x3D; 0) {
+          this.cargando &#x3D; false;
+        } else {
+          this.cargarImagenesVehiculos();
+        }
+      },
+      error: (error) &#x3D;&gt; {
+        console.log(&#x27;Error al obtener vehículos:&#x27;, error);
+        this.cargando &#x3D; false;
+      }
+    });
+  }
+
+
+  /**
+   * Muestra un mensaje temporal de éxito o error.
+   * @param mensaje Texto a mostrar
+   * @param tipo Tipo de mensaje (&#x27;error&#x27; o &#x27;exito&#x27;), por defecto &#x27;exito&#x27;
+   */
+  mostrarMensaje(mensaje: string, tipo: &#x27;error&#x27; | &#x27;exito&#x27; &#x3D; &#x27;exito&#x27;) {
+    this.mensaje &#x3D; mensaje;
+    this.tipoMensaje &#x3D; tipo;
+    setTimeout(() &#x3D;&gt; this.mensaje &#x3D; &#x27;&#x27;, 5000);
+  }
+
+
+  /**
+   * Carga las imágenes de todos los vehículos solicitándolas al backend.
+   * Actualiza la propiedad &#x60;imagenUrl&#x60; de cada vehículo.
+   * Marca &#x60;cargando&#x60; como false cuando todas las imágenes se han cargado.
+   */
+  cargarImagenesVehiculos(): void {
+    this.imagenesCargadas &#x3D; 0;
+
+    this.vehiculos.forEach((vehiculo, index) &#x3D;&gt; {
+      this.obtenerImagen(vehiculo.marca, vehiculo.modelo).then(imagenUrl &#x3D;&gt; {
+        vehiculo.imagenUrl &#x3D; imagenUrl;
+        this.imagenesCargadas++;
+
+        if (this.imagenesCargadas &#x3D;&#x3D;&#x3D; this.vehiculos.length) {
+          this.cargando &#x3D; false;
+        }
+      });
+    });
+  }
+
+  /**
+   * Obtiene la URL de la imagen para un vehículo dado marca y modelo.
+   * Si falla, retorna una imagen por defecto.
+   * @param marca Marca del vehículo
+   * @param modelo Modelo del vehículo
+   * @returns Promise con la URL de la imagen
+   */
+  async obtenerImagen(marca: string, modelo: string): Promise&lt;string&gt; {
+    const apiUrl &#x3D; &#x60;https://anthonyx82.ddns.net/taller/api/car-imagery/?searchTerm&#x3D;${encodeURIComponent(marca + &#x27; &#x27; + modelo)}&#x60;;
+    try {
+      const response &#x3D; await this.http.get(apiUrl, { responseType: &#x27;text&#x27; }).toPromise();
+      const match &#x3D; response?.match(/&lt;string[^&gt;]*&gt;(.*?)&lt;\/string&gt;/);
+      return match ? match[1] : &#x27;assets/no-image.png&#x27;;
+    } catch (error) {
+      console.log(&#x60;Error al obtener imagen de ${marca} ${modelo}:&#x60;, error);
+      return &#x27;assets/no-image.png&#x27;;
+    }
+  }
+
+  /**
+   * Solicita y muestra los detalles de un vehículo, incluyendo sus errores asociados.
+   * @param vehiculoId Identificador del vehículo
+   */
+  verDetalles(vehiculoId: number): void {
+    this.http.get(&#x60;https://anthonyx82.ddns.net/taller/api/mis-vehiculos/${vehiculoId}&#x60;).subscribe({
+      next: (data: any) &#x3D;&gt; {
+        this.vehiculoSeleccionado &#x3D; data;
+
+        this.http.get(&#x60;https://anthonyx82.ddns.net/taller/api/mis-errores/${vehiculoId}&#x60;).subscribe({
+          next: (errores: any) &#x3D;&gt; {
+            this.vehiculoSeleccionado.errores &#x3D; errores;
+          },
+          error: (error) &#x3D;&gt; {
+            console.log(&#x27;Error al obtener errores del vehículo:&#x27;, error);
+            this.vehiculoSeleccionado.errores &#x3D; [];
+          }
+        });
+      },
+      error: (error) &#x3D;&gt; console.log(&#x27;Error al obtener detalles del vehículo:&#x27;, error)
+    });
+  }
+
+  /**
+   * Envía una solicitud para generar un informe del vehículo y enviarlo al email proporcionado.
+   * Valida el formato del email antes de enviar.
+   * Copia el enlace del informe al portapapeles tras éxito.
+   * @param vehiculoId Identificador del vehículo
+   */
+  solicitarInformeConEmail(vehiculoId: number) {
+    if (!this.emailCliente || !this.emailCliente.includes(&#x27;@&#x27;)) {
+      this.mostrarMensaje(&#x27;Por favor, introduce un email válido.&#x27;, &#x27;error&#x27;);
+      return;
+    }
+
+    this.http.post&lt;{ enlace: string }&gt;(
+      &#x60;https://anthonyx82.ddns.net/taller/api/crear-informe/${vehiculoId}&#x60;,
+      { email: this.emailCliente },
+      { headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; } }
+    ).subscribe({
+      next: (res) &#x3D;&gt; {
+        this.mostrarMensaje(&#x27;Informe generado y enviado por correo.&#x27;);
+        navigator.clipboard.writeText(res.enlace);
+        this.emailCliente &#x3D; &#x27;&#x27;;
+      },
+      error: () &#x3D;&gt; {
+        this.mostrarMensaje(&#x27;Error al generar el informe.&#x27;, &#x27;error&#x27;);
+      }
+    });
+  }
+
+  /**
+   * Cierra la vista de detalles del vehículo seleccionado.
+   */
+  cerrarDetalles(): void {
+    this.vehiculoSeleccionado &#x3D; null;
+  }
+
+  /**
+   * Navega a la ruta para editar el vehículo indicado.
+   * @param vehiculoId Identificador del vehículo
+   */
+  editarVehiculo(vehiculoId: number): void {
+    this.router.navigate([&#x60;/editar-vehiculo/${vehiculoId}&#x60;]);
+  }
+
+  /**
+   * Elimina un vehículo del backend y actualiza la lista local.
+   * @param vehiculoId Identificador del vehículo a eliminar
+   */
+  eliminarVehiculo(vehiculoId: number): void {
+    this.http.delete(&#x60;https://anthonyx82.ddns.net/taller/api/eliminar-vehiculo/${vehiculoId}&#x60;).subscribe({
+      next: () &#x3D;&gt; {
+        this.vehiculos &#x3D; this.vehiculos.filter(v &#x3D;&gt; v.id !&#x3D;&#x3D; vehiculoId);
+        console.log(&#x27;Vehículo eliminado&#x27;);
+      },
+      error: (error) &#x3D;&gt; console.log(&#x27;Error al eliminar vehículo:&#x27;, error)
+    });
+  }
+
+  /**
+   * Navega a la página principal.
+   */
+  volverInicio(): void {
+    this.router.navigate([&#x27;/&#x27;]);
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;h2&gt;Mis Vehículos&lt;/h2&gt;
+
+&lt;ng-container *ngIf&#x3D;&quot;cargando&quot;&gt;
+  &lt;div class&#x3D;&quot;loading&quot;&gt;
+    &lt;p&gt;Cargando vehículos...&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/ng-container&gt;
+
+&lt;ng-container *ngIf&#x3D;&quot;!cargando &amp;&amp; vehiculos.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+  &lt;ng-container *ngIf&#x3D;&quot;vehiculos.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+    &lt;div class&#x3D;&quot;instructions&quot;&gt;
+      &lt;h3&gt;No tienes vehículos registrados&lt;/h3&gt;
+      &lt;p&gt;Para registrar un vehículo sigue estos sencillos pasos:&lt;/p&gt;
+      &lt;div class&#x3D;&quot;steps&quot;&gt;
+        &lt;div class&#x3D;&quot;step&quot;&gt;
+          &lt;h4&gt;1. Descarga la aplicación del cliente&lt;/h4&gt;
+          &lt;p&gt;Accede al siguiente enlace para descargar la aplicación del cliente:&lt;/p&gt;
+          &lt;a href&#x3D;&quot;https://github.com/Anthonyx82/GestionTallerPFC/releases/download/v2.0.0/client.7z&quot; target&#x3D;&quot;_blank&quot;
+            class&#x3D;&quot;download-link&quot;&gt;Descargar aplicación&lt;/a&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;step&quot;&gt;
+          &lt;h4&gt;2. Conecta el vehículo al puerto OBDII&lt;/h4&gt;
+          &lt;p&gt;Conecta el cable ELM327 al puerto OBDII de tu vehículo. Este puerto suele encontrarse cerca del volante,
+            debajo del tablero.&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;step&quot;&gt;
+          &lt;h4&gt;3. Conecta el portátil al vehículo&lt;/h4&gt;
+          &lt;p&gt;Asegúrate de que el portátil que vas a usar para la conexión está conectado al vehículo mediante el cable
+            ELM327.&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;step&quot;&gt;
+          &lt;h4&gt;4. Inicia sesión en la aplicación&lt;/h4&gt;
+          &lt;p&gt;Abre la aplicación del cliente que descargaste e inicia sesión con el mismo usuario y contraseña que usaste
+            para registrar tu cuenta en esta página web.&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;step&quot;&gt;
+          &lt;h4&gt;5. Los datos del vehículo se recopilarán automáticamente&lt;/h4&gt;
+          &lt;p&gt;Una vez iniciada la sesión, la aplicación del cliente comenzará a recoger todos los datos del vehículo de
+            forma automática. ¡Ya está! Ahora tu vehículo aparecerá en tu lista de vehículos registrados.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/ng-container&gt;
+&lt;/ng-container&gt;
+
+&lt;ng-container *ngIf&#x3D;&quot;!cargando &amp;&amp; vehiculos.length &gt; 0&quot;&gt;
+  &lt;ng-container *ngIf&#x3D;&quot;vehiculos.length &gt; 0&quot;&gt;
+    &lt;div class&#x3D;&quot;vehicle-cards&quot;&gt;
+      &lt;div class&#x3D;&quot;vehicle-card&quot; *ngFor&#x3D;&quot;let vehiculo of vehiculos&quot;&gt;
+        &lt;!-- Botones ahora están fuera de image-container --&gt;
+        &lt;button class&#x3D;&quot;icon-button edit-icon&quot; (click)&#x3D;&quot;editarVehiculo(vehiculo.id)&quot; title&#x3D;&quot;Editar&quot;&gt;
+          &lt;mat-icon&gt;edit&lt;/mat-icon&gt;
+        &lt;/button&gt;
+
+        &lt;button class&#x3D;&quot;icon-button delete-icon&quot; (click)&#x3D;&quot;eliminarVehiculo(vehiculo.id)&quot; title&#x3D;&quot;Eliminar&quot;&gt;
+          &lt;mat-icon class&#x3D;&quot;material-icons delete-red&quot;&gt;delete&lt;/mat-icon&gt;
+        &lt;/button&gt;
+
+        &lt;div class&#x3D;&quot;image-container&quot;&gt;
+          &lt;img [src]&#x3D;&quot;vehiculo.imagenUrl || &#x27;assets/no-image.png&#x27;&quot; alt&#x3D;&quot;{{ vehiculo.marca }} {{ vehiculo.modelo }}&quot;
+            class&#x3D;&quot;vehicle-image&quot; (click)&#x3D;&quot;verDetalles(vehiculo.id)&quot;&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;vehicle-info&quot;&gt;
+          &lt;h3&gt;{{ vehiculo.marca }} {{ vehiculo.modelo }}&lt;/h3&gt;
+          &lt;p&gt;&lt;strong&gt;Año:&lt;/strong&gt; {{ vehiculo.year }}&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+  &lt;/ng-container&gt;
+&lt;/ng-container&gt;
+
+&lt;!-- Modal para mostrar detalles del vehículo --&gt;
+&lt;div *ngIf&#x3D;&quot;vehiculoSeleccionado&quot; class&#x3D;&quot;vehicle-details-modal&quot;&gt;
+  &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+    &lt;span class&#x3D;&quot;close&quot; (click)&#x3D;&quot;cerrarDetalles()&quot;&gt;&amp;times;&lt;/span&gt;
+    &lt;h3&gt;{{ vehiculoSeleccionado.marca }} {{ vehiculoSeleccionado.modelo }}&lt;/h3&gt;
+    &lt;p&gt;&lt;strong&gt;Año:&lt;/strong&gt; {{ vehiculoSeleccionado.year }}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;VIN:&lt;/strong&gt; {{ vehiculoSeleccionado.vin }}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;RPM:&lt;/strong&gt; {{ vehiculoSeleccionado.rpm }}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Velocidad:&lt;/strong&gt; {{ vehiculoSeleccionado.velocidad }} km/h&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Errores&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ng-container *ngIf&#x3D;&quot;vehiculoSeleccionado.errores.length &gt; 0; else noErrores&quot;&gt;
+      &lt;ul&gt;
+        &lt;li *ngFor&#x3D;&quot;let error of vehiculoSeleccionado.errores&quot;&gt;{{ error.codigo_dtc }}&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/ng-container&gt;
+
+    &lt;ng-template #noErrores&gt;
+      &lt;p&gt;No se han detectado fallos&lt;/p&gt;
+    &lt;/ng-template&gt;
+
+    &lt;div class&#x3D;&quot;email-section&quot;&gt;
+      &lt;label for&#x3D;&quot;emailInput&quot;&gt;&lt;strong&gt;Email del cliente:&lt;/strong&gt;&lt;/label&gt;
+      &lt;input id&#x3D;&quot;emailInput&quot; type&#x3D;&quot;email&quot; [(ngModel)]&#x3D;&quot;emailCliente&quot; placeholder&#x3D;&quot;cliente@ejemplo.com&quot;
+        class&#x3D;&quot;email-input&quot; /&gt;
+
+      &lt;div *ngIf&#x3D;&quot;mensaje&quot;
+        [ngClass]&#x3D;&quot;{&#x27;mensaje-error&#x27;: tipoMensaje &#x3D;&#x3D;&#x3D; &#x27;error&#x27;, &#x27;mensaje-exito&#x27;: tipoMensaje &#x3D;&#x3D;&#x3D; &#x27;exito&#x27;}&quot;
+        class&#x3D;&quot;mensaje-flotante&quot;&gt;
+        {{ mensaje }}
+      &lt;/div&gt;
+
+      &lt;button (click)&#x3D;&quot;solicitarInformeConEmail(vehiculoSeleccionado.id)&quot;&gt;
+        📄 Enviar Informe al Email
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;button (click)&#x3D;&quot;volverInicio()&quot; class&#x3D;&quot;cta-button&quot;&gt;Volver al Inicio&lt;/button&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./mis-vehiculos.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">/* Estilos generales para la sección de vehículos */
+h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Botón de inicio visible siempre */
+button {
+    display: block;
+    margin: 20px auto;
+    font-size: 1.2rem;
+    /* Aumenté el tamaño de la fuente */
+    background: linear-gradient(45deg, #ffffff, #ffbf80);
+    /* Añadí el gradiente */
+    color: #ff6f00;
+    /* Cambié el color del texto */
+    padding: 15px 40px;
+    /* Aumenté el padding para que se vea más grande */
+    border-radius: 50px;
+    /* Cambié el border-radius */
+    border: none;
+    box-shadow: 0px 5px 15px rgba(255, 111, 0, 0.4);
+    /* Añadí sombra */
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+button:not(.icon-button):hover {
+    background: #ff6f00;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0px 8px 20px rgba(255, 111, 0, 0.6);
+}
+
+/* Cargando */
+.loading {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+/* Estilos para las instrucciones cuando no hay vehículos */
+.instructions {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.instructions h3 {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.instructions p {
+    margin-bottom: 15px;
+}
+
+/* Enlace de descarga */
+.download-link {
+    color: #4caf50;
+    font-weight: bold;
+    text-decoration: none;
+    border-bottom: 2px solid #4caf50;
+}
+
+.download-link:hover {
+    color: #45a049;
+    border-bottom: 2px solid #45a049;
+}
+
+/* Estilos para los pasos */
+.steps {
+    text-align: left;
+    margin: 20px 0;
+    padding: 0;
+}
+
+.step {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.step h4 {
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.step p {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Estilos para las tarjetas de vehículos */
+.vehicle-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.vehicle-card {
+    position: relative;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.vehicle-card img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.vehicle-card .vehicle-info {
+    margin-top: 15px;
+}
+
+.vehicle-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.vehicle-card p {
+    font-size: 1rem;
+    margin: 5px 0;
+    color: #555;
+}
+
+/* Botones de editar y eliminar sobre la imagen */
+.image-container {
+    position: relative;
+    width: 100%;
+}
+
+.icon-button {
+    z-index: 10;
+    position: absolute;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    padding: 6px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: none;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-icon {
+    top: 0px;
+    left: 0px;
+}
+
+.delete-icon {
+    top: 0px;
+    right: 0px;
+}
+
+.icon-button:hover {
+    transform: scale(1.1);
+}
+
+.material-icons {
+    font-size: 20px;
+    color: #555;
+}
+
+.delete-red {
+    color: red !important;
+}
+
+/* Estilos para el modal de detalles del vehículo */
+.vehicle-details-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.modal-content h3 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #ff6f00;
+    /* Usamos el mismo color de la marca */
+}
+
+.modal-content p {
+    font-size: 1rem;
+    margin: 10px 0;
+    color: #555;
+}
+
+.modal-content ul {
+    padding-left: 20px;
+}
+
+.modal-content ul li {
+    color: #ff6f00;
+    font-weight: bold;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 1.8rem;
+    color: #ff6f00;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}
+
+.close:hover {
+    color: #d57e00;
+    /* Color ligeramente más oscuro al hacer hover */
+}
+
+/* Sección para enviar informe */
+.email-section {
+    margin-top: 30px;
+    background-color: #fff5e6;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(255, 111, 0, 0.1);
+}
+
+.email-section label {
+    font-size: 1rem;
+    color: #ff6f00;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.email-section .email-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid #ffbf80;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: border 0.3s ease-in-out;
+}
+
+.email-section .email-input:focus {
+    border-color: #ff6f00;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 111, 0, 0.3);
+}
+
+/* Alerta */
+.mensaje-flotante {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.mensaje-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.mensaje-exito {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content h3 {
+        font-size: 1.5rem;
+    }
+
+    .modal-content p {
+        font-size: 0.9rem;
+    }
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><h2>Mis Vehículos</h2><ng-container *ngIf="cargando">  <div class="loading">    <p>Cargando vehículos...</p>  </div></ng-container><ng-container *ngIf="!cargando && vehiculos.length === 0">  <ng-container *ngIf="vehiculos.length === 0">    <div class="instructions">      <h3>No tienes vehículos registrados</h3>      <p>Para registrar un vehículo sigue estos sencillos pasos:</p>      <div class="steps">        <div class="step">          <h4>1. Descarga la aplicación del cliente</h4>          <p>Accede al siguiente enlace para descargar la aplicación del cliente:</p>          <a href="https://github.com/Anthonyx82/GestionTallerPFC/releases/download/v2.0.0/client.7z" target="_blank"            class="download-link">Descargar aplicación</a>        </div>        <div class="step">          <h4>2. Conecta el vehículo al puerto OBDII</h4>          <p>Conecta el cable ELM327 al puerto OBDII de tu vehículo. Este puerto suele encontrarse cerca del volante,            debajo del tablero.</p>        </div>        <div class="step">          <h4>3. Conecta el portátil al vehículo</h4>          <p>Asegúrate de que el portátil que vas a usar para la conexión está conectado al vehículo mediante el cable            ELM327.</p>        </div>        <div class="step">          <h4>4. Inicia sesión en la aplicación</h4>          <p>Abre la aplicación del cliente que descargaste e inicia sesión con el mismo usuario y contraseña que usaste            para registrar tu cuenta en esta página web.</p>        </div>        <div class="step">          <h4>5. Los datos del vehículo se recopilarán automáticamente</h4>          <p>Una vez iniciada la sesión, la aplicación del cliente comenzará a recoger todos los datos del vehículo de            forma automática. ¡Ya está! Ahora tu vehículo aparecerá en tu lista de vehículos registrados.</p>        </div>      </div>    </div>  </ng-container></ng-container><ng-container *ngIf="!cargando && vehiculos.length > 0">  <ng-container *ngIf="vehiculos.length > 0">    <div class="vehicle-cards">      <div class="vehicle-card" *ngFor="let vehiculo of vehiculos">        <!-- Botones ahora están fuera de image-container -->        <button class="icon-button edit-icon" (click)="editarVehiculo(vehiculo.id)" title="Editar">          <mat-icon>edit</mat-icon>        </button>        <button class="icon-button delete-icon" (click)="eliminarVehiculo(vehiculo.id)" title="Eliminar">          <mat-icon class="material-icons delete-red">delete</mat-icon>        </button>        <div class="image-container">          <img [src]="vehiculo.imagenUrl || \'assets/no-image.png\'" alt="{{ vehiculo.marca }} {{ vehiculo.modelo }}"            class="vehicle-image" (click)="verDetalles(vehiculo.id)">        </div>        <div class="vehicle-info">          <h3>{{ vehiculo.marca }} {{ vehiculo.modelo }}</h3>          <p><strong>Año:</strong> {{ vehiculo.year }}</p>        </div>      </div>    </div>  </ng-container></ng-container><!-- Modal para mostrar detalles del vehículo --><div *ngIf="vehiculoSeleccionado" class="vehicle-details-modal">  <div class="modal-content">    <span class="close" (click)="cerrarDetalles()">&times;</span>    <h3>{{ vehiculoSeleccionado.marca }} {{ vehiculoSeleccionado.modelo }}</h3>    <p><strong>Año:</strong> {{ vehiculoSeleccionado.year }}</p>    <p><strong>VIN:</strong> {{ vehiculoSeleccionado.vin }}</p>    <p><strong>RPM:</strong> {{ vehiculoSeleccionado.rpm }}</p>    <p><strong>Velocidad:</strong> {{ vehiculoSeleccionado.velocidad }} km/h</p>    <p><strong>Errores</strong></p>    <ng-container *ngIf="vehiculoSeleccionado.errores.length > 0; else noErrores">      <ul>        <li *ngFor="let error of vehiculoSeleccionado.errores">{{ error.codigo_dtc }}</li>      </ul>    </ng-container>    <ng-template #noErrores>      <p>No se han detectado fallos</p>    </ng-template>    <div class="email-section">      <label for="emailInput"><strong>Email del cliente:</strong></label>      <input id="emailInput" type="email" [(ngModel)]="emailCliente" placeholder="cliente@ejemplo.com"        class="email-input" />      <div *ngIf="mensaje"        [ngClass]="{\'mensaje-error\': tipoMensaje === \'error\', \'mensaje-exito\': tipoMensaje === \'exito\'}"        class="mensaje-flotante">        {{ mensaje }}      </div>      <button (click)="solicitarInformeConEmail(vehiculoSeleccionado.id)">        📄 Enviar Informe al Email      </button>    </div>  </div></div><button (click)="volverInicio()" class="cta-button">Volver al Inicio</button></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'EditarVehiculoComponent', 'selector': 'app-editar-vehiculo'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'InformePublicoComponent', 'selector': 'app-informe-publico'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MisVehiculosComponent', 'selector': 'app-mis-vehiculos'},{'name': 'RegisterComponent', 'selector': 'app-register'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'MisVehiculosComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'MisVehiculosComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

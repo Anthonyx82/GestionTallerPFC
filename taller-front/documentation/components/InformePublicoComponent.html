@@ -1,0 +1,1188 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>taller-front documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">taller-front documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  InformePublicoComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/informe-publico/informe-publico.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p><img src="../assets/docs/screenshots/informe.png" alt="informe" class="img-responsive">
+<br>
+Componente para mostrar un informe público de un vehículo mediante token.
+Carga los datos del informe desde la API y muestra las revisiones en secciones.
+Permite descargar el informe en PDF y compartir el enlace del informe.</p>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-informe-publico</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>RouterModule</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./informe-publico.component.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./informe-publico.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                <a href="#datosInforme" >datosInforme</a>
+                            </li>
+                            <li>
+                                <a href="#error" >error</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#http" >http</a>
+                            </li>
+                            <li>
+                                <a href="#revisionesPreparadas" >revisionesPreparadas</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#route" >route</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#compartir" >compartir</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#descargarPDF" >descargarPDF</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#prepararRevisiones" >prepararRevisiones</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#titleCase" >titleCase</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="compartir"></a>
+                    <span class="name">
+                        <span ><b>compartir</b></span>
+                        <a href="#compartir"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>compartir()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="145"
+                                    class="link-to-prism">src/app/informe-publico/informe-publico.component.ts:145</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Comparte el enlace del informe usando la API Web Share si está disponible,
+o copia el enlace al portapapeles.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="descargarPDF"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>descargarPDF</b></span>
+                        <a href="#descargarPDF"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>descargarPDF()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="117"
+                                    class="link-to-prism">src/app/informe-publico/informe-publico.component.ts:117</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Genera y descarga un PDF con el contenido del informe.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promesa que se resuelve cuando finaliza la descarga.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="55"
+                                    class="link-to-prism">src/app/informe-publico/informe-publico.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Método que se ejecuta al iniciar el componente.
+Obtiene el token de la URL y carga el informe correspondiente.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prepararRevisiones"></a>
+                    <span class="name">
+                        <span ><b>prepararRevisiones</b></span>
+                        <a href="#prepararRevisiones"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>prepararRevisiones()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="81"
+                                    class="link-to-prism">src/app/informe-publico/informe-publico.component.ts:81</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Procesa la revisión cruda del informe para preparar las secciones y puntos
+que se mostrarán en la vista.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="titleCase"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>titleCase</b></span>
+                        <a href="#titleCase"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>titleCase(text: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="164"
+                                    class="link-to-prism">src/app/informe-publico/informe-publico.component.ts:164</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Convierte un texto a formato Title Case.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>text</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Texto a convertir.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Texto en Title Case.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/informe-publico/informe-publico.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indica si el informe se está cargando.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="datosInforme"></a>
+                    <span class="name">
+                        <span ><b>datosInforme</b></span>
+                        <a href="#datosInforme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/informe-publico/informe-publico.component.ts:34</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Datos del informe cargados desde la API.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="error"></a>
+                    <span class="name">
+                        <span ><b>error</b></span>
+                        <a href="#error"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/informe-publico/informe-publico.component.ts:44</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Mensaje de error en caso de fallo al cargar el informe.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="http"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>http</b></span>
+                        <a href="#http"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(HttpClient)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/informe-publico/informe-publico.component.ts:24</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Servicio HttpClient para realizar peticiones HTTP.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="revisionesPreparadas"></a>
+                    <span class="name">
+                        <span ><b>revisionesPreparadas</b></span>
+                        <a href="#revisionesPreparadas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>literal type[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/informe-publico/informe-publico.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Revisiones procesadas para mostrar en secciones.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="route"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>route</b></span>
+                        <a href="#route"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ActivatedRoute)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/informe-publico/informe-publico.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Servicio ActivatedRoute para acceder a parámetros de la ruta activa.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { ActivatedRoute, RouterModule } from &#x27;@angular/router&#x27;;
+import { HttpClient } from &#x27;@angular/common/http&#x27;;
+
+/**
+ * ![informe](../assets/docs/screenshots/informe.png)
+ * &lt;br&gt;
+ * Componente para mostrar un informe público de un vehículo mediante token.
+ * Carga los datos del informe desde la API y muestra las revisiones en secciones.
+ * Permite descargar el informe en PDF y compartir el enlace del informe.
+ */
+@Component({
+  selector: &#x27;app-informe-publico&#x27;,
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: &#x27;./informe-publico.component.html&#x27;,
+  styleUrls: [&#x27;./informe-publico.component.css&#x27;]
+})
+export class InformePublicoComponent {
+  /**
+   * Servicio HttpClient para realizar peticiones HTTP.
+   */
+  private http &#x3D; inject(HttpClient);
+
+  /**
+   * Servicio ActivatedRoute para acceder a parámetros de la ruta activa.
+   */
+  private route &#x3D; inject(ActivatedRoute);
+
+  /**
+   * Datos del informe cargados desde la API.
+   */
+  datosInforme: any &#x3D; null;
+
+  /**
+   * Indica si el informe se está cargando.
+   */
+  cargando &#x3D; true;
+
+  /**
+   * Mensaje de error en caso de fallo al cargar el informe.
+   */
+  error &#x3D; &#x27;&#x27;;
+
+  /**
+   * Revisiones procesadas para mostrar en secciones.
+   */
+  revisionesPreparadas: { seccion: string, puntos: string[] }[] &#x3D; [];
+
+  /**
+   * Método que se ejecuta al iniciar el componente.
+   * Obtiene el token de la URL y carga el informe correspondiente.
+   */
+  ngOnInit(): void {
+    const token &#x3D; this.route.snapshot.paramMap.get(&#x27;token&#x27;);
+
+    if (!token) {
+      this.error &#x3D; &#x27;Token no válido&#x27;;
+      this.cargando &#x3D; false;
+      return;
+    }
+
+    this.http.get(&#x60;https://anthonyx82.ddns.net/taller/api/informe/${token}&#x60;).subscribe({
+      next: (res) &#x3D;&gt; {
+        this.datosInforme &#x3D; res;
+        this.prepararRevisiones();
+        this.cargando &#x3D; false;
+      },
+      error: () &#x3D;&gt; {
+        this.error &#x3D; &#x27;Informe no encontrado o expirado.&#x27;;
+        this.cargando &#x3D; false;
+      }
+    });
+  }
+
+  /**
+   * Procesa la revisión cruda del informe para preparar las secciones y puntos
+   * que se mostrarán en la vista.
+   */
+  prepararRevisiones(): void {
+    this.revisionesPreparadas &#x3D; [];
+
+    const rawRevision &#x3D; this.datosInforme?.vehiculo?.revision;
+
+    let revision: Record&lt;string, string[]&gt; | null &#x3D; null;
+
+    if (typeof rawRevision &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) {
+      try {
+        const safeJson &#x3D; rawRevision.replace(/&#x27;/g, &#x27;&quot;&#x27;);
+        revision &#x3D; JSON.parse(safeJson);
+      } catch (e) {
+        console.error(&#x27;Error al parsear la revisión:&#x27;, e);
+      }
+    } else if (typeof rawRevision &#x3D;&#x3D;&#x3D; &#x27;object&#x27; &amp;&amp; rawRevision !&#x3D;&#x3D; null) {
+      revision &#x3D; rawRevision;
+    }
+
+    if (revision) {
+      for (const seccion in revision) {
+        if (Array.isArray(revision[seccion])) {
+          this.revisionesPreparadas.push({
+            seccion,
+            puntos: revision[seccion]
+          });
+        }
+      }
+    }
+
+    console.log(&#x27;Revisiones preparadas:&#x27;, this.revisionesPreparadas);
+  }
+
+  /**
+   * Genera y descarga un PDF con el contenido del informe.
+   * @returns Promesa que se resuelve cuando finaliza la descarga.
+   */
+  async descargarPDF(): Promise&lt;void&gt; {
+    const element &#x3D; document.querySelector(&#x27;.informe-container&#x27;) as HTMLElement;
+    if (!element) return;
+
+    // Import dinámico compatible con Angular 18
+    const html2pdfModule &#x3D; await import(&#x27;html2pdf.js&#x27;);
+    const html2pdf &#x3D; html2pdfModule.default || html2pdfModule;
+
+    const opt &#x3D; {
+      margin: 0,
+      filename: &#x60;informe-vehiculo-${this.datosInforme.vehiculo.vin}.pdf&#x60;,
+      image: { type: &#x27;jpeg&#x27;, quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: &#x27;pt&#x27;, format: &#x27;a4&#x27;, orientation: &#x27;portrait&#x27; }
+    };
+
+    // Clonar para eliminar botones sin afectar el DOM real
+    const clone &#x3D; element.cloneNode(true) as HTMLElement;
+    const acciones &#x3D; clone.querySelector(&#x27;.acciones&#x27;);
+    if (acciones) acciones.remove();
+
+    html2pdf().set(opt).from(clone).save();
+  }
+
+  /**
+   * Comparte el enlace del informe usando la API Web Share si está disponible,
+   * o copia el enlace al portapapeles.
+   */
+  compartir(): void {
+    const url &#x3D; window.location.href;
+    if (navigator.share) {
+      navigator.share({
+        title: &#x27;Informe del Vehículo&#x27;,
+        text: &#x27;Consulta el informe de tu vehículo:&#x27;,
+        url
+      });
+    } else {
+      alert(&#x27;Enlace copiado al portapapeles&#x27;);
+      navigator.clipboard.writeText(url);
+    }
+  }
+
+  /**
+   * Convierte un texto a formato Title Case.
+   * @param text Texto a convertir.
+   * @returns Texto en Title Case.
+   */
+  private titleCase(text: string): string {
+    return text.replace(/\w\S*/g, (txt) &#x3D;&gt; txt[0].toUpperCase() + txt.substring(1).toLowerCase());
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div *ngIf&#x3D;&quot;cargando&quot; class&#x3D;&quot;loading&quot;&gt;
+  Cargando informe...
+&lt;/div&gt;
+
+&lt;div *ngIf&#x3D;&quot;error &amp;&amp; !cargando&quot; class&#x3D;&quot;error&quot;&gt;
+  {{ error }}
+&lt;/div&gt;
+
+&lt;div *ngIf&#x3D;&quot;!cargando &amp;&amp; !error &amp;&amp; datosInforme&quot; class&#x3D;&quot;informe-container&quot;&gt;
+  &lt;h1&gt;Informe del Vehículo&lt;/h1&gt;
+
+  &lt;!-- Datos del Vehículo --&gt;
+  &lt;section class&#x3D;&quot;datos-vehiculo&quot;&gt;
+    &lt;h2&gt;Datos del Vehículo&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;Marca:&lt;/strong&gt; {{ datosInforme.vehiculo.marca }}&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;Modelo:&lt;/strong&gt; {{ datosInforme.vehiculo.modelo }}&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;Año:&lt;/strong&gt; {{ datosInforme.vehiculo.year }}&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;VIN:&lt;/strong&gt; {{ datosInforme.vehiculo.vin }}&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;Velocidad:&lt;/strong&gt; {{ datosInforme.vehiculo.velocidad }} km/h&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;RPM:&lt;/strong&gt; {{ datosInforme.vehiculo.rpm }}&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/section&gt;
+
+  &lt;!-- Puntos Revisados --&gt;
+  &lt;section class&#x3D;&quot;revisiones&quot; *ngIf&#x3D;&quot;revisionesPreparadas.length&quot;&gt;
+    &lt;h2&gt;Puntos Revisados&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li *ngFor&#x3D;&quot;let rev of revisionesPreparadas&quot;&gt;
+        &lt;h3&gt;{{ rev.seccion }}&lt;/h3&gt;
+        &lt;ul&gt;
+          &lt;li *ngFor&#x3D;&quot;let punto of rev.puntos&quot;&gt;
+            {{ punto }}
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/section&gt;
+
+  &lt;!-- Errores Detectados --&gt;
+  &lt;section class&#x3D;&quot;errores&quot; *ngIf&#x3D;&quot;datosInforme.errores?.length&quot;&gt;
+    &lt;h2&gt;Errores Detectados&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li *ngFor&#x3D;&quot;let err of datosInforme.errores&quot;&gt;
+        {{ err }}
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/section&gt;
+
+  &lt;!-- Botones --&gt;
+  &lt;div class&#x3D;&quot;acciones&quot;&gt;
+    &lt;button (click)&#x3D;&quot;descargarPDF()&quot;&gt;Descargar PDF&lt;/button&gt;
+    &lt;button (click)&#x3D;&quot;compartir()&quot;&gt;Compartir&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./informe-publico.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">/* Contenedor general del informe */
+.informe-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  font-family: &#x27;Poppins&#x27;, sans-serif;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #ff6f00;
+  margin-bottom: 25px;
+}
+
+/* Datos del vehículo */
+.informe-container p {
+  font-size: 1.1rem;
+  margin: 10px 0;
+  color: #555;
+}
+
+/* Errores */
+.informe-container h3 {
+  font-size: 1.5rem;
+  margin-top: 30px;
+  color: #ff6f00;
+}
+
+.informe-container ul {
+  list-style: disc;
+  padding-left: 25px;
+  margin-top: 10px;
+}
+
+.informe-container ul li {
+  color: #ff6f00;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Botones */
+button {
+  display: inline-block;
+  margin: 20px 10px 0 0;
+  font-size: 1.1rem;
+  background: linear-gradient(45deg, #ffffff, #ffbf80);
+  color: #ff6f00;
+  padding: 12px 30px;
+  border-radius: 50px;
+  border: none;
+  box-shadow: 0px 5px 15px rgba(255, 111, 0, 0.4);
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+button:hover {
+  background: #ff6f00;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0px 8px 20px rgba(255, 111, 0, 0.6);
+}
+
+/* Estado de carga y errores */
+.loading,
+.error {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 40px;
+  color: #ff6f00;
+}
+
+.informe-container ul {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.informe-container ul li {
+  font-weight: 400;
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.revisiones ul li &gt; h3 {
+  color: #ff6f00;
+  font-size: 1.2rem;
+  margin: 15px 0 10px;
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div *ngIf="cargando" class="loading">  Cargando informe...</div><div *ngIf="error && !cargando" class="error">  {{ error }}</div><div *ngIf="!cargando && !error && datosInforme" class="informe-container">  <h1>Informe del Vehículo</h1>  <!-- Datos del Vehículo -->  <section class="datos-vehiculo">    <h2>Datos del Vehículo</h2>    <ul>      <li><strong>Marca:</strong> {{ datosInforme.vehiculo.marca }}</li>      <li><strong>Modelo:</strong> {{ datosInforme.vehiculo.modelo }}</li>      <li><strong>Año:</strong> {{ datosInforme.vehiculo.year }}</li>      <li><strong>VIN:</strong> {{ datosInforme.vehiculo.vin }}</li>      <li><strong>Velocidad:</strong> {{ datosInforme.vehiculo.velocidad }} km/h</li>      <li><strong>RPM:</strong> {{ datosInforme.vehiculo.rpm }}</li>    </ul>  </section>  <!-- Puntos Revisados -->  <section class="revisiones" *ngIf="revisionesPreparadas.length">    <h2>Puntos Revisados</h2>    <ul>      <li *ngFor="let rev of revisionesPreparadas">        <h3>{{ rev.seccion }}</h3>        <ul>          <li *ngFor="let punto of rev.puntos">            {{ punto }}          </li>        </ul>      </li>    </ul>  </section>  <!-- Errores Detectados -->  <section class="errores" *ngIf="datosInforme.errores?.length">    <h2>Errores Detectados</h2>    <ul>      <li *ngFor="let err of datosInforme.errores">        {{ err }}      </li>    </ul>  </section>  <!-- Botones -->  <div class="acciones">    <button (click)="descargarPDF()">Descargar PDF</button>    <button (click)="compartir()">Compartir</button>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'EditarVehiculoComponent', 'selector': 'app-editar-vehiculo'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'InformePublicoComponent', 'selector': 'app-informe-publico'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MisVehiculosComponent', 'selector': 'app-mis-vehiculos'},{'name': 'RegisterComponent', 'selector': 'app-register'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'InformePublicoComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'InformePublicoComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -54,6 +54,18 @@ El sistema está dividido en tres componentes principales:
 
 ---
 
+## 📘 Documentación del Frontend Angular
+
+El frontend de la aplicación está ubicado en la carpeta `taller-front`. Para detalles específicos sobre la instalación, desarrollo y despliegue del frontend, por favor consulta el archivo README que se encuentra en:
+
+```
+taller-front/README.md
+```
+
+Este documento contiene instrucciones y detalles específicos para trabajar con la aplicación Angular.
+
+---
+
 ## ⚙️ Instalación y despliegue
 
 1. Clona el repositorio:
