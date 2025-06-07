@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 /** 
- * ![editar-vehiculo](../assets/docs/screenshots/editar-vehiculo.png)
+ * ![editar-vehiculo](assets/docs/screenshots/editar-vehiculo.png)
  * <br>
  * Componente para editar los datos de un vehículo existente.
  *

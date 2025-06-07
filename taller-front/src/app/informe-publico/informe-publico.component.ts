@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 /**
- * ![informe](../assets/docs/screenshots/informe.png)
+ * ![informe](/docs_html/assets/docs/screenshots/informe.png)
  * <br>
  * Componente para mostrar un informe público de un vehículo mediante token.
  * Carga los datos del informe desde la API y muestra las revisiones en secciones.
