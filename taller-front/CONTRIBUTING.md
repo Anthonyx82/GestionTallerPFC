@@ -10,7 +10,7 @@ Para colaborar y ayudarnos a mejorar esta solución, sigue estas pautas:
 2. Crea una rama para tu funcionalidad o corrección:
    ```bash
    git checkout -b feature/nueva-funcionalidad
-````
+   ```
 
 3. Realiza tus cambios y pruebas localmente.
 4. Haz commit con mensajes claros y descriptivos.

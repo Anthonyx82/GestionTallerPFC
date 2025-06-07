@@ -1,28 +1,30 @@
-# TallerFront - Frontend Angular para Proyecto Taller 82
-
-## Descripción
-
-Este proyecto contiene el frontend desarrollado en **Angular 18** para la gestión del taller mecánico dentro del **Proyecto Taller 82**.
-
-La aplicación permite a los usuarios:
-
-* Registrar y gestionar vehículos revisados.
-* Visualizar informes generados.
-* Gestionar autenticación y control de usuarios.
-* Interactuar con la API backend para enviar y recibir datos en tiempo real.
+# 🚗 TallerFront - Frontend Angular para Proyecto Taller 82
 
 ---
 
-## Instalación
+## 🔧 Descripción
 
-Clona el repositorio principal y navega a la carpeta del frontend:
+**TallerFront** es la interfaz frontend, desarrollada con **Angular 18**, que forma parte fundamental del **Proyecto Taller 82**.
+
+Con esta aplicación podrás:
+
+* 🚙 Registrar y administrar vehículos revisados.
+* 📊 Visualizar informes detallados y en tiempo real.
+* 🔐 Gestionar autenticación y control de usuarios con seguridad.
+* ⚡ Interactuar eficientemente con la API backend para un flujo de datos dinámico.
+
+---
+
+## 🚀 Instalación rápida
+
+Clona el repositorio y entra en la carpeta del frontend:
 
 ```bash
 git clone https://github.com/Anthonyx82/GestionTallerPFC.git
 cd GestionTallerPFC/taller-front
 ```
 
-Instala las dependencias con npm:
+Instala las dependencias con:
 
 ```bash
 npm install
@@ -30,37 +32,35 @@ npm install
 
 ---
 
-## Desarrollo
+## 💻 Desarrollo
 
-Levanta un servidor de desarrollo con recarga automática:
+Levanta un servidor local con recarga automática para desarrollo:
 
 ```bash
 ng serve
 ```
 
-Abre tu navegador en:
+Luego abre en tu navegador:
 
-```
-http://localhost:4200/
-```
+👉 [http://localhost:4200/](http://localhost:4200/)
 
-La aplicación recargará automáticamente al guardar cambios en el código fuente.
+Cada cambio en el código se reflejará automáticamente en la aplicación.
 
 ---
 
-## Construcción para Producción
+## 🏗️ Construcción para Producción
 
-Para compilar la aplicación optimizada para producción:
+Genera una versión optimizada lista para producción con:
 
 ```bash
 ng build --prod
 ```
 
-Los archivos compilados estarán en la carpeta `dist/`.
+Los archivos resultantes estarán en la carpeta `dist/`.
 
 ---
 
-## Tecnologías Utilizadas
+## 🛠️ Tecnologías
 
 * Angular 18
 * TypeScript
@@ -68,24 +68,24 @@ Los archivos compilados estarán en la carpeta `dist/`.
 
 ---
 
-## Versionado y Changelog
+## 📅 Versionado y Changelog
 
-El frontend sigue un esquema de versionado semántico. Consulta el [CHANGELOG.md](./CHANGELOG.md) para detalles de versiones y novedades.
+El proyecto sigue **versionado semántico**. Consulta el [CHANGELOG.md](./changelog.html) para ver detalles de cada versión.
 
 ---
 
 ## 🤝 Contribuciones
 
-Si quieres colaborar, revisa nuestra guía de contribución en el archivo [CONTRIBUTING.md](./CONTRIBUTING.md).
+¿Quieres ayudar a mejorar TallerFront? Lee la guía en [CONTRIBUTING.md](./contributing.html) y súmate al desarrollo.
 
 ---
 
-## 📜 Licencia
+## 📄 Licencia
 
-Este proyecto está bajo licencia MIT. Consulta [LICENSE.md](./LICENSE.md) para más información.
+Este proyecto está licenciado bajo MIT. Más info en [LICENSE.md](./license.html).
 
 ---
 
-## Más Información
+## 🔗 Más Información
 
-Para detalles generales, documentación técnica y los otros componentes del sistema, visita el README principal en la raíz del repositorio.
+Para documentación completa, detalles técnicos y otros componentes, revisa el README principal en la raíz del repositorio.
