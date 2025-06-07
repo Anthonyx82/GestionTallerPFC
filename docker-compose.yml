@@ -63,8 +63,6 @@ services:
       - "traefik.http.middlewares.frontend_taller_stripprefix.stripprefix.prefixes=/taller-front"
       - "traefik.http.routers.frontend_taller.middlewares=frontend_taller_stripprefix"
       - "traefik.http.services.frontend_taller.loadbalancer.server.port=80"
-    volumes:
-      - ./docs_html:/usr/share/nginx/html/docs_html
 
 networks:
   web:
