@@ -16,8 +16,8 @@ const baseUrl = 'https://anthonyx82.ddns.net/taller-front';
 const screenshotsDir = path.join('src', 'assets', 'docs', 'screenshots');
 
 const CREDENTIALS = {
-  username: 'Antonio',
-  password: 'Ams1313*',
+  username: 'demo',
+  password: 'demo1234',
 };
 
 async function getTokenFromApi(): Promise<string> {
