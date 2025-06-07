@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 /** 
- * ![editar-vehiculo](assets/docs/screenshots/editar-vehiculo.png)
+ * ![editar-vehiculo](../assets/docs/screenshots/editar-vehiculo.png)
  * <br>
  * Componente para editar los datos de un vehículo existente.
  *
@@ -23,6 +23,7 @@ import { FormsModule } from '@angular/forms';
 export class EditarVehiculoComponent implements OnInit {
 
   /** 
+ * ![editar-vehiculo](../assets/docs/screenshots/editar-vehiculo.png)
    * ID del vehículo a editar, obtenido desde los parámetros de la ruta.
    */
   vehiculoId!: number;

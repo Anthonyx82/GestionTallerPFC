@@ -115,5 +115,5 @@ function injectJsDocImages() {
 
 (async () => {
   await captureScreenshots();
-  injectJsDocImages();
+  //injectJsDocImages();
 })();
