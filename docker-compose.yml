@@ -71,3 +71,7 @@ networks:
 volumes:
   mysql_data:
     driver: local
+    driver_opts:
+      type: none
+      device: /raid0/ftpsv/ftp/Docker/volumes/mysql_data
+      o: bind
