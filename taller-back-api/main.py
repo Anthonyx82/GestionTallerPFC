@@ -181,13 +181,13 @@ class InformeCompartido(Base):
     # Relación con Vehiculo (muchos a uno)
     vehiculo = relationship("Vehiculo", back_populates="informes_compartidos")
 
-# Crear tablas si no existen
-if __name__ == "__main__":
-    Base.metadata.create_all(bind=engine)
-
 # Iniciar FastAPI
 app = FastAPI(root_path="/taller/api")
 BASE_DIR = Path("docs/build/html")
+
+@app.on_event("startup")
+def startup():
+    Base.metadata.create_all(bind=engine)
 
 # Configurar CORS
 app.add_middleware(
