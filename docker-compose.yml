@@ -9,7 +9,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
-      - /raid0/ftpsv/ftp/Docker/volumes/gestiontallerpfc_mysql_data:/var/lib/mysql
+      - gestiontallerpfc_mysql_data:/var/lib/mysql
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "--password=${MYSQL_ROOT_PASSWORD}" ]
       interval: 10s
@@ -67,3 +67,11 @@ services:
 networks:
   web:
     external: true
+
+volumes:
+  mysql_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /raid0/ftpsv/ftp/Docker/volumes/gestiontallerpfc_mysql_data
+      o: bind
