@@ -73,5 +73,5 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /raid0/ftpsv/ftp/Docker/volumes/gestiontallerpfc_mysql_data
+      device: /mnt/raid0/GestionTallerPFC/gestion_taller_mysql_data
       o: bind
