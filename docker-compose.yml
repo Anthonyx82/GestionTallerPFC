@@ -40,7 +40,7 @@ services:
       - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.api_taller.rule=Host(`anthonyx82.ddns.net`) && PathPrefix(`/taller/api`)"
+      - "traefik.http.routers.api_taller.rule=Host(`web82.es`) && PathPrefix(`/taller/api`)"
       - "traefik.http.routers.api_taller.entrypoints=websecure"
       - "traefik.http.routers.api_taller.tls.certresolver=mysresolver"
       - "traefik.http.middlewares.api_taller_stripprefix.stripprefix.prefixes=/taller/api"
@@ -57,7 +57,7 @@ services:
       - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend_taller.rule=Host(`anthonyx82.ddns.net`) && PathPrefix(`/taller-front`)"
+      - "traefik.http.routers.frontend_taller.rule=Host(`web82.es`) && PathPrefix(`/taller-front`)"
       - "traefik.http.routers.frontend_taller.entrypoints=websecure"
       - "traefik.http.routers.frontend_taller.tls.certresolver=mysresolver"
       - "traefik.http.middlewares.frontend_taller_stripprefix.stripprefix.prefixes=/taller-front"
