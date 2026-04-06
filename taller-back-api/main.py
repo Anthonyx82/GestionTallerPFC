@@ -663,7 +663,7 @@ async def crear_informe(vehiculo_id: int, request: InformeRequest, usuario: Usua
         db.add(informe)
         db.commit()
 
-        enlace = f"https://anthonyx82.ddns.net/taller-front/informe/{token}"
+        enlace = f"https://taller.front.web82.es/taller-front/informe/{token}"
 
         mensaje = MessageSchema(
         subject="Tu informe del vehículo",
