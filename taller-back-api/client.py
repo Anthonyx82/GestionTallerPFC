@@ -8,7 +8,7 @@ from tkinter import messagebox, Toplevel, StringVar, IntVar, Canvas, Label, Chec
 from PIL import Image, ImageTk
 import ctypes
 
-API_URL = "https://anthonyx82.ddns.net/taller/api"
+API_URL = "https://taller.api.web82.es"
 token = None
 selected_port = None
 revision_data = {}
@@ -38,7 +38,7 @@ def obtener_token():
         f"{API_URL}/login",
         json={"username": usuario, "password": password}
     )
-    
+
     if response.status_code == 200:
         global token
         token = response.json().get("access_token")

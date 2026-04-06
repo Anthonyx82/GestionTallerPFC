@@ -132,7 +132,7 @@ class Vehiculo(Base):
 
     # Relación con ErrorVehiculo (uno a muchos)
     errores = relationship("ErrorVehiculo", back_populates="vehiculo", cascade="all, delete-orphan")
-    
+
     # Relación con InformeCompartido (uno a muchos)
     informes_compartidos = relationship("InformeCompartido", back_populates="vehiculo", cascade="all, delete-orphan")
 
@@ -342,7 +342,7 @@ class ErrorVehiculoRegistro(BaseModel):
     """
     codigo_dtc: list[str]
     vehiculo_id: int
-    
+
 class InformeRequest(BaseModel):
     """
     Modelo de solicitud para generar y enviar un informe por correo.
@@ -370,22 +370,22 @@ async def serve_docs_html(path: str):
     if not file_path.exists() or not file_path.is_file():
         raise HTTPException(status_code=404, detail="Archivo no encontrado")
     return FileResponse(file_path)
-    
+
 # Endpoint para registro de usuario
 @app.post("/register")
 def register(datos: UsuarioRegistro, db: Session = Depends(get_db)):
     """
     **POST** ``/register``
-    
+
     Registra un nuevo usuario en la base de datos.
-    
+
     **Parámetros**:
     - ``datos`` (UsuarioRegistro): Objeto que contiene el nombre de usuario y la contraseña.
     - ``db`` (Session): Sesión activa de la base de datos, proporcionada por FastAPI.
-    
+
     **Retorna**:
     - ``dict``: Un mensaje indicando si el usuario fue registrado exitosamente.
-    
+
     **Errores**:
     - ``400``: Si los campos son inválidos o el nombre de usuario ya existe.
     """
@@ -424,15 +424,15 @@ def login(datos: UsuarioLogin, db: Session = Depends(get_db)):
     """
     if not datos.username or len(datos.username.strip()) < 3:
         raise HTTPException(status_code=400, detail="Debes ingresar un nombre de usuario válido.")
-    
+
     if not datos.password or len(datos.password) < 6:
         raise HTTPException(status_code=400, detail="Debes ingresar una contraseña válida de al menos 6 caracteres.")
 
     usuario = db.query(Usuario).filter(Usuario.username == datos.username.strip()).first()
-    
+
     if not usuario:
         raise HTTPException(status_code=401, detail="El nombre de usuario no está registrado.")
-    
+
     if not verificar_password(datos.password, usuario.password_hash):
         raise HTTPException(status_code=401, detail="La contraseña es incorrecta.")
 
