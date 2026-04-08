@@ -40,7 +40,7 @@ services:
       - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.api_taller.rule=Host(`taller.api.web82.es`)"
+      - "traefik.http.routers.api_taller.rule=Host(`taller-api.web82.es`)"
       - "traefik.http.routers.api_taller.entrypoints=websecure"
       - "traefik.http.routers.api_taller.tls.certresolver=myresolver"
       - "traefik.http.services.api_taller.loadbalancer.server.port=8000"
@@ -55,7 +55,7 @@ services:
       - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend_taller.rule=Host(`taller.front.web82.es`)"
+      - "traefik.http.routers.frontend_taller.rule=Host(`taller-front.web82.es`)"
       - "traefik.http.routers.frontend_taller.entrypoints=websecure"
       - "traefik.http.routers.frontend_taller.tls.certresolver=myresolver"
       - "traefik.http.services.frontend_taller.loadbalancer.server.port=80"

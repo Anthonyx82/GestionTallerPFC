@@ -8,7 +8,7 @@ from tkinter import messagebox, Toplevel, StringVar, IntVar, Canvas, Label, Chec
 from PIL import Image, ImageTk
 import ctypes
 
-API_URL = "https://taller.api.web82.es"
+API_URL = "https://taller-api.web82.es"
 token = None
 selected_port = None
 revision_data = {}
