@@ -736,7 +736,7 @@ export class EditarVehiculoComponent implements OnInit {
    * Realiza una petición HTTP GET al backend.
    */
   cargarVehiculo(): void {
-    this.http.get(&#x60;https://anthonyx82.ddns.net/taller/api/mis-vehiculos/${this.vehiculoId}&#x60;).subscribe({
+    this.http.get(&#x60;https://taller-api.web82.es/taller/api/mis-vehiculos/${this.vehiculoId}&#x60;).subscribe({
       next: (data: any) &#x3D;&gt; {
         this.vehiculo &#x3D; data;
       },
@@ -761,7 +761,7 @@ export class EditarVehiculoComponent implements OnInit {
       revision: this.vehiculo.revision
     };
 
-    this.http.put(&#x60;https://anthonyx82.ddns.net/taller/api/editar-vehiculo/${this.vehiculoId}&#x60;, vehiculoActualizado).subscribe({
+    this.http.put(&#x60;https://taller-api.web82.es/taller/api/editar-vehiculo/${this.vehiculoId}&#x60;, vehiculoActualizado).subscribe({
       next: () &#x3D;&gt; {
         console.log(&#x27;Vehículo actualizado correctamente&#x27;);
         this.router.navigate([&#x27;/mis-vehiculos&#x27;]);

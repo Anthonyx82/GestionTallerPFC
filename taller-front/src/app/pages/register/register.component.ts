@@ -69,7 +69,7 @@ export class RegisterComponent {
    */
   register() {
     if (this.registerForm.valid) {
-      this.http.post('https://anthonyx82.ddns.net/taller/api/register', this.registerForm.value).subscribe({
+      this.http.post('https://taller-api.web82.es/taller/api/register', this.registerForm.value).subscribe({
         next: () => this.router.navigate(['/']),
         error: (error) => {
           this.errorMessage = error.error.detail || 'Error desconocido en el registro.';

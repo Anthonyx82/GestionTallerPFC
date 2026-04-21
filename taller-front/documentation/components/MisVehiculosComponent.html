@@ -1386,7 +1386,7 @@ export class MisVehiculosComponent {
    * Obtiene los vehículos del backend y comienza la carga de sus imágenes.
    */
   ngOnInit() {
-    this.http.get(&#x27;https://anthonyx82.ddns.net/taller/api/mis-vehiculos/&#x27;).subscribe({
+    this.http.get(&#x27;https://taller-api.web82.es/taller/api/mis-vehiculos/&#x27;).subscribe({
       next: (data: any) &#x3D;&gt; {
         this.vehiculos &#x3D; data.vehiculos ?? [];
         if (this.vehiculos.length &#x3D;&#x3D;&#x3D; 0) {
@@ -1443,7 +1443,7 @@ export class MisVehiculosComponent {
    * @returns Promise con la URL de la imagen
    */
   async obtenerImagen(marca: string, modelo: string): Promise&lt;string&gt; {
-    const apiUrl &#x3D; &#x60;https://anthonyx82.ddns.net/taller/api/car-imagery/?searchTerm&#x3D;${encodeURIComponent(marca + &#x27; &#x27; + modelo)}&#x60;;
+    const apiUrl &#x3D; &#x60;https://taller-api.web82.es/taller/api/car-imagery/?searchTerm&#x3D;${encodeURIComponent(marca + &#x27; &#x27; + modelo)}&#x60;;
     try {
       const response &#x3D; await this.http.get(apiUrl, { responseType: &#x27;text&#x27; }).toPromise();
       const match &#x3D; response?.match(/&lt;string[^&gt;]*&gt;(.*?)&lt;\/string&gt;/);
@@ -1459,11 +1459,11 @@ export class MisVehiculosComponent {
    * @param vehiculoId Identificador del vehículo
    */
   verDetalles(vehiculoId: number): void {
-    this.http.get(&#x60;https://anthonyx82.ddns.net/taller/api/mis-vehiculos/${vehiculoId}&#x60;).subscribe({
+    this.http.get(&#x60;https://taller-api.web82.es/taller/api/mis-vehiculos/${vehiculoId}&#x60;).subscribe({
       next: (data: any) &#x3D;&gt; {
         this.vehiculoSeleccionado &#x3D; data;
 
-        this.http.get(&#x60;https://anthonyx82.ddns.net/taller/api/mis-errores/${vehiculoId}&#x60;).subscribe({
+        this.http.get(&#x60;https://taller-api.web82.es/taller/api/mis-errores/${vehiculoId}&#x60;).subscribe({
           next: (errores: any) &#x3D;&gt; {
             this.vehiculoSeleccionado.errores &#x3D; errores;
           },
@@ -1490,7 +1490,7 @@ export class MisVehiculosComponent {
     }
 
     this.http.post&lt;{ enlace: string }&gt;(
-      &#x60;https://anthonyx82.ddns.net/taller/api/crear-informe/${vehiculoId}&#x60;,
+      &#x60;https://taller-api.web82.es/taller/api/crear-informe/${vehiculoId}&#x60;,
       { email: this.emailCliente },
       { headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; } }
     ).subscribe({
@@ -1525,7 +1525,7 @@ export class MisVehiculosComponent {
    * @param vehiculoId Identificador del vehículo a eliminar
    */
   eliminarVehiculo(vehiculoId: number): void {
-    this.http.delete(&#x60;https://anthonyx82.ddns.net/taller/api/eliminar-vehiculo/${vehiculoId}&#x60;).subscribe({
+    this.http.delete(&#x60;https://taller-api.web82.es/taller/api/eliminar-vehiculo/${vehiculoId}&#x60;).subscribe({
       next: () &#x3D;&gt; {
         this.vehiculos &#x3D; this.vehiculos.filter(v &#x3D;&gt; v.id !&#x3D;&#x3D; vehiculoId);
         console.log(&#x27;Vehículo eliminado&#x27;);

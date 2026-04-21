@@ -555,7 +555,7 @@ export class LoginComponent {
    * - Muestra un mensaje de error indicando que las credenciales son incorrectas.
    */
   login() {
-    this.http.post&lt;{ access_token: string }&gt;(&#x27;https://anthonyx82.ddns.net/taller/api/login&#x27;, {
+    this.http.post&lt;{ access_token: string }&gt;(&#x27;https://taller-api.web82.es/taller/api/login&#x27;, {
       username: this.username,
       password: this.password
     }).subscribe({

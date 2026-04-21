@@ -802,7 +802,7 @@ export class InformePublicoComponent {
       return;
     }
 
-    this.http.get(&#x60;https://anthonyx82.ddns.net/taller/api/informe/${token}&#x60;).subscribe({
+    this.http.get(&#x60;https://taller-api.web82.es/taller/api/informe/${token}&#x60;).subscribe({
       next: (res) &#x3D;&gt; {
         this.datosInforme &#x3D; res;
         this.prepararRevisiones();

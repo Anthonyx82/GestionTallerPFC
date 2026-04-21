@@ -12,7 +12,7 @@ const pages = [
 ];
 
 
-const baseUrl = 'https://anthonyx82.ddns.net/taller-front';
+const baseUrl = 'https://taller-front.web82.es/taller-front';
 const screenshotsDir = path.join('src', 'assets', 'docs', 'screenshots');
 
 const CREDENTIALS = {
@@ -21,7 +21,7 @@ const CREDENTIALS = {
 };
 
 async function getTokenFromApi(): Promise<string> {
-  const response = await fetch('https://anthonyx82.ddns.net/taller/api/login', {
+  const response = await fetch('https://taller-api.web82.es/taller/api/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(CREDENTIALS),

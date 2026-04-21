@@ -83,7 +83,7 @@ cd GestionTallerPFC
 docker-compose up -d --build
 ```
 
-4. Accede al frontend desde el navegador en tu dominio (ej. `https://anthonyx82.ddns.net/taller-front/`)
+4. Accede al frontend desde el navegador en tu dominio (ej. `https://taller-front.web82.es/taller-front/`)
 
 ---
 

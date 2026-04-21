@@ -61,7 +61,7 @@ export class InformePublicoComponent {
       return;
     }
 
-    this.http.get(`https://anthonyx82.ddns.net/taller/api/informe/${token}`).subscribe({
+    this.http.get(`https://taller-api.web82.es/taller/api/informe/${token}`).subscribe({
       next: (res) => {
         this.datosInforme = res;
         this.prepararRevisiones();
